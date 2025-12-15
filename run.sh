@@ -8,7 +8,7 @@ echo "Exécution en cours..."
 cd "bin" || { echo "Erreur: dossier 'bin' introuvable."; exit 1; }
 
 # Lancer l'application Java
-java . controleur.Controleur &
+java controleur.Controleur &
 app_pid=$!
 
 # Optionnel: attendre une seconde et vérifier si le processus tourne
