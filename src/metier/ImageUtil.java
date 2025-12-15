@@ -1,9 +1,53 @@
 package metier;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
+
+/**
+ * Classe utilitaire pour les images
+ */
 public class ImageUtil
 {
+	public BufferedImage img;
+
+	public ImageUtil(String srcImg)
+	{
+		try
+		{
+			this.img = ImageIO.read(new File(srcImg));
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+	}
+	public BufferedImage getImage() {
+		return this.img;
+	}
+
+	public void setImage(BufferedImage img) {
+		this.img = img;
+	}
+
+	public void sauvegarderImage(String destImg)
+	{
+		this.sauvegarderImage(destImg, "png");
+	}
+
+	public void sauvegarderImage(String destImg, String format)
+	{
+		try
+		{
+			ImageIO.write(this.img, format, new File(destImg));
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 
 	public static void afficherDetailCouleur(String nomCouleur, int couleur)
 	{
