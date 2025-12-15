@@ -13,3 +13,4 @@
 ./src/metier/Teinte.java
 ./src/metier/TexteImage.java
 ./src/metier/TestMiroir.java
+./src/metier/TestRedimensionnement.java
