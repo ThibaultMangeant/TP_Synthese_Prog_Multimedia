@@ -52,7 +52,7 @@ public class ImageUtil
 		}
 	}
 
-	public static List<Integer> afficherDetailCouleur(int couleur)
+	public  List<Integer> afficherDetailCouleur(int couleur)
 	{
 		List<Integer> rgb = new ArrayList<>();
 		int rouge = couleur / (256*256); 
