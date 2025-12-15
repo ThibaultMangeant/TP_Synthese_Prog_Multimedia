@@ -19,6 +19,7 @@ public class FramePrincipale extends JFrame
 		this.setTitle("Application Multimedia");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(800, 600);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLocation(200, 200);
 		
 		this.initMenu(); 
