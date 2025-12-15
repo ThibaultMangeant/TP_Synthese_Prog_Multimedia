@@ -14,7 +14,7 @@ public class FramePrincipale extends JFrame
 	{
 		this.controleur = ctrl;
 		
-		this.panelPrincipal = new PanelPrincipal();
+		this.panelPrincipal = new PanelPrincipal(this);
 		
 		this.setTitle("Application Multimedia");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,5 +60,10 @@ public class FramePrincipale extends JFrame
 		menuBar.add(menuEdition);
 
 		this.setJMenuBar(menuBar);
+	}
+
+	public String getImage()
+	{
+		return this.controleur.getImage();
 	}
 }

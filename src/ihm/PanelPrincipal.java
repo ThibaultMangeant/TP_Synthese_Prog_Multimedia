@@ -1,23 +1,49 @@
 package ihm;
 
 import javax.swing.*;
+import javax.imageio.ImageIO;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class PanelPrincipal extends JPanel
 {
-	private JPanel panelImage;
-	private JLabel image;
+	private BufferedImage bufferedImage;
+	private FramePrincipale frame;
 
-	public PanelPrincipal()
+	public PanelPrincipal(FramePrincipale frame)
 	{
-		this.panelImage = new JPanel(new BorderLayout());
+		this.frame = frame;
 
-		this.image = new JLabel(new ImageIcon("images/david_tennant.png"));
-		this.image.setOpaque(false);
-		this.panelImage.add(this.image, BorderLayout.CENTER);
-		this.panelImage.setOpaque(false);
+		this.setLayout(new BorderLayout());
 		
-		this.add(panelImage, BorderLayout.CENTER);
+		// Charger l'image
+		try
+		{
+			bufferedImage = ImageIO.read(new File(this.frame.getImage()));
+		}
+		catch (IOException e)
+		{
+			System.err.println("Erreur: impossible de charger l'image");
+			e.printStackTrace();
+		}
+	}
+	
+	protected void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+		
+		if (bufferedImage != null)
+		{
+			g.drawImage(bufferedImage, 0, 0, getWidth(), getHeight(), this);
+		}
+	}
+
+	public void majIHM()
+	{
+		this.repaint();
 	}
 }
