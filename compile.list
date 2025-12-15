@@ -1,5 +1,6 @@
 ./src/controleur/Controleur.java
 
+./src/ihm/BarMenu.java
 ./src/ihm/FramePrincipale.java
 ./src/ihm/PanelPrincipal.java
 
