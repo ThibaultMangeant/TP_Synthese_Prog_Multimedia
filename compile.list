@@ -14,3 +14,4 @@
 ./src/metier/TexteImage.java
 ./src/metier/TestMiroir.java
 ./src/metier/TestRedimensionnement.java
+./src/metier/TestRotation.java
