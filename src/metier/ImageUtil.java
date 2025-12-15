@@ -24,11 +24,13 @@ public class ImageUtil
 		}
 
 	}
-	public BufferedImage getImage() {
+	public BufferedImage getImage()
+	{
 		return this.img;
 	}
 
-	public void setImage(BufferedImage img) {
+	public void setImage(BufferedImage img)
+	{
 		this.img = img;
 	}
 
@@ -62,8 +64,8 @@ public class ImageUtil
 	{
 		int min,max;
 		int rouge = c.getRed();
-		int vert = c.getGreen();
-		int bleu = c.getBlue();
+		int vert  = c.getGreen();
+		int bleu  = c.getBlue();
 
 		switch (numAlgo) {
 			

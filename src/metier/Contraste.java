@@ -2,9 +2,7 @@ package metier;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
-import metier.ImageUtil;
 
 /**
  * Classe pour gérer le contraste et la lumière
@@ -12,15 +10,15 @@ import metier.ImageUtil;
 public class Contraste
 {
 
-	String fichierSource;
-	String fichierDest;
+	String    fichierSource;
+	String    fichierDest;
 	ImageUtil imgUtil;
 
 	public Contraste(String fichierSource, String fichierDest)
 	{
 		this.fichierSource = fichierSource;
-		this.fichierDest = fichierDest;
-		this.imgUtil = new ImageUtil(fichierSource);
+		this.fichierDest   = fichierDest;
+		this.imgUtil       = new ImageUtil(fichierSource);
 	}
 
 	public void appliquerContraste(int contraste)
