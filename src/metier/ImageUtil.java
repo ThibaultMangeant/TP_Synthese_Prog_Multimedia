@@ -3,6 +3,8 @@ package metier;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -50,14 +52,18 @@ public class ImageUtil
 		}
 	}
 
-
-	public static void afficherDetailCouleur(String nomCouleur, int couleur)
+	public static List<Integer> afficherDetailCouleur(int couleur)
 	{
+		List<Integer> rgb = new ArrayList<>();
 		int rouge = couleur / (256*256); 
 		int vert  = couleur / 256 % 256;
 		int bleu  = couleur % 256    ;
 
-		System.out.println(String.format("%s%12d [%3d,%3d,%3d]\n", nomCouleur, couleur, rouge, vert, bleu));
+		rgb.add(rouge);
+		rgb.add(vert);
+		rgb.add(bleu);
+
+		return rgb;
 	}
 
 	public static int luminance( Color c, int numAlgo)
