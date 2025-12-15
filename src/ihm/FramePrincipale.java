@@ -2,8 +2,6 @@ package ihm;
 
 import controleur.Controleur;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class FramePrincipale extends JFrame
 {
@@ -30,37 +28,7 @@ public class FramePrincipale extends JFrame
 
 	private void initMenu()
 	{
-		JMenuBar menuBar = new JMenuBar();
-
-		JMenu menuFichier = new JMenu("Fichier");
-		
-		JMenuItem itemOuvrir = new JMenuItem("Ouvrir");
-		JMenuItem itemQuitter = new JMenuItem("Quitter");
-
-		itemQuitter.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				System.exit(0);
-			}
-		});
-	
-		itemOuvrir.addActionListener(e -> {
-			System.out.println("Clic sur Ouvrir -> Appel au contrôleur");
-		});
-
-		menuFichier.add(itemOuvrir);
-		menuFichier.addSeparator();
-		menuFichier.add(itemQuitter);
-
-		JMenu menuEdition = new JMenu("Édition");
-		menuEdition.add(new JMenuItem("Paramètres"));
-
-		menuBar.add(menuFichier);
-		menuBar.add(menuEdition);
-
-		this.setJMenuBar(menuBar);
+		this.setJMenuBar(new BarMenu());
 	}
 
 	public String getImage()
