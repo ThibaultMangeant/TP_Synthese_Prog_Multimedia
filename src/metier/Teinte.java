@@ -12,11 +12,23 @@ public class Teinte
 
 	ImageUtil imgUtil;
 
+	/**
+	 * Constructeur
+	 * 
+	 * @param srcImg
+	 */
 	public Teinte(String srcImg)
 	{
 		this.imgUtil = new ImageUtil(srcImg);
 	}
 
+	/**
+	 * Appliquer une teinte à l'image
+	 * 
+	 * @param teinteRouge
+	 * @param teinteVerte
+	 * @param teinteBleue
+	 */
 	public void teinter(int teinteRouge, int teinteVerte, int teinteBleue)
 	{
 		BufferedImage img = this.imgUtil.getImage();

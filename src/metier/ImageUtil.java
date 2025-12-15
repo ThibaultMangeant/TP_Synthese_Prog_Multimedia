@@ -15,6 +15,11 @@ public class ImageUtil
 {
 	public BufferedImage img;
 
+	/**
+	 * Constructeur
+	 * 
+	 * @param srcImg
+	 */
 	public ImageUtil(String srcImg)
 	{
 		try
@@ -24,8 +29,12 @@ public class ImageUtil
 		{
 			e.printStackTrace();
 		}
-
 	}
+
+	/**
+	 * Obtenir l'image
+	 * @return BufferedImage
+	 */
 	public BufferedImage getImage()
 	{
 		return this.img;
@@ -36,6 +45,10 @@ public class ImageUtil
 		this.img = img;
 	}
 
+	/**
+	 * Sauvegarder l'image au format PNG
+	 * @param destImg
+	 */
 	public void sauvegarderImage(String destImg)
 	{
 		this.sauvegarderImage(destImg, "png");
@@ -52,6 +65,12 @@ public class ImageUtil
 		}
 	}
 
+	/**
+	 * Afficher le détail des couleurs d'un pixel
+	 * 
+	 * @param couleur
+	 * @return List<Integer> des composantes RGB
+	 */
 	public  List<Integer> afficherDetailCouleur(int couleur)
 	{
 		List<Integer> rgb = new ArrayList<>();
@@ -66,6 +85,13 @@ public class ImageUtil
 		return rgb;
 	}
 
+	/**
+	 * Calculer la luminance d'une couleur selon un algorithme donné
+	 * 
+	 * @param c
+	 * @param numAlgo
+	 * @return int luminance
+	 */
 	public static int luminance( Color c, int numAlgo)
 	{
 		int min,max;

@@ -11,6 +11,12 @@ public class Rotation
 	public ImageUtil imageUtil;
 	String fichierSource;
 
+
+	/**
+	 * Constructeur
+	 * 
+	 * @param fichierSource
+	 */
 	public Rotation(String fichierSource)
 	{
 		this.fichierSource = fichierSource;

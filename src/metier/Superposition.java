@@ -13,6 +13,12 @@ public class Superposition
 	String cheminImage1;
 	String cheminImage2;
 
+	/**
+	 * Constructeur
+	 * 
+	 * @param cheminImage1 Chemin de la première image (base)
+	 * @param cheminImage2 Chemin de la deuxième image (à superposer)
+	 */
 	public Superposition(String cheminImage1, String cheminImage2)
 	{
 		this.cheminImage1 = cheminImage1;
@@ -22,13 +28,17 @@ public class Superposition
 		this.imgUtil2 = new ImageUtil(cheminImage2);
 	}
 
+	/**
+	 * Superpose imgUtil2 sur imgUtil1 aux coordonnées (x, y)
+	 * 
+	 * @param x Position x de la superposition
+	 * @param y Position y de la superposition
+	 */
 	public void superposer(int x, int y)
 	{
 		BufferedImage image1 = imgUtil1.getImage();
 		BufferedImage image2 = imgUtil2.getImage();
 
-		int largeur1 = image1.getWidth();
-		int hauteur1 = image1.getHeight();
 		int largeur2 = image2.getWidth();
 		int hauteur2 = image2.getHeight();
 
