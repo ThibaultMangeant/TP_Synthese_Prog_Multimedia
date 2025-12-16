@@ -11,7 +11,7 @@ export CLASSPATH="lib/*:bin:.:${CLASSPATH-}"
 echo "CLASSPATH défini à \"$CLASSPATH\""
 
 echo "Compilation en cours..."
-javac -cp "$CLASSPATH" @compile.list -d ./bin -encoding UTF-8
+javac "$CLASSPATH" @compile.list -d ./bin -encoding UTF-8
 
 echo "Compilation terminée."
 

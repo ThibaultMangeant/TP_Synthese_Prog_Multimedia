@@ -1,10 +1,13 @@
 package ihm;
 
 import javax.swing.JMenuItem;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JFileChooser;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import controleur.Controleur;

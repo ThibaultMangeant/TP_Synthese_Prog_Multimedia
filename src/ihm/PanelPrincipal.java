@@ -28,9 +28,9 @@ public class PanelPrincipal extends JPanel
 	{
 		super.paintComponent(g);
 		
-		if (bufferedImage != null)
+		if (this.bufferedImage != null)
 		{
-			g.drawImage(bufferedImage, 0, 0, getWidth(), getHeight(), this);
+			g.drawImage(this.bufferedImage, 0, 0, getWidth(), getHeight(), this);
 		}
 	}
 
@@ -43,7 +43,7 @@ public class PanelPrincipal extends JPanel
 	{
 		try
 		{
-			bufferedImage = ImageIO.read(new File(path));
+			this.bufferedImage = ImageIO.read(new File(path));
 			this.majIHM();
 		}
 		catch (IOException e)
