@@ -29,12 +29,11 @@ public class Superposition
 	}
 
 	/**
-	 * Superpose imgUtil2 sur imgUtil1 aux coordonnées (x, y)
+	 * Superpose imgUtil2 sur imgUtil1 aux coordonnees donnees
 	 * 
-	 * @param x Position x de la superposition
-	 * @param y Position y de la superposition
+	 * @param position Position de la superposition
 	 */
-	public void superposer(int x, int y)
+	public void superposer(Point position)
 	{
 		BufferedImage image1 = imgUtil1.getImage();
 		BufferedImage image2 = imgUtil2.getImage();
@@ -48,7 +47,7 @@ public class Superposition
 				int alpha2 = (pixel2 >> 24) & 0xff;
 
 				if (alpha2 > 0) { // Si le pixel n'est pas totalement transparent
-					int pixel1 = image1.getRGB(x + i, y + j);
+					int pixel1 = image1.getRGB(position.x + i, position.y + j);
 
 					// Calcul de la nouvelle couleur en fonction de l'alpha
 					int r1 = (pixel1 >> 16) & 0xff;
@@ -64,9 +63,20 @@ public class Superposition
 					int bFinal = (b2 * alpha2 + b1 * (255 - alpha2)) / 255;
 
 					int pixelFinal = (255 << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
-					image1.setRGB(x + i, y + j, pixelFinal);
+					image1.setRGB(position.x + i, position.y + j, pixelFinal);
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Superpose imgUtil2 sur imgUtil1 aux coordonnees (x, y)
+	 * 
+	 * @param x Position x de la superposition
+	 * @param y Position y de la superposition
+	 */
+	public void superposer(int x, int y)
+	{
+		superposer(new Point(x, y));
 	}
 }

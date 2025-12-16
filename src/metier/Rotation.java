@@ -2,9 +2,6 @@ package metier;
 
 import java.awt.image.BufferedImage;
 
-import metier.ImageUtil;
-
-
 /**
  * Classe pour faire des rotations d'images
  */

@@ -12,24 +12,35 @@ public class PotPeinture
 	/**
 	 * Retire une couleur et ses voisines proches de l'image (rend transparent)
 	 * @param imgUtil ImageUtil contenant l'image
-	 * @param x Position X du clic
-	 * @param y Position Y du clic
-	 * @param tolerance Tolérance de couleur (0-255)
+	 * @param position Position du clic
+	 * @param tolerance Tolerance de couleur (0-255)
 	 */
-	public static void retirerCouleur(ImageUtil imgUtil, int x, int y, int tolerance)
+	public static void retirerCouleur(ImageUtil imgUtil, Point position, int tolerance)
 	{
-		if (x < 0 || x >= imgUtil.img.getWidth() || y < 0 || y >= imgUtil.img.getHeight())
+		if (position.x < 0 || position.x >= imgUtil.img.getWidth() || position.y < 0 || position.y >= imgUtil.img.getHeight())
 			return;
 		
-		// Récupérer la couleur cliquée
-		Color couleurCible = new Color(imgUtil.img.getRGB(x, y));
+		// Recuperer la couleur cliquee
+		Color couleurCible = new Color(imgUtil.img.getRGB(position.x, position.y));
 		
 		// Algorithme de remplissage pour retirer la couleur
-		retirerCouleurIteratif(imgUtil, x, y, couleurCible, tolerance);
+		retirerCouleurIteratif(imgUtil, position.x, position.y, couleurCible, tolerance);
 	}
 	
 	/**
-	 * Algorithme itératif pour retirer une zone de couleur
+	 * Retire une couleur et ses voisines proches de l'image (rend transparent)
+	 * @param imgUtil ImageUtil contenant l'image
+	 * @param x Position X du clic
+	 * @param y Position Y du clic
+	 * @param tolerance Tolerance de couleur (0-255)
+	 */
+	public static void retirerCouleur(ImageUtil imgUtil, int x, int y, int tolerance)
+	{
+		retirerCouleur(imgUtil, new Point(x, y), tolerance);
+	}
+	
+	/**
+	 * Algorithme iteratif pour retirer une zone de couleur
 	 */
 	private static void retirerCouleurIteratif(ImageUtil imgUtil, int x, int y, Color couleurCible, int tolerance)
 	{
@@ -42,26 +53,26 @@ public class PotPeinture
 		{
 			Point p = file.poll();
 			
-			// Vérifier les limites
+			// Verifier les limites
 			if (p.x < 0 || p.x >= imgUtil.img.getWidth() || p.y < 0 || p.y >= imgUtil.img.getHeight())
 				continue;
 			
-			// Si déjà visité, passer
+			// Si deja visite, passer
 			if (visite[p.x][p.y])
 				continue;
 			
 			Color couleurActuelle = new Color(imgUtil.img.getRGB(p.x, p.y), true);
 			
-			// Vérifier si la couleur est proche de la couleur cible
+			// Verifier si la couleur est proche de la couleur cible
 			if (!couleurProche(couleurActuelle, couleurCible, tolerance))
 				continue;
 			
-			// Marquer comme visité
+			// Marquer comme visite
 			visite[p.x][p.y] = true;
 			
 			// Rendre transparent (Alpha = 0)
 			int rgb = imgUtil.img.getRGB(p.x, p.y);
-			int transparent = rgb & 0x00FFFFFF; // Garde RGB, met Alpha à 0
+			int transparent = rgb & 0x00FFFFFF; // Garde RGB, met Alpha a 0
 			imgUtil.img.setRGB(p.x, p.y, transparent);
 			
 			// Ajouter les 4 voisins (haut, bas, gauche, droite)
@@ -75,27 +86,39 @@ public class PotPeinture
 	/**
 	 * Remplit une zone avec une couleur
 	 * @param imgUtil ImageUtil contenant l'image
-	 * @param x Position X du clic
-	 * @param y Position Y du clic
+	 * @param position Position du clic
 	 * @param nouvelleCouleur Couleur de remplissage
-	 * @param tolerance Tolérance
+	 * @param tolerance Tolerance
 	 */
-	public static void remplir(ImageUtil imgUtil, int x, int y, Color nouvelleCouleur, int tolerance)
+	public static void remplir(ImageUtil imgUtil, Point position, Color nouvelleCouleur, int tolerance)
 	{
-		if (x < 0 || x >= imgUtil.img.getWidth() || y < 0 || y >= imgUtil.img.getHeight())
+		if (position.x < 0 || position.x >= imgUtil.img.getWidth() || position.y < 0 || position.y >= imgUtil.img.getHeight())
 			return;
 		
-		Color couleurCible = new Color(imgUtil.img.getRGB(x, y));
+		Color couleurCible = new Color(imgUtil.img.getRGB(position.x, position.y));
 		
-		// Si même couleur, ne rien faire
+		// Si meme couleur, ne rien faire
 		if (couleurProche(couleurCible, nouvelleCouleur, 0))
 			return;
 		
-		remplirIteratif(imgUtil, x, y, couleurCible, nouvelleCouleur, tolerance);
+		remplirIteratif(imgUtil, position.x, position.y, couleurCible, nouvelleCouleur, tolerance);
 	}
 	
 	/**
-	 * Algorithme itératif de remplissage
+	 * Remplit une zone avec une couleur
+	 * @param imgUtil ImageUtil contenant l'image
+	 * @param x Position X du clic
+	 * @param y Position Y du clic
+	 * @param nouvelleCouleur Couleur de remplissage
+	 * @param tolerance Tolerance
+	 */
+	public static void remplir(ImageUtil imgUtil, int x, int y, Color nouvelleCouleur, int tolerance)
+	{
+		remplir(imgUtil, new Point(x, y), nouvelleCouleur, tolerance);
+	}
+	
+	/**
+	 * Algorithme iteratif de remplissage
 	 */
 	private static void remplirIteratif(ImageUtil imgUtil, int x, int y, Color couleurCible, Color nouvelleCouleur, int tolerance)
 	{
@@ -131,7 +154,7 @@ public class PotPeinture
 	}
 	
 	/**
-	 * Vérifie si deux couleurs sont proches selon une tolérance
+	 * Verifie si deux couleurs sont proches selon une tolerance
 	 */
 	private static boolean couleurProche(Color c1, Color c2, int tolerance)
 	{
@@ -140,19 +163,5 @@ public class PotPeinture
 		int diffBleu = Math.abs(c1.getBlue() - c2.getBlue());
 		
 		return diffRouge <= tolerance && diffVert <= tolerance && diffBleu <= tolerance;
-	}
-	
-	/**
-	 * Classe interne pour représenter un point
-	 */
-	private static class Point
-	{
-		int x, y;
-		
-		Point(int x, int y)
-		{
-			this.x = x;
-			this.y = y;
-		}
 	}
 }

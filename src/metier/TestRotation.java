@@ -2,20 +2,20 @@ package metier;
 
 /**
  * Petite classe de test pour la rotation d'image.
- * Par défaut utilise l'image du dossier images et produit quatre fichiers:
- *  - images/david_tennant_rot90.png
- *  - images/david_tennant_rot180.png
- *  - images/david_tennant_rot270.png
- *  - images/david_tennant_rot45.png
+ * Par defaut utilise l'image du dossier src/images et produit quatre fichiers:
+ *  - src/images/david_tennant_rot90.png
+ *  - src/images/david_tennant_rot180.png
+ *  - src/images/david_tennant_rot270.png
+ *  - src/images/david_tennant_rot45.png
  */
 public class TestRotation {
 
     public static void main(String[] args) {
-        String src = args.length > 0 ? args[0] : "images/david_tennant.png";
-        String out90 = args.length > 1 ? args[1] : "images/david_tennant_rot90.png";
-        String out180 = args.length > 2 ? args[2] : "images/david_tennant_rot180.png";
-        String out270 = args.length > 3 ? args[3] : "images/david_tennant_rot270.png";
-        String out45 = args.length > 4 ? args[4] : "images/david_tennant_rot45.png";
+        String src = args.length > 0 ? args[0] : "src/images/david_tennant.png";
+        String out90 = args.length > 1 ? args[1] : "src/images/david_tennant_rot90.png";
+        String out180 = args.length > 2 ? args[2] : "src/images/david_tennant_rot180.png";
+        String out270 = args.length > 3 ? args[3] : "src/images/david_tennant_rot270.png";
+        String out45 = args.length > 4 ? args[4] : "src/images/david_tennant_rot45.png";
 
         System.out.println("[TestRotation] Source: " + src);
 
