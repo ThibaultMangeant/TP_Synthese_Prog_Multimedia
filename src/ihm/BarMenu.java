@@ -1,17 +1,17 @@
 package ihm;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JFileChooser;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
 import controleur.Controleur;
-import javax.swing.filechooser.FileNameExtensionFilter;
  
 public class BarMenu extends JMenuBar implements ActionListener
 {
@@ -103,22 +103,40 @@ public class BarMenu extends JMenuBar implements ActionListener
 
 		if (e.getSource() == this.itemOuvrir)
 		{
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setAcceptAllFileFilterUsed(false);
-			fileChooser.setFileFilter(new FileNameExtensionFilter("Images (png)", "png"));
-			int result = fileChooser.showOpenDialog(null);
-			if (result == JFileChooser.APPROVE_OPTION) {
-				java.io.File selectedFile = fileChooser.getSelectedFile();
-				String path = selectedFile.getAbsolutePath();
-				if (path.toLowerCase().endsWith(".png")) {
-					System.out.println(path);
+			JFileChooser selecteurFichier;
+			int          result;
+			File         fichierChoisi;
+			String       chemin;
+
+			selecteurFichier = new JFileChooser();
+			selecteurFichier.setAcceptAllFileFilterUsed(false);
+			selecteurFichier.setFileFilter(new FileNameExtensionFilter("Images (png)", "png"));
+
+			result = selecteurFichier.showOpenDialog(null);
+			if (result == JFileChooser.APPROVE_OPTION)
+			{
+				fichierChoisi = selecteurFichier.getSelectedFile();
+				chemin = fichierChoisi.getAbsolutePath();
+				if (chemin.toLowerCase().endsWith(".png"))
+				{
+					System.out.println(chemin);
 					if (this.controleur != null)
 					{
-						this.controleur.ouvrirImage(path);
+						this.controleur.ouvrirImage(chemin);
 					}
-				} else {
-					javax.swing.JOptionPane.showMessageDialog(null, "Veuillez sélectionner un fichier PNG.", "Format invalide", javax.swing.JOptionPane.ERROR_MESSAGE);
 				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez sélectionner un fichier PNG.", "Format invalide", javax.swing.JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else if (result == JFileChooser.CANCEL_OPTION)
+			{
+				System.out.println("Opération annulée par l'utilisateur.");
+			}
+			else if (result == JFileChooser.ERROR_OPTION)
+			{
+				System.out.println("Une erreur est survenue lors de la sélection du fichier.");
 			}
 		}
 	}
