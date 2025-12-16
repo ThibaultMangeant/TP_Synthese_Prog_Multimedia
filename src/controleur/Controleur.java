@@ -91,9 +91,8 @@ public class Controleur
         this.framePrincipale.afficherImage(out);
     }
 
-    /** * Redimensionne l'image courante aux dimensions spécifiées et met à jour l'affichage. 
-     * (Logique mémoire conservée de votre version)
-     */
+	/** * Redimensionne l'image courante à de nouvelles dimensions (largeur et hauteur). 
+	 */
     public void redimensionner(int newWidth, int newHeight)
     {
         BufferedImage src = this.imageUtil.getImage();
@@ -117,9 +116,6 @@ public class Controleur
         System.out.println("Anti-aliasing appliqué.");
     }
 
-    /** * Effectue une rotation en mémoire et met à jour l'affichage.
-     * (Ajout de votre version)
-     */
     public void rotation(int angle)
     {
         BufferedImage src = this.imageUtil.getImage();
@@ -128,20 +124,11 @@ public class Controleur
         this.framePrincipale.afficherImage(out);
     }
 
-    /**
-     * Version wrapper pour compatibilité.
-     * Utilise désormais la logique en mémoire (votre modification) 
-     * au lieu de passer par image_temp.png (version Github).
-     */
     public void appliquerRotation(int angle)
     {
         rotation(angle);
     }
 
-    /**
-     * Version wrapper pour compatibilité.
-     * Utilise désormais la logique en mémoire (votre modification).
-     */
     public void appliquerRedimensionnement(int nouvelleLargeur, int nouvelleHauteur)
     {
         redimensionner(nouvelleLargeur, nouvelleHauteur);
@@ -151,9 +138,6 @@ public class Controleur
     {
         System.out.println("Pot de peinture appliqué.");
     }
-
-    // Les méthodes ci-dessous utilisent encore la logique de fichier temporaire
-    // car elles n'avaient pas été modifiées dans votre version locale.
 
     public void appliquerTeinte(int teinteRouge, int teinteVerte, int teinteBleue)
     {
