@@ -1,8 +1,6 @@
 package metier;
 
 import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
 /**
  * Classe pour redimensionner les images
@@ -69,12 +67,44 @@ public class Redimensionnement
 	public static BufferedImage redimensionner(BufferedImage src, int newWidth, int newHeight)
 	{
 		if (newWidth <= 0 || newHeight <= 0) return src;
-		int type = src.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : src.getType();
-		BufferedImage out = new BufferedImage(newWidth, newHeight, type);
-		Graphics2D g2d = out.createGraphics();
-		g2d.drawImage(src, 0, 0, newWidth, newHeight, null);
-		g2d.dispose();
-		return out;
+
+		int w = src.getWidth();
+		int h = src.getHeight();
+
+		// On force l'ARGB pour conserver la transparence si besoin
+		BufferedImage dest = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+
+		// Échantillonnage inverse (nearest neighbor) centré comme pour la rotation
+		double scaleX = (double) w / newWidth;
+		double scaleY = (double) h / newHeight;
+
+		double i0  = w / 2.0;        // centre source
+		double j0  = h / 2.0;
+		double i0d = newWidth / 2.0;  // centre destination
+		double j0d = newHeight / 2.0;
+
+		for (int jd = 0; jd < newHeight; jd++)
+		{
+			for (int id = 0; id < newWidth; id++)
+			{
+				double xd = id - i0d;
+				double yd = jd - j0d;
+
+				double xs = xd * scaleX;
+				double ys = yd * scaleY;
+
+				int is = (int)Math.round(xs + i0);
+				int js = (int)Math.round(ys + j0);
+
+				if (is >= 0 && is < w && js >= 0 && js < h)
+				{
+					int rgb = src.getRGB(is, js);
+					dest.setRGB(id, jd, rgb);
+				}
+			}
+		}
+
+		return dest;
 	}
 
 	/**
