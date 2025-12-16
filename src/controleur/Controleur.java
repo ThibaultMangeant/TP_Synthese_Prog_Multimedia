@@ -3,12 +3,18 @@ package controleur;
 import ihm.FramePrincipale;
 import metier.*;
 import java.awt.image.BufferedImage;
+import java.util.Stack;
 
 public class Controleur
 {
     private FramePrincipale framePrincipale;
     private ImageUtil imageUtil;
     private String cheminImageCourant;
+    
+    // Historique pour undo/redo
+    private Stack<BufferedImage> historiqueImages;
+    private Stack<BufferedImage> imagesAnnulees;
+    private static final int LIMITE_HISTORIQUE = 15;
 
     public Controleur()
     {
@@ -16,6 +22,8 @@ public class Controleur
         // Chemin relatif depuis le dossier bin/
         this.cheminImageCourant = "../src/images/david_tennant.png";
         this.imageUtil = new ImageUtil(this.cheminImageCourant);
+        this.historiqueImages = new Stack<>();
+        this.imagesAnnulees = new Stack<>();
         this.framePrincipale = new FramePrincipale(this);
     }
 
@@ -58,10 +66,60 @@ public class Controleur
 		this.imageUtil.setY0(y);
 	}
 
+    private BufferedImage copierImage(BufferedImage src)
+    {
+        BufferedImage copie = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
+        copie.getGraphics().drawImage(src, 0, 0, null);
+        return copie;
+    }
+    
+    private void sauvegarderEtat()
+    {
+        BufferedImage copie = copierImage(this.imageUtil.getImage());
+        this.historiqueImages.push(copie);
+        
+        // Limiter la taille de l'historique
+        if (this.historiqueImages.size() > LIMITE_HISTORIQUE)
+        {
+            this.historiqueImages.remove(0);
+        }
+        
+        // Vider le redo apres une nouvelle action
+        this.imagesAnnulees.clear();
+    }
+    
+    public void annuler()
+    {
+        if (!this.historiqueImages.isEmpty())
+        {
+            BufferedImage imageActuelle = copierImage(this.imageUtil.getImage());
+            this.imagesAnnulees.push(imageActuelle);
+            
+            BufferedImage imagePrec = this.historiqueImages.pop();
+            this.imageUtil.setImage(imagePrec);
+            this.framePrincipale.afficherImage(imagePrec);
+        }
+    }
+    
+    public void refaire()
+    {
+        if (!this.imagesAnnulees.isEmpty())
+        {
+            BufferedImage imageActuelle = copierImage(this.imageUtil.getImage());
+            this.historiqueImages.push(imageActuelle);
+            
+            BufferedImage imageSuiv = this.imagesAnnulees.pop();
+            this.imageUtil.setImage(imageSuiv);
+            this.framePrincipale.afficherImage(imageSuiv);
+        }
+    }
+
     public void ouvrirImage(String path)
     {
         this.cheminImageCourant = path;
         this.imageUtil = new ImageUtil(path);
+        this.historiqueImages.clear();
+        this.imagesAnnulees.clear();
         this.framePrincipale.afficherImage(path);
     }
 
@@ -77,6 +135,7 @@ public class Controleur
 
     public void miroirHorizontal()
     {
+        sauvegarderEtat();
         BufferedImage src = this.imageUtil.getImage();
         BufferedImage out = Miroir.appliquerMiroirHorizontal(src);
         this.imageUtil.setImage(out);
@@ -85,6 +144,7 @@ public class Controleur
 
     public void miroirVertical()
     {
+        sauvegarderEtat();
         BufferedImage src = this.imageUtil.getImage();
         BufferedImage out = Miroir.appliquerMiroirVertical(src);
         this.imageUtil.setImage(out);
@@ -95,6 +155,7 @@ public class Controleur
 	 */
     public void redimensionner(int newWidth, int newHeight)
     {
+        sauvegarderEtat();
         BufferedImage src = this.imageUtil.getImage();
         BufferedImage out = Redimensionnement.redimensionner(src, newWidth, newHeight);
         this.imageUtil.setImage(out);
@@ -105,6 +166,7 @@ public class Controleur
      */
     public void redimensionnerRatio(double scale)
     {
+        sauvegarderEtat();
         BufferedImage src = this.imageUtil.getImage();
         BufferedImage out = Redimensionnement.redimensionnerRatio(src, scale);
         this.imageUtil.setImage(out);
@@ -118,6 +180,7 @@ public class Controleur
 
     public void rotation(int angle)
     {
+        sauvegarderEtat();
         BufferedImage src = this.imageUtil.getImage();
         BufferedImage out = Rotation.appliquerRotation(src, angle);
         this.imageUtil.setImage(out);
@@ -141,6 +204,7 @@ public class Controleur
 
     public void appliquerTeinte(int teinteRouge, int teinteVerte, int teinteBleue)
     {
+        sauvegarderEtat();
         // Préférer application en mémoire via méthode statique
         BufferedImage src = this.imageUtil.getImage();
         BufferedImage out = Teinte.appliquerTeinte(src, teinteRouge, teinteVerte, teinteBleue);
@@ -150,6 +214,7 @@ public class Controleur
 
     public void appliquerContraste(int valeurContraste)
     {
+        sauvegarderEtat();
         BufferedImage src = this.imageUtil.getImage();
         BufferedImage out = Contraste.appliquerContraste(src, valeurContraste);
         this.imageUtil.setImage(out);

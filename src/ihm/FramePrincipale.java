@@ -4,6 +4,9 @@ import controleur.Controleur;
 import ihm.BarMenu.BarMenu;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 public class FramePrincipale extends JFrame
@@ -23,7 +26,8 @@ public class FramePrincipale extends JFrame
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLocation(200, 200);
 		
-		this.initMenu(); 
+		this.initMenu();
+		this.initRaccourcisClavier();
 
 		this.add(panelPrincipal);
 		this.setVisible(true);
@@ -32,6 +36,28 @@ public class FramePrincipale extends JFrame
 	private void initMenu()
 	{
 		this.setJMenuBar(new BarMenu(this.controleur));
+	}
+
+	private void initRaccourcisClavier()
+	{
+		// Raccourcis Ctrl+Z et Ctrl+Y pour undo/redo
+		InputMap inputMap = this.panelPrincipal.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = this.panelPrincipal.getActionMap();
+
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK), "redo");
+
+		actionMap.put("undo", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				controleur.annuler();
+			}
+		});
+
+		actionMap.put("redo", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				controleur.refaire();
+			}
+		});
 	}
 
 	public boolean contient(int x, int y)
