@@ -34,7 +34,7 @@ public class PanelPrincipal extends JPanel
 		
 		if (this.bufferedImage != null)
 		{
-			g.drawImage(this.bufferedImage, this.frame.getX(), this.frame.getY(), this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this);
+			g.drawImage(this.bufferedImage, this.frame.getPosX(), this.frame.getPosY(), this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this);
 		}
 	}
 
@@ -57,6 +57,9 @@ public class PanelPrincipal extends JPanel
 
 	private class GestionSouris extends MouseAdapter
 	{
+		private int lastX, lastY;
+		private boolean dragging = false;
+
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
@@ -64,17 +67,35 @@ public class PanelPrincipal extends JPanel
 		}
 
 		@Override
+		public void mousePressed(MouseEvent e)
+		{
+			// Toujours permettre de commencer le drag n'importe ou
+			lastX = e.getX();
+			lastY = e.getY();
+			dragging = true;
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e)
+		{
+			dragging = false;
+		}
+
+		@Override
 		public void mouseDragged(MouseEvent e)
 		{
-			if (PanelPrincipal.this.frame.contient(e.getX(), e.getY()))
+			if (dragging)
 			{
-				PanelPrincipal.this.frame.setPosX(e.getX());
-				PanelPrincipal.this.frame.setPosY(e.getY());
-				System.out.println("Image qui se déplace en position: (" + e.getX() + ", " + e.getY() + ")");
-			}
-			else
-			{
-				System.out.println("Drag hors de l'image en position: (" + e.getX() + ", " + e.getY() + ")");
+				int deltaX = e.getX() - lastX;
+				int deltaY = e.getY() - lastY;
+				
+				PanelPrincipal.this.frame.setPosX(PanelPrincipal.this.frame.getPosX() + deltaX);
+				PanelPrincipal.this.frame.setPosY(PanelPrincipal.this.frame.getPosY() + deltaY);
+				
+				lastX = e.getX();
+				lastY = e.getY();
+				
+				PanelPrincipal.this.majIHM();
 			}
 		}
 	}
