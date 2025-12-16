@@ -17,14 +17,20 @@ public class BarMenu extends JMenuBar implements ActionListener
 {
 	private JMenu menuFichier;
 	private JMenu menuEdition;
+	private JMenu menuImage;
+	private JMenu menuAjustement;
 
 	private JMenuItem itemQuitter;
 	private JMenuItem itemOuvrir;
+
+	private JMenuItem itemAnnuler;
+	private JMenuItem itemRepeter;
 
 	private JMenuItem itemRotation;
 	private JMenuItem itemMiroirH;
 	private JMenuItem itemMiroirV;
 	private JMenuItem itemRedimensionner;
+
 	private JMenuItem itemPeinture;
 	private JMenuItem itemTeinte;
 	private JMenuItem itemAntiAliasing;
@@ -38,16 +44,22 @@ public class BarMenu extends JMenuBar implements ActionListener
 	{
 		this.controleur = controleur;
 		/* Création des menus */
-		this.menuFichier = new JMenu("Fichier");
-		this.menuEdition = new JMenu("Édition");
+		this.menuFichier    = new JMenu("Fichier");
+		this.menuEdition    = new JMenu("Édition");
+		this.menuImage      = new JMenu("Image");
+		this.menuAjustement = new JMenu("Ajustement");
 		
 		this.itemOuvrir  = new JMenuItem("Ouvrir");
 		this.itemQuitter = new JMenuItem("Quitter");
+
+		this.itemAnnuler = new JMenuItem("Annuler");
+		this.itemRepeter = new JMenuItem("Répéter");
 
 		this.itemRotation       = new JMenuItem("Rotation");
 		this.itemMiroirH        = new JMenuItem("Miroir Horizontal");
 		this.itemMiroirV        = new JMenuItem("Miroir Vertical");
 		this.itemRedimensionner = new JMenuItem("Redimensionner");
+
 		this.itemPeinture       = new JMenuItem("Effet Peinture");
 		this.itemTeinte         = new JMenuItem("Ajuster Teinte");
 		this.itemAntiAliasing   = new JMenuItem("Anti-Aliasing");
@@ -56,36 +68,48 @@ public class BarMenu extends JMenuBar implements ActionListener
 		this.itemTexteImage     = new JMenuItem("Créer une Image à partir de Texte");
 
 		/* Ajout des items au menu Fichier */
-		menuFichier.add(itemOuvrir);
-		menuFichier.addSeparator();
-		menuFichier.add(itemQuitter);
+		this.menuFichier.add(this.itemOuvrir);
+		this.menuFichier.addSeparator();
+		this.menuFichier.add(this.itemQuitter);
 
 		/* Ajout des items au menu Édition */
-		menuEdition.add(itemRotation);
-		menuEdition.add(itemMiroirH);
-		menuEdition.add(itemMiroirV);
-		menuEdition.add(itemRedimensionner);
-		menuEdition.add(itemPeinture);
-		menuEdition.add(itemTeinte);
-		menuEdition.add(itemAntiAliasing);
-		menuEdition.add(itemContraste);
-		menuEdition.add(itemSuperposition);
-		menuEdition.add(itemTexteImage);
+		this.menuEdition.add(this.itemAnnuler);
+		this.menuEdition.add(this.itemRepeter);
+
+		/* Ajout des items au menu Image */
+		this.menuImage.add(this.itemRotation);
+		this.menuImage.add(this.itemMiroirH);
+		this.menuImage.add(this.itemMiroirV);
+		this.menuImage.add(this.itemRedimensionner);
+
+		/* Ajout des items au menu Ajustement */
+		this.menuAjustement.add(this.itemPeinture);
+		this.menuAjustement.add(this.itemTeinte);
+		this.menuAjustement.add(this.itemAntiAliasing);
+		this.menuAjustement.add(this.itemContraste);
+		this.menuAjustement.add(this.itemSuperposition);
+		this.menuAjustement.add(this.itemTexteImage);
 
 
 		/* Positionnement des composants */
-		this.add(menuFichier);
-		this.add(menuEdition);
+		this.add(this.menuFichier);
+		this.add(this.menuEdition);
+		this.add(this.menuImage);
+		this.add(this.menuAjustement);
 
 
 		/* Activation des composants */
 		this.itemQuitter.addActionListener(this);
 		this.itemOuvrir.addActionListener(this);
 
+		this.itemAnnuler.addActionListener(this);
+		this.itemRepeter.addActionListener(this);
+
 		this.itemRotation.addActionListener(this);
 		this.itemMiroirH.addActionListener(this);
 		this.itemMiroirV.addActionListener(this);
 		this.itemRedimensionner.addActionListener(this);
+
 		this.itemPeinture.addActionListener(this);
 		this.itemTeinte.addActionListener(this);
 		this.itemAntiAliasing.addActionListener(this);
@@ -175,7 +199,7 @@ public class BarMenu extends JMenuBar implements ActionListener
 
 			if (e.getSource() == this.itemTeinte)
 			{
-				this.controleur.appliquerTeinte(50 , 0, -30);
+				this.controleur.appliquerTeinte(100 , 0, 100);
 			}
 
 			if (e.getSource() == this.itemContraste)
