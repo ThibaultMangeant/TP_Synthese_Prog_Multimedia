@@ -1,0 +1,96 @@
+package ihm;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
+import controleur.Controleur;
+
+import javax.swing.JOptionPane;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class MenuAjustement extends JMenu implements ActionListener
+{
+	private Controleur controleur;
+
+	private JMenuItem itemPeinture;
+	private JMenuItem itemTeinte;
+	private JMenuItem itemAntiAliasing;
+	private JMenuItem itemContraste;
+	private JMenuItem itemSuperposition;
+	private JMenuItem itemTexteImage;
+
+	public MenuAjustement(Controleur controleur)
+	{
+		super("Ajustement");
+
+		this.controleur = controleur;
+
+		/* Création des items */
+		this.itemPeinture       = new JMenuItem("Effet Peinture");
+		this.itemTeinte         = new JMenuItem("Ajuster Teinte");
+		this.itemAntiAliasing   = new JMenuItem("Anti-Aliasing");
+		this.itemContraste      = new JMenuItem("Ajuster Contraste");
+		this.itemSuperposition  = new JMenuItem("Superposition d'Images");
+		this.itemTexteImage     = new JMenuItem("Créer une Image à partir de Texte");
+
+		/* Ajout des items au menu Ajustement */
+		this.add(this.itemPeinture);
+		this.add(this.itemTeinte);
+		this.add(this.itemAntiAliasing);
+		this.add(this.itemContraste);
+		this.add(this.itemSuperposition);
+		this.add(this.itemTexteImage);
+
+		/* Activation des composants */
+		this.itemPeinture     .addActionListener(this);
+		this.itemTeinte       .addActionListener(this);
+		this.itemAntiAliasing .addActionListener(this);
+		this.itemContraste    .addActionListener(this);
+		this.itemSuperposition.addActionListener(this);
+		this.itemTexteImage   .addActionListener(this);
+	}
+
+	public void actionPerformed(ActionEvent e)
+	{
+		if (this.controleur != null)
+		{
+			if (e.getSource() == this.itemAntiAliasing)
+			{
+				this.controleur.appliquerAntiAliasing();
+			}
+
+			if (e.getSource() == this.itemPeinture)
+			{
+				this.controleur.appliquerPotPeinture();
+			}
+
+			if (e.getSource() == this.itemTeinte)
+			{
+				int teinteR = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte rouge (entre -255 et 255) : "));
+				int teinteV = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte verte (entre -255 et 255) : "));
+				int teinteB = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte bleue (entre -255 et 255) : "));
+
+				this.controleur.appliquerTeinte(teinteR , teinteV, teinteB);
+			}
+
+			if (e.getSource() == this.itemContraste)
+			{
+				int valeurContraste = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la valeur du contraste (entre -100 et 100) : "));
+
+				this.controleur.appliquerContraste(valeurContraste);
+			}
+
+			if (e.getSource() == this.itemSuperposition)
+			{
+				this.controleur.appliquerSuperpositionImages();
+			}
+
+			if (e.getSource() == this.itemTexteImage)
+			{
+				this.controleur.appliquerCreationImageTexte();
+			}
+		}
+	}
+}

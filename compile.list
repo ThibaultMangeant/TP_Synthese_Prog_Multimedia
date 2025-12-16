@@ -1,6 +1,11 @@
 ./src/controleur/Controleur.java
 
 ./src/ihm/BarMenu.java
+./src/ihm/MenuFichier.java
+./src/ihm/MenuEdition.java
+./src/ihm/MenuImage.java
+./src/ihm/MenuAjustement.java
+
 ./src/ihm/FramePrincipale.java
 ./src/ihm/PanelPrincipal.java
 
