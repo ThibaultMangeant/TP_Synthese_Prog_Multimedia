@@ -141,11 +141,11 @@ public class Controleur
 
     public void appliquerTeinte(int teinteRouge, int teinteVerte, int teinteBleue)
     {
-        Teinte teinte = new Teinte(this.cheminImageCourant, "image_temp.png");
-        teinte.teinter(teinteRouge, teinteVerte, teinteBleue);
-
-        // Mettre à jour l'affichage
-        this.framePrincipale.afficherImage("image_temp.png");
+        // Préférer application en mémoire via méthode statique
+        BufferedImage src = this.imageUtil.getImage();
+        BufferedImage out = Teinte.appliquerTeinte(src, teinteRouge, teinteVerte, teinteBleue);
+        this.imageUtil.setImage(out);
+        this.framePrincipale.afficherImage(out);
     }
 
     public void appliquerContraste(int valeurContraste)

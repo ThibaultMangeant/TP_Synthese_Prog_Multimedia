@@ -36,30 +36,46 @@ public class Teinte
 	 */
 	public void teinter(int teinteRouge, int teinteVerte, int teinteBleue)
 	{
-		BufferedImage img = this.imgUtil.getImage();
+		BufferedImage src = this.imgUtil.getImage();
+		BufferedImage out = appliquerTeinte(src, teinteRouge, teinteVerte, teinteBleue);
+		this.imgUtil.setImage(out);
+		this.imgUtil.sauvegarderImage(this.fichierDest);
+	}
 
-		int hauteur = img.getHeight();
-		int largeur = img.getWidth();
+	/**
+	 * Methode statique: applique une teinte RGB sur une image et retourne le resultat.
+	 * @param src Image source
+	 * @param teinteRouge delta rouge (-255..255)
+	 * @param teinteVerte delta vert (-255..255)
+	 * @param teinteBleue delta bleu (-255..255)
+	 * @return Image teintee
+	 */
+	public static BufferedImage appliquerTeinte(BufferedImage src, int teinteRouge, int teinteVerte, int teinteBleue)
+	{
+		int largeur = src.getWidth();
+		int hauteur = src.getHeight();
+		BufferedImage out = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_ARGB);
 
 		for (int x = 0; x < largeur; x++)
 		{
 			for (int y = 0; y < hauteur; y++)
 			{
-				int pixel = img.getRGB(x, y);
-				List<Integer> rgb = imgUtil.afficherDetailCouleur(pixel);
-				
-				// Appliquer les teintes et borner entre 0 et 255
-				int nouveauRouge = Math.max(0, Math.min(255, rgb.get(0) + teinteRouge));
-				int nouveauVert  = Math.max(0, Math.min(255, rgb.get(1) + teinteVerte));
-				int nouveauBleu  = Math.max(0, Math.min(255, rgb.get(2) + teinteBleue));
+				int pixel = src.getRGB(x, y);
+				// Extraire RGBA correctement
+				int a = (pixel >>> 24) & 0xFF;
+				int r = (pixel >>> 16) & 0xFF;
+				int g = (pixel >>> 8)  & 0xFF;
+				int b = pixel & 0xFF;
 
-				Color nouvelleCouleur = new Color(nouveauRouge, nouveauVert, nouveauBleu);
-				img.setRGB(x, y, nouvelleCouleur.getRGB()); 
+				int nr = Math.max(0, Math.min(255, r + teinteRouge));
+				int ng = Math.max(0, Math.min(255, g + teinteVerte));
+				int nb = Math.max(0, Math.min(255, b + teinteBleue));
+
+				int rgba = (a << 24) | (nr << 16) | (ng << 8) | (nb);
+				out.setRGB(x, y, rgba);
 			}
 		}
-		
-		// Mise a jour de l'image et sauvegarde
-		this.imgUtil.setImage(img);
-		this.imgUtil.sauvegarderImage(this.fichierDest);
+
+		return out;
 	}
 }
