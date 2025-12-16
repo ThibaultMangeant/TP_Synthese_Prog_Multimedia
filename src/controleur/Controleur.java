@@ -2,6 +2,7 @@ package controleur;
 
 import ihm.FramePrincipale;
 import metier.*;
+import java.awt.image.BufferedImage;
 
 public class Controleur
 {
@@ -28,6 +29,22 @@ public class Controleur
 		this.cheminImageCourant = path;
 		this.imageUtil = new ImageUtil(path);
 		this.framePrincipale.afficherImage(path);
+	}
+
+	public void miroirHorizontal()
+	{
+		BufferedImage src = this.imageUtil.getImage();
+		BufferedImage out = Miroir.appliquerMiroirHorizontal(src);
+		this.imageUtil.setImage(out);
+		this.framePrincipale.afficherImage(out);
+	}
+
+	public void miroirVertical()
+	{
+		BufferedImage src = this.imageUtil.getImage();
+		BufferedImage out = Miroir.appliquerMiroirVertical(src);
+		this.imageUtil.setImage(out);
+		this.framePrincipale.afficherImage(out);
 	}
 
 	public static void main(String[] args)

@@ -39,6 +39,12 @@ public class PanelPrincipal extends JPanel
 		this.repaint();
 	}
 
+	public void setImage(BufferedImage image)
+	{
+		this.bufferedImage = image;
+		this.majIHM();
+	}
+
 	public void chargerImage(String path)
 	{
 		try

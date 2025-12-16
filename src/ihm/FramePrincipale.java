@@ -2,6 +2,7 @@ package ihm;
 
 import controleur.Controleur;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 
 public class FramePrincipale extends JFrame
 {
@@ -39,5 +40,10 @@ public class FramePrincipale extends JFrame
 	public void afficherImage(String path)
 	{
 		this.panelPrincipal.chargerImage(path);
+	}
+
+	public void afficherImage(BufferedImage image)
+	{
+		this.panelPrincipal.setImage(image);
 	}
 }

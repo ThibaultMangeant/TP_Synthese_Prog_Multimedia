@@ -139,5 +139,18 @@ public class BarMenu extends JMenuBar implements ActionListener
 				System.out.println("Une erreur est survenue lors de la sélection du fichier.");
 			}
 		}
+
+
+		if (this.controleur != null)
+		{
+			if(e.getSource() == this.itemMiroirH)
+			{
+				this.controleur.miroirHorizontal();
+			}
+			if(e.getSource() == this.itemMiroirV)
+			{
+				this.controleur.miroirVertical();
+			}
+		}
 	}
 }
