@@ -54,20 +54,20 @@ public class Controleur
 
 	public void appliquerRotation(int angle)
 	{
-		Rotation rotation = new Rotation(this.cheminImageCourant, this.cheminImageCourant + "_rotated.png");
+		Rotation rotation = new Rotation(this.cheminImageCourant, "image_temp.png");
 		rotation.rotation(angle);
 
 		// Mettre à jour l'affichage
-		this.framePrincipale.afficherImage(this.cheminImageCourant + "_rotated.png");
+		this.framePrincipale.afficherImage("image_temp.png");
 	}
 
 	public void appliquerRedimensionnement(int nouvelleLargeur, int nouvelleHauteur)
 	{
-		Redimensionnement redim = new Redimensionnement(this.cheminImageCourant, this.cheminImageCourant + "_redim.png");
+		Redimensionnement redim = new Redimensionnement(this.cheminImageCourant, "image_temp.png");
 		redim.redimensionner(nouvelleLargeur, nouvelleHauteur);
 
 		// Mettre à jour l'affichage
-		this.framePrincipale.afficherImage(this.cheminImageCourant + "_redim.png");
+		this.framePrincipale.afficherImage("image_temp.png");
 	}
 
 	public void appliquerPotPeinture()
@@ -77,20 +77,20 @@ public class Controleur
 
 	public void appliquerTeinte(int teinteRouge, int teinteVerte, int teinteBleue)
 	{
-		Teinte teinte = new Teinte(this.cheminImageCourant, this.cheminImageCourant + "_teinte.png");
+		Teinte teinte = new Teinte(this.cheminImageCourant, "image_temp.png");
 		teinte.teinter(teinteRouge, teinteVerte, teinteBleue);
 
 		// Mettre à jour l'affichage
-		this.framePrincipale.afficherImage(this.cheminImageCourant + "_teinte.png");
+		this.framePrincipale.afficherImage("image_temp.png");
 	}
 
 	public void appliquerContraste(int valeurContraste)
 	{
-		Contraste contraste = new Contraste(this.cheminImageCourant, this.cheminImageCourant + "_contraste.png");
+		Contraste contraste = new Contraste(this.cheminImageCourant, "image_temp.png");
 		contraste.appliquerContraste(valeurContraste);
 
 		// Mettre à jour l'affichage
-		this.framePrincipale.afficherImage(this.cheminImageCourant  + "_contraste.png");
+		this.framePrincipale.afficherImage("image_temp.png");
 	}
 
 	public void appliquerSuperpositionImages()
