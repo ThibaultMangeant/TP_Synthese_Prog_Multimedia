@@ -89,7 +89,10 @@ public class MenuAjustement extends JMenu implements ActionListener
 
 			if (e.getSource() == this.itemTexteImage)
 			{
-				this.controleur.appliquerCreationImageTexte();
+				String texte = JOptionPane.showInputDialog("Rentrer le texte à afficher : ");
+				int taillePolice = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la taille de la police : "));
+
+				this.controleur.appliquerCreationImageTexte(texte, taillePolice);
 			}
 		}
 	}
