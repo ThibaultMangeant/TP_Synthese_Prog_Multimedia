@@ -20,16 +20,8 @@ public class PanelPrincipal extends JPanel
 
 		this.setLayout(new BorderLayout());
 		
-		// Charger l'image
-		try
-		{
-			bufferedImage = ImageIO.read(new File(this.frame.getImage()));
-		}
-		catch (IOException e)
-		{
-			System.err.println("Erreur: impossible de charger l'image");
-			e.printStackTrace();
-		}
+		// Charger l'image initiale
+		this.chargerImage(this.frame.getImage());
 	}
 	
 	protected void paintComponent(Graphics g)
@@ -45,5 +37,19 @@ public class PanelPrincipal extends JPanel
 	public void majIHM()
 	{
 		this.repaint();
+	}
+
+	public void chargerImage(String path)
+	{
+		try
+		{
+			bufferedImage = ImageIO.read(new File(path));
+			this.majIHM();
+		}
+		catch (IOException e)
+		{
+			System.err.println("Erreur: impossible de charger l'image: " + path);
+			e.printStackTrace();
+		}
 	}
 }

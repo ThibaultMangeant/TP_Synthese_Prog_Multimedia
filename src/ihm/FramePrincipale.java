@@ -28,11 +28,16 @@ public class FramePrincipale extends JFrame
 
 	private void initMenu()
 	{
-		this.setJMenuBar(new BarMenu());
+		this.setJMenuBar(new BarMenu(this.controleur));
 	}
 
 	public String getImage()
 	{
 		return this.controleur.getImage();
+	}
+
+	public void afficherImage(String path)
+	{
+		this.panelPrincipal.chargerImage(path);
 	}
 }
