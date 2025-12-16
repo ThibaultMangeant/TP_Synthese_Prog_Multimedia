@@ -68,8 +68,8 @@ public class PanelPrincipal extends JPanel
 		{
 			if (PanelPrincipal.this.frame.contient(e.getX(), e.getY()))
 			{
-				PanelPrincipal.this.frame.setX(e.getX());
-				PanelPrincipal.this.frame.setY(e.getY());
+				PanelPrincipal.this.frame.setPosX(e.getX());
+				PanelPrincipal.this.frame.setPosY(e.getY());
 				System.out.println("Image qui se déplace en position: (" + e.getX() + ", " + e.getY() + ")");
 			}
 			else

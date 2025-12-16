@@ -38,22 +38,22 @@ public class Controleur
         return this.imageUtil.contient(x, y);
     }
 
-	public int getX()
+	public int getPosX()
 	{
 		return this.imageUtil.getX0();
 	}
 
-	public int getY()
+	public int getPosY()
 	{
 		return this.imageUtil.getY0();
 	}
 
-	public void setX(int x)
+	public void setPosX(int x)
 	{
 		this.imageUtil.setX0(x);
 	}
 
-	public void setY(int y)
+	public void setPosY(int y)
 	{
 		this.imageUtil.setY0(y);
 	}
