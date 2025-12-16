@@ -11,14 +11,16 @@ public class Controleur
 
 	public Controleur()
 	{
-		this.cheminImageCourant = this.getImage();
-		this.framePrincipale = new FramePrincipale(this);
+		// Initialisation avec l'image par defaut
+		// Chemin relatif depuis le dossier bin/
+		this.cheminImageCourant = "../src/images/david_tennant.png";
 		this.imageUtil = new ImageUtil(this.cheminImageCourant);
+		this.framePrincipale = new FramePrincipale(this);
 	}
 
 	public String getImage()
 	{
-		return this.imageUtil.getCheminImage();
+		return this.cheminImageCourant;
 	}
 
 	public void ouvrirImage(String path)
