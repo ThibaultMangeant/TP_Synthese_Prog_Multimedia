@@ -19,9 +19,9 @@ public class Controleur
 		this.framePrincipale = new FramePrincipale(this);
 	}
 
-	public String getImage()
+	public BufferedImage getImage()
 	{
-		return this.cheminImageCourant;
+		return this.imageUtil.getImage();
 	}
 
 	public void ouvrirImage(String path)
