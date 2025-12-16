@@ -38,6 +38,26 @@ public class Controleur
         return this.imageUtil.contient(x, y);
     }
 
+	public int getX()
+	{
+		return this.imageUtil.getX0();
+	}
+
+	public int getY()
+	{
+		return this.imageUtil.getY0();
+	}
+
+	public void setX(int x)
+	{
+		this.imageUtil.setX0(x);
+	}
+
+	public void setY(int y)
+	{
+		this.imageUtil.setY0(y);
+	}
+
     public void ouvrirImage(String path)
     {
         this.cheminImageCourant = path;

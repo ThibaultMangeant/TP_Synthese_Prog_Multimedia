@@ -23,7 +23,9 @@ public class PanelPrincipal extends JPanel
 		// Charger l'image initiale
 		this.chargerImage();
 
-		this.addMouseListener(new GestionSouris());
+		GestionSouris gestionSouris = new GestionSouris();
+		this.addMouseListener(gestionSouris);
+		this.addMouseMotionListener(gestionSouris);
 	}
 	
 	protected void paintComponent(Graphics g)
@@ -32,7 +34,7 @@ public class PanelPrincipal extends JPanel
 		
 		if (this.bufferedImage != null)
 		{
-			g.drawImage(this.bufferedImage, 50, 50, this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this);
+			g.drawImage(this.bufferedImage, this.frame.getX(), this.frame.getY(), this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this);
 		}
 	}
 
@@ -64,7 +66,16 @@ public class PanelPrincipal extends JPanel
 		@Override
 		public void mouseDragged(MouseEvent e)
 		{
-			System.out.println("Souris déplacée en position: (" + e.getX() + ", " + e.getY() + ")");
+			if (PanelPrincipal.this.frame.contient(e.getX(), e.getY()))
+			{
+				PanelPrincipal.this.frame.setX(e.getX());
+				PanelPrincipal.this.frame.setY(e.getY());
+				System.out.println("Image qui se déplace en position: (" + e.getX() + ", " + e.getY() + ")");
+			}
+			else
+			{
+				System.out.println("Drag hors de l'image en position: (" + e.getX() + ", " + e.getY() + ")");
+			}
 		}
 	}
 }

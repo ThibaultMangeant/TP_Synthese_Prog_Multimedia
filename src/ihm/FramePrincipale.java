@@ -39,6 +39,26 @@ public class FramePrincipale extends JFrame
 		return this.controleur.contient(x, y);
 	}
 
+	public int getX()
+	{
+		return this.controleur.getX();
+	}
+
+	public int getY()
+	{
+		return this.controleur.getY();
+	}
+
+	public void setX(int x)
+	{
+		this.controleur.setX(x);
+	}
+
+	public void setY(int y)
+	{
+		this.controleur.setY(y);
+	}
+
 	public BufferedImage getImage()
 	{
 		return this.controleur.getImage();
