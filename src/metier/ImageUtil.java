@@ -15,6 +15,8 @@ public class ImageUtil
 {
 	public BufferedImage img;
 	public String cheminImage;
+	public int largeur;
+	public int hauteur;
 
 	/**
 	 * Constructeur
@@ -27,12 +29,29 @@ public class ImageUtil
 		try
 		{
 			this.img = ImageIO.read(new File(cheminImage));
+			this.hauteur = img.getHeight();
+			this.largeur = img.getWidth();
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
 
+
+	public int getLargeur()
+	{
+		return this.largeur;
+	}
+
+	public int getHauteur()
+	{
+		return this.hauteur;
+	}
+
+	/**
+	 * Obtenir le chemin de l'image
+	 * @return String chemin
+	 */
 	public String getCheminImage()
 	{
 		return this.cheminImage;

@@ -9,16 +9,22 @@ import java.awt.image.BufferedImage;
 public class TexteImage
 {
 	ImageUtil imgUtil;
-	String cheminImage;
+	String fichierSource;
+	String texte;
+	String fichierDest;
 
 	/**
 	 * Constructeur
 	 * 
-	 * @param cheminImage Chemin de l'image de fond
+	 * @param fichierSource Chemin de l'image de fond
 	 */
-	public TexteImage(String cheminImage)
+	public TexteImage(String fichierSource, String texte, String fichierDest)
 	{
-		this.cheminImage = cheminImage;
-		this.imgUtil = new ImageUtil(cheminImage);
+		this.fichierSource = fichierSource;
+		this.texte = texte;
+		this.fichierDest = fichierDest;
+		this.imgUtil = new ImageUtil(fichierSource);
 	}
+
+	
 }
