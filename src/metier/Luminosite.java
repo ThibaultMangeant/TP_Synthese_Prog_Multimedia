@@ -2,8 +2,8 @@ package metier;
 
 public class Luminosite
 {	
-	ImageUtil imgUtil;
-	String cheminImage;
+	private ImageUtil imgUtil;
+	private String    cheminImage;
 
 	/**
 	 * Constructeur
@@ -13,7 +13,7 @@ public class Luminosite
 	public Luminosite(String cheminImage)
 	{
 		this.cheminImage = cheminImage;
-		this.imgUtil = new ImageUtil(cheminImage);
+		this.imgUtil     = new ImageUtil(cheminImage);
 	}
 
 }

@@ -17,14 +17,16 @@ public class PotPeinture
 	 */
 	public static void retirerCouleur(ImageUtil imgUtil, Point position, int tolerance)
 	{
+		Color couleurCible;
+
 		if (position.x < 0 || position.x >= imgUtil.img.getWidth() || position.y < 0 || position.y >= imgUtil.img.getHeight())
 			return;
 		
 		// Recuperer la couleur cliquee
-		Color couleurCible = new Color(imgUtil.img.getRGB(position.x, position.y));
+		couleurCible = new Color(imgUtil.img.getRGB(position.x, position.y));
 		
 		// Algorithme de remplissage pour retirer la couleur
-		retirerCouleurIteratif(imgUtil, position.x, position.y, couleurCible, tolerance);
+		PotPeinture.retirerCouleurIteratif(imgUtil, position.x, position.y, couleurCible, tolerance);
 	}
 	
 	/**
@@ -36,7 +38,7 @@ public class PotPeinture
 	 */
 	public static void retirerCouleur(ImageUtil imgUtil, int x, int y, int tolerance)
 	{
-		retirerCouleur(imgUtil, new Point(x, y), tolerance);
+		PotPeinture.retirerCouleur(imgUtil, new Point(x, y), tolerance);
 	}
 	
 	/**
@@ -44,14 +46,20 @@ public class PotPeinture
 	 */
 	private static void retirerCouleurIteratif(ImageUtil imgUtil, int x, int y, Color couleurCible, int tolerance)
 	{
-		Queue<Point> file = new LinkedList<>();
+		Queue<Point> file;
+		boolean[][] visite;
+		Point p;
+		Color couleurActuelle;
+		int rgb, transparent;
+
+		file = new LinkedList<>();
 		file.add(new Point(x, y));
 		
-		boolean[][] visite = new boolean[imgUtil.img.getWidth()][imgUtil.img.getHeight()];
+		visite = new boolean[imgUtil.img.getWidth()][imgUtil.img.getHeight()];
 		
 		while (!file.isEmpty())
 		{
-			Point p = file.poll();
+			p = file.poll();
 			
 			// Verifier les limites
 			if (p.x < 0 || p.x >= imgUtil.img.getWidth() || p.y < 0 || p.y >= imgUtil.img.getHeight())
@@ -61,7 +69,7 @@ public class PotPeinture
 			if (visite[p.x][p.y])
 				continue;
 			
-			Color couleurActuelle = new Color(imgUtil.img.getRGB(p.x, p.y), true);
+			couleurActuelle = new Color(imgUtil.img.getRGB(p.x, p.y), true);
 			
 			// Verifier si la couleur est proche de la couleur cible
 			if (!couleurProche(couleurActuelle, couleurCible, tolerance))
@@ -71,8 +79,8 @@ public class PotPeinture
 			visite[p.x][p.y] = true;
 			
 			// Rendre transparent (Alpha = 0)
-			int rgb = imgUtil.img.getRGB(p.x, p.y);
-			int transparent = rgb & 0x00FFFFFF; // Garde RGB, met Alpha a 0
+			rgb = imgUtil.img.getRGB(p.x, p.y);
+			transparent = rgb & 0x00FFFFFF; // Garde RGB, met Alpha a 0
 			imgUtil.img.setRGB(p.x, p.y, transparent);
 			
 			// Ajouter les 4 voisins (haut, bas, gauche, droite)
@@ -92,16 +100,18 @@ public class PotPeinture
 	 */
 	public static void remplir(ImageUtil imgUtil, Point position, Color nouvelleCouleur, int tolerance)
 	{
+		Color couleurCible;
+
 		if (position.x < 0 || position.x >= imgUtil.img.getWidth() || position.y < 0 || position.y >= imgUtil.img.getHeight())
 			return;
 		
-		Color couleurCible = new Color(imgUtil.img.getRGB(position.x, position.y));
+		couleurCible = new Color(imgUtil.img.getRGB(position.x, position.y));
 		
 		// Si meme couleur, ne rien faire
-		if (couleurProche(couleurCible, nouvelleCouleur, 0))
+		if (PotPeinture.couleurProche(couleurCible, nouvelleCouleur, 0))
 			return;
 		
-		remplirIteratif(imgUtil, position.x, position.y, couleurCible, nouvelleCouleur, tolerance);
+		PotPeinture.remplirIteratif(imgUtil, position.x, position.y, couleurCible, nouvelleCouleur, tolerance);
 	}
 	
 	/**
@@ -114,7 +124,7 @@ public class PotPeinture
 	 */
 	public static void remplir(ImageUtil imgUtil, int x, int y, Color nouvelleCouleur, int tolerance)
 	{
-		remplir(imgUtil, new Point(x, y), nouvelleCouleur, tolerance);
+		PotPeinture.remplir(imgUtil, new Point(x, y), nouvelleCouleur, tolerance);
 	}
 	
 	/**
@@ -122,14 +132,19 @@ public class PotPeinture
 	 */
 	private static void remplirIteratif(ImageUtil imgUtil, int x, int y, Color couleurCible, Color nouvelleCouleur, int tolerance)
 	{
-		Queue<Point> file = new LinkedList<>();
+		Queue<Point> file;
+		boolean[][] visite;
+		Point p;
+		Color couleurActuelle;
+
+		file = new LinkedList<>();
 		file.add(new Point(x, y));
 		
-		boolean[][] visite = new boolean[imgUtil.img.getWidth()][imgUtil.img.getHeight()];
+		visite = new boolean[imgUtil.img.getWidth()][imgUtil.img.getHeight()];
 		
 		while (!file.isEmpty())
 		{
-			Point p = file.poll();
+			p = file.poll();
 			
 			if (p.x < 0 || p.x >= imgUtil.img.getWidth() || p.y < 0 || p.y >= imgUtil.img.getHeight())
 				continue;
@@ -137,9 +152,9 @@ public class PotPeinture
 			if (visite[p.x][p.y])
 				continue;
 			
-			Color couleurActuelle = new Color(imgUtil.img.getRGB(p.x, p.y));
+			couleurActuelle = new Color(imgUtil.img.getRGB(p.x, p.y));
 			
-			if (!couleurProche(couleurActuelle, couleurCible, tolerance))
+			if (!PotPeinture.couleurProche(couleurActuelle, couleurCible, tolerance))
 				continue;
 			
 			visite[p.x][p.y] = true;
@@ -158,9 +173,11 @@ public class PotPeinture
 	 */
 	private static boolean couleurProche(Color c1, Color c2, int tolerance)
 	{
-		int diffRouge = Math.abs(c1.getRed() - c2.getRed());
-		int diffVert = Math.abs(c1.getGreen() - c2.getGreen());
-		int diffBleu = Math.abs(c1.getBlue() - c2.getBlue());
+		int diffRouge, diffVert, diffBleu;
+
+		diffRouge = Math.abs(c1.getRed() - c2.getRed());
+		diffVert = Math.abs(c1.getGreen() - c2.getGreen());
+		diffBleu = Math.abs(c1.getBlue() - c2.getBlue());
 		
 		return diffRouge <= tolerance && diffVert <= tolerance && diffBleu <= tolerance;
 	}

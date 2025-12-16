@@ -7,9 +7,9 @@ import java.awt.image.BufferedImage;
  */
 public class Miroir
 {
-	String fichierSource;
-	String fichierDest;
-	ImageUtil imgUtil;
+	private String    fichierSource;
+	private String    fichierDest;
+	private ImageUtil imgUtil;
 
 	/**
 	 * Constructeur de la classe Miroir
@@ -27,9 +27,11 @@ public class Miroir
 	 */
 	public void miroirHorizontal()
 	{
+		BufferedImage src, out;
+
 		// Récupération de l'image source et de ses dimensions
-		BufferedImage src = this.imgUtil.getImage();
-		BufferedImage out = appliquerMiroirHorizontal(src);
+		src = this.imgUtil.getImage();
+		out = appliquerMiroirHorizontal(src);
 		this.imgUtil.setImage(out);
 	}
 
@@ -39,9 +41,11 @@ public class Miroir
 	 */
 	public void miroirVertical()
 	{
+		BufferedImage src, out;
+
 		// Récupération de l'image source et de ses dimensions
-		BufferedImage src = this.imgUtil.getImage();
-		BufferedImage out = appliquerMiroirVertical(src);
+		src = this.imgUtil.getImage();
+		out = appliquerMiroirVertical(src);
 		this.imgUtil.setImage(out);
 	}
 
@@ -50,9 +54,12 @@ public class Miroir
 	 */
 	public static BufferedImage appliquerMiroirHorizontal(BufferedImage src)
 	{
-		int w = src.getWidth();
-		int h = src.getHeight();
-		BufferedImage out = new BufferedImage(w, h, src.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : src.getType());
+		BufferedImage out;
+		int w, h;
+
+		w = src.getWidth();
+		h = src.getHeight();
+		out = new BufferedImage(w, h, src.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : src.getType());
 		for (int y = 0; y < h; y++)
 		{
 			for (int x = 0; x < w; x++)
@@ -68,9 +75,12 @@ public class Miroir
 	 */
 	public static BufferedImage appliquerMiroirVertical(BufferedImage src)
 	{
-		int w = src.getWidth();
-		int h = src.getHeight();
-		BufferedImage out = new BufferedImage(w, h, src.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : src.getType());
+		BufferedImage out;
+		int w, h;
+
+		w = src.getWidth();
+		h = src.getHeight();
+		out = new BufferedImage(w, h, src.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : src.getType());
 		for (int y = 0; y < h; y++)
 		{
 			for (int x = 0; x < w; x++)

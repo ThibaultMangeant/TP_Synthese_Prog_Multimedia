@@ -40,11 +40,13 @@ public class Point
 	@Override
 	public boolean equals(Object obj)
 	{
+		Point point;
+
 		if (this == obj)
 			return true;
 		if (obj == null || getClass() != obj.getClass())
 			return false;
-		Point point = (Point) obj;
+		point = (Point) obj;
 		return x == point.x && y == point.y;
 	}
 	
