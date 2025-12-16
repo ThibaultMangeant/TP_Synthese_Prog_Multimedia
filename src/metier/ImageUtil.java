@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 public class ImageUtil
 {
 	public BufferedImage img;
+	public String cheminImage;
 
 	/**
 	 * Constructeur
@@ -22,13 +23,19 @@ public class ImageUtil
 	 */
 	public ImageUtil(String srcImg)
 	{
+		this.cheminImage = srcImg;
 		try
 		{
-			this.img = ImageIO.read(new File(srcImg));
+			this.img = ImageIO.read(new File(cheminImage));
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public String getCheminImage()
+	{
+		return this.cheminImage;
 	}
 
 	/**

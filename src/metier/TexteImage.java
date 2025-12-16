@@ -1,5 +1,6 @@
 package metier;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 /**
@@ -7,5 +8,17 @@ import java.awt.image.BufferedImage;
  */
 public class TexteImage
 {
-	
+	ImageUtil imgUtil;
+	String cheminImage;
+
+	/**
+	 * Constructeur
+	 * 
+	 * @param cheminImage Chemin de l'image de fond
+	 */
+	public TexteImage(String cheminImage)
+	{
+		this.cheminImage = cheminImage;
+		this.imgUtil = new ImageUtil(cheminImage);
+	}
 }

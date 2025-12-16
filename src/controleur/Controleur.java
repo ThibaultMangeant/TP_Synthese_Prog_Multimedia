@@ -18,7 +18,7 @@ public class Controleur
 
 	public String getImage()
 	{
-		return "images/david_tennant.png";
+		return this.imageUtil.getCheminImage();
 	}
 
 	public void ouvrirImage(String path)
