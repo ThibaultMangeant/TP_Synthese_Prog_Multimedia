@@ -27,8 +27,10 @@ public class MenuEdition extends JMenu implements ActionListener
 		/* Création des items */
 		this.itemAnnuler = new JMenuItem("Annuler");
 		this.itemRepeter = new JMenuItem("Répéter");
-		this.itemAnnuler.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
-		this.itemRepeter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
+
+		/* Définition des raccourcis clavier */
+		this.itemAnnuler.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+Z
+		this.itemRepeter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+Y
 
 		/* Ajout des items au menu Édition */
 		this.add(this.itemAnnuler);

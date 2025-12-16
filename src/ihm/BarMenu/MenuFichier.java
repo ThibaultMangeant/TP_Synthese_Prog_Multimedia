@@ -6,9 +6,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.awt.event.ActionEvent;
 
@@ -33,8 +36,15 @@ public class MenuFichier extends JMenu implements ActionListener
 		this.itemSauvegarder     = new JMenuItem("Sauvegarder");
 		this.itemQuitter         = new JMenuItem("Quitter");
 
+		/* Définition des raccourcis clavier */
+		this.itemOuvrir         .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+O
+		this.itemSauvegarderSous.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK)); // Raccourci ctrl+shift+S
+		this.itemSauvegarder    .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+S
+		this.itemQuitter		.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+Q
+
 		/* Ajout des items au menu Fichier */
 		this.add(this.itemOuvrir);
+		this.addSeparator();
 		this.add(this.itemSauvegarderSous);
 		this.add(this.itemSauvegarder);
 		this.addSeparator();

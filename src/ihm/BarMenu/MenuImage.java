@@ -5,8 +5,10 @@ import controleur.Controleur;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 
 public class MenuImage extends JMenu implements ActionListener
@@ -29,6 +31,12 @@ public class MenuImage extends JMenu implements ActionListener
 		this.itemMiroirH        = new JMenuItem("Miroir Horizontal");
 		this.itemMiroirV        = new JMenuItem("Miroir Vertical");
 		this.itemRedimensionner = new JMenuItem("Redimensionner");
+
+		/* Définition des raccourcis clavier */
+		this.itemRotation       .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+R
+		this.itemMiroirH        .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+H
+		this.itemMiroirV        .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+V
+		this.itemRedimensionner .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+D
 
 		/* Ajout des items au menu Image */
 		this.add(this.itemRedimensionner);
