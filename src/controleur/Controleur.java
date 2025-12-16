@@ -19,6 +19,11 @@ public class Controleur
 		this.framePrincipale = new FramePrincipale(this);
 	}
 
+	public String getCheminImageCourant()
+	{
+		return this.cheminImageCourant;
+	}
+
 	public BufferedImage getImage()
 	{
 		return this.imageUtil.getImage();
