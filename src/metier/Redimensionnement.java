@@ -72,14 +72,8 @@ public class Redimensionnement
 		int type = src.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : src.getType();
 		BufferedImage out = new BufferedImage(newWidth, newHeight, type);
 		Graphics2D g2d = out.createGraphics();
-		try {
-			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2d.drawImage(src, 0, 0, newWidth, newHeight, null);
-		} finally {
-			g2d.dispose();
-		}
+		g2d.drawImage(src, 0, 0, newWidth, newHeight, null);
+		g2d.dispose();
 		return out;
 	}
 
