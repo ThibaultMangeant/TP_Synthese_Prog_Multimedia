@@ -236,12 +236,17 @@ public class BarMenu extends JMenuBar implements ActionListener
 
 			if (e.getSource() == this.itemRotation)
 			{
-				this.controleur.appliquerRotation(90);
+				int angle = Integer.parseInt(JOptionPane.showInputDialog("Rentrer l'angle : "));
+
+				this.controleur.appliquerRotation(angle);
 			}
 
 			if (e.getSource() == this.itemRedimensionner)
 			{
-				this.controleur.appliquerRedimensionnement(150, 150);
+				int nouvelleLargeur  = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle largeur : "));
+				int nouvelleHauteur  = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle hauteur : "));
+
+				this.controleur.appliquerRedimensionnement(nouvelleLargeur, nouvelleHauteur);
 			}
 
 			if (e.getSource() == this.itemPeinture)
@@ -251,12 +256,18 @@ public class BarMenu extends JMenuBar implements ActionListener
 
 			if (e.getSource() == this.itemTeinte)
 			{
-				this.controleur.appliquerTeinte(100 , 0, 100);
+				int teinteR = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte rouge (entre -255 et 255) : "));
+				int teinteV = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte verte (entre -255 et 255) : "));
+				int teinteB = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte bleue (entre -255 et 255) : "));
+
+				this.controleur.appliquerTeinte(teinteR , teinteV, teinteB);
 			}
 
 			if (e.getSource() == this.itemContraste)
 			{
-				this.controleur.appliquerContraste(10);
+				int valeurContraste = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la valeur du contraste (entre -100 et 100) : "));
+
+				this.controleur.appliquerContraste(valeurContraste);
 			}
 
 			if (e.getSource() == this.itemSuperposition)
