@@ -175,6 +175,7 @@ public class Controleur
 
 	public void appliquerAntiAliasing()
 	{
+		this.sauvegarderEtat();
 		BufferedImage src = this.imageUtil.getImage();
         BufferedImage out = AntiAlias.appliquerAntiAliasing(src);
         this.imageUtil.setImage(out);
