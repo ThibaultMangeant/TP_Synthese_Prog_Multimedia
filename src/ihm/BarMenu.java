@@ -143,13 +143,54 @@ public class BarMenu extends JMenuBar implements ActionListener
 
 		if (this.controleur != null)
 		{
-			if(e.getSource() == this.itemMiroirH)
+			if (e.getSource() == this.itemMiroirH)
 			{
 				this.controleur.miroirHorizontal();
 			}
-			if(e.getSource() == this.itemMiroirV)
+
+			if (e.getSource() == this.itemMiroirV)
 			{
 				this.controleur.miroirVertical();
+			}
+
+			if (e.getSource() == this.itemAntiAliasing)
+			{
+				this.controleur.appliquerAntiAliasing();
+			}
+
+			if (e.getSource() == this.itemRotation)
+			{
+				this.controleur.appliquerRotation(90);
+			}
+
+			if (e.getSource() == this.itemRedimensionner)
+			{
+				this.controleur.appliquerRedimensionnement(150, 150);
+			}
+
+			if (e.getSource() == this.itemPeinture)
+			{
+				this.controleur.appliquerPotPeinture();
+			}
+
+			if (e.getSource() == this.itemTeinte)
+			{
+				this.controleur.appliquerTeinte(50 , 0, -30);
+			}
+
+			if (e.getSource() == this.itemContraste)
+			{
+				this.controleur.appliquerContraste(10);
+			}
+
+			if (e.getSource() == this.itemSuperposition)
+			{
+				this.controleur.appliquerSuperpositionImages();
+			}
+
+			if (e.getSource() == this.itemTexteImage)
+			{
+				this.controleur.appliquerCreationImageTexte();
 			}
 		}
 	}
