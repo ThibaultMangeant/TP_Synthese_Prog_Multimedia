@@ -31,6 +31,16 @@ public class Controleur
 		this.framePrincipale.afficherImage(path);
 	}
 
+	public void sauvegarderImageSous(String path)
+	{
+		this.imageUtil.sauvegarderImage(path);
+	}
+
+	public void sauvegarderImage()
+	{
+		this.imageUtil.sauvegarderImage(this.cheminImageCourant);
+	}
+
 	public void miroirHorizontal()
 	{
 		BufferedImage src = this.imageUtil.getImage();

@@ -20,8 +20,11 @@ public class BarMenu extends JMenuBar implements ActionListener
 	private JMenu menuImage;
 	private JMenu menuAjustement;
 
-	private JMenuItem itemQuitter;
+	
 	private JMenuItem itemOuvrir;
+	private JMenuItem itemSauvegarderSous;
+	private JMenuItem itemSauvegarder;
+	private JMenuItem itemQuitter;
 
 	private JMenuItem itemAnnuler;
 	private JMenuItem itemRepeter;
@@ -49,8 +52,10 @@ public class BarMenu extends JMenuBar implements ActionListener
 		this.menuImage      = new JMenu("Image");
 		this.menuAjustement = new JMenu("Ajustement");
 		
-		this.itemOuvrir  = new JMenuItem("Ouvrir");
-		this.itemQuitter = new JMenuItem("Quitter");
+		this.itemOuvrir          = new JMenuItem("Ouvrir");
+		this.itemSauvegarderSous = new JMenuItem("Sauvegarder sous...");
+		this.itemSauvegarder     = new JMenuItem("Sauvegarder");
+		this.itemQuitter         = new JMenuItem("Quitter");
 
 		this.itemAnnuler = new JMenuItem("Annuler");
 		this.itemRepeter = new JMenuItem("Répéter");
@@ -69,6 +74,8 @@ public class BarMenu extends JMenuBar implements ActionListener
 
 		/* Ajout des items au menu Fichier */
 		this.menuFichier.add(this.itemOuvrir);
+		this.menuFichier.add(this.itemSauvegarderSous);
+		this.menuFichier.add(this.itemSauvegarder);
 		this.menuFichier.addSeparator();
 		this.menuFichier.add(this.itemQuitter);
 
@@ -77,10 +84,11 @@ public class BarMenu extends JMenuBar implements ActionListener
 		this.menuEdition.add(this.itemRepeter);
 
 		/* Ajout des items au menu Image */
+		this.menuImage.add(this.itemRedimensionner);
 		this.menuImage.add(this.itemRotation);
+		this.menuImage.addSeparator();
 		this.menuImage.add(this.itemMiroirH);
 		this.menuImage.add(this.itemMiroirV);
-		this.menuImage.add(this.itemRedimensionner);
 
 		/* Ajout des items au menu Ajustement */
 		this.menuAjustement.add(this.itemPeinture);
@@ -99,8 +107,10 @@ public class BarMenu extends JMenuBar implements ActionListener
 
 
 		/* Activation des composants */
-		this.itemQuitter.addActionListener(this);
 		this.itemOuvrir.addActionListener(this);
+		this.itemSauvegarderSous.addActionListener(this);
+		this.itemSauvegarder.addActionListener(this);
+		this.itemQuitter.addActionListener(this);
 
 		this.itemAnnuler.addActionListener(this);
 		this.itemRepeter.addActionListener(this);
@@ -120,11 +130,6 @@ public class BarMenu extends JMenuBar implements ActionListener
 
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getSource() == this.itemQuitter)
-		{
-			System.exit(0);
-		}
-
 		if (e.getSource() == this.itemOuvrir)
 		{
 			JFileChooser selecteurFichier;
@@ -162,6 +167,53 @@ public class BarMenu extends JMenuBar implements ActionListener
 			{
 				System.out.println("Une erreur est survenue lors de la sélection du fichier.");
 			}
+		}
+
+		if (e.getSource() == this.itemSauvegarderSous)
+		{
+			JFileChooser selecteurFichier;
+			int          result;
+			File         fichierChoisi;
+			String       chemin;
+
+			selecteurFichier = new JFileChooser();
+			selecteurFichier.setAcceptAllFileFilterUsed(false);
+			selecteurFichier.setFileFilter(new FileNameExtensionFilter("Images (png)", "png"));
+
+			result = selecteurFichier.showSaveDialog(null);
+			if (result == JFileChooser.APPROVE_OPTION)
+			{
+				fichierChoisi = selecteurFichier.getSelectedFile();
+				chemin = fichierChoisi.getAbsolutePath();
+				if (!chemin.toLowerCase().endsWith(".png"))
+				{
+					chemin += ".png";	
+				}
+
+				System.out.println(chemin);
+				if (this.controleur != null)
+				{
+					this.controleur.sauvegarderImageSous(chemin);
+				}
+			}
+			else if (result == JFileChooser.CANCEL_OPTION)
+			{
+				System.out.println("Opération annulée par l'utilisateur.");
+			}
+			else if (result == JFileChooser.ERROR_OPTION)
+			{
+				System.out.println("Une erreur est survenue lors de la sélection du fichier.");
+			}
+		}
+
+		if (e.getSource() == this.itemSauvegarder)
+		{
+			this.controleur.sauvegarderImage();
+		}
+
+		if (e.getSource() == this.itemQuitter)
+		{
+			System.exit(0);
 		}
 
 
