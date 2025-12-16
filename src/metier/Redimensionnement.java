@@ -1,6 +1,8 @@
 package metier;
 
 import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 /**
  * Classe pour redimensionner les images
@@ -42,51 +44,7 @@ public class Redimensionnement
 		if (newWidth <= 0 || newHeight <= 0)
 			return;
 
-		// Dimensions de l'image source
-		int w = src.getWidth();
-		int h = src.getHeight();
-
-		// Creation de l'image destination avec transparence (ARGB)
-		BufferedImage dest = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-
-		// Calcul des facteurs d'echelle
-		double scaleX = (double) w / newWidth;
-		double scaleY = (double) h / newHeight;
-
-		// Coordonnees du centre de l'image source
-		double i0 = w / 2.0;
-		double j0 = h / 2.0;
-
-		// Coordonnees du centre de l'image destination
-		double i0d = newWidth / 2.0;
-		double j0d = newHeight / 2.0;
-
-		// Parcours de chaque pixel de l'image destination
-		for (int jd = 0; jd < newHeight; jd++) {
-			for (int id = 0; id < newWidth; id++) {
-				// Coordonnees du pixel destination par rapport au centre
-				double xd = id - i0d;
-				double yd = jd - j0d;
-
-				// Application de l'echelle pour trouver le pixel correspondant
-				// dans l'image source
-				double xs = xd * scaleX;
-				double ys = yd * scaleY;
-
-				// Conversion en coordonnees absolues dans l'image source
-				int is = (int) Math.round(xs + i0);
-				int js = (int) Math.round(ys + j0);
-
-				// Verification que le pixel source est dans les limites de l'image
-				if (is >= 0 && is < w && js >= 0 && js < h) {
-					// Copie du pixel source vers le pixel destination
-					int rgb = src.getRGB(is, js);
-					dest.setRGB(id, jd, rgb);
-				}
-				// Sinon, le pixel reste transparent (valeur par defaut)
-			}
-		}
-
+		BufferedImage dest = redimensionner(src, newWidth, newHeight);
 		this.imgUtil.setImage(dest);
 		this.imgUtil.sauvegarderImage(this.fichierDest);
 	}
@@ -100,8 +58,39 @@ public class Redimensionnement
 		if (scale <= 0)
 			return;
 		BufferedImage src = this.imgUtil.getImage();
+		BufferedImage dest = redimensionnerRatio(src, scale);
+		this.imgUtil.setImage(dest);
+		this.imgUtil.sauvegarderImage(this.fichierDest);
+	}
+
+	/**
+	 * Methode statique: redimensionne une image aux dimensions donnees.
+	 */
+	public static BufferedImage redimensionner(BufferedImage src, int newWidth, int newHeight)
+	{
+		if (newWidth <= 0 || newHeight <= 0) return src;
+		int type = src.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : src.getType();
+		BufferedImage out = new BufferedImage(newWidth, newHeight, type);
+		Graphics2D g2d = out.createGraphics();
+		try {
+			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.drawImage(src, 0, 0, newWidth, newHeight, null);
+		} finally {
+			g2d.dispose();
+		}
+		return out;
+	}
+
+	/**
+	 * Methode statique: redimensionne une image en conservant le ratio via un facteur d'echelle.
+	 */
+	public static BufferedImage redimensionnerRatio(BufferedImage src, double scale)
+	{
+		if (scale <= 0) return src;
 		int newWidth  = Math.max(1, (int)Math.round(src.getWidth()  * scale));
 		int newHeight = Math.max(1, (int)Math.round(src.getHeight() * scale));
-		redimensionner(newWidth, newHeight);
+		return redimensionner(src, newWidth, newHeight);
 	}
 }

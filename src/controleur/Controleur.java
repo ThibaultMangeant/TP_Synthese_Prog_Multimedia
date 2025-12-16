@@ -62,6 +62,24 @@ public class Controleur
 		this.framePrincipale.afficherImage(out);
 	}
 
+	/** Redimensionne l'image courante aux dimensions spécifiées et met à jour l'affichage. */
+	public void redimensionner(int newWidth, int newHeight)
+	{
+		BufferedImage src = this.imageUtil.getImage();
+		BufferedImage out = Redimensionnement.redimensionner(src, newWidth, newHeight);
+		this.imageUtil.setImage(out);
+		this.framePrincipale.afficherImage(out);
+	}
+
+	/** Redimensionne l'image courante en conservant le ratio via un facteur d'échelle. */
+	public void redimensionnerRatio(double scale)
+	{
+		BufferedImage src = this.imageUtil.getImage();
+		BufferedImage out = Redimensionnement.redimensionnerRatio(src, scale);
+		this.imageUtil.setImage(out);
+		this.framePrincipale.afficherImage(out);
+	}
+
 	public void appliquerAntiAliasing()
 	{
 		System.out.println("Anti-aliasing appliqué.");

@@ -70,8 +70,7 @@ public class MenuImage extends JMenu implements ActionListener
 				int nouvelleLargeur  = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle largeur : "));
 				int nouvelleHauteur  = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle hauteur : "));
 
-				this.controleur.appliquerRedimensionnement(nouvelleLargeur, nouvelleHauteur);
-			}
+				this.controleur.redimensionner(nouvelleLargeur, nouvelleHauteur);			}
 		}
 	}
 }
