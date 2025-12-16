@@ -1,6 +1,7 @@
 package metier;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class ImageUtil
 	public String cheminImage;
 	public int largeur;
 	public int hauteur;
+	public int x0,y0;
 
 	/**
 	 * Constructeur
@@ -25,21 +27,50 @@ public class ImageUtil
 	 */
 	public ImageUtil(String srcImg)
 	{
+		this(srcImg, 0, 0);
+	}
+
+	public ImageUtil(String srcImg, int x0, int y0)
+	{
 		this.cheminImage = srcImg;
-		try
+		try 
 		{
 			this.img = ImageIO.read(new File(cheminImage));
-			this.hauteur = img.getHeight();
-			this.largeur = img.getWidth();
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+		this.largeur = img.getWidth();
+		this.hauteur = img.getHeight();
+		this.x0 = x0;
+		this.y0 = y0;
+		
+
 	}
 
 	public boolean contient(int x, int y)
 	{
-		return (x >= 0 && x < this.largeur && y >= 0 && y < this.hauteur);
+		return (x >= this.x0 && x < this.largeur + this.x0 && y >= this.y0 && y < this.hauteur + this.y0);
+	}
+
+	public int getX0()
+	{
+		return this.x0;
+	}
+
+	public int getY0()
+	{
+		return this.y0;
+	}
+
+	public void setX0(int x0)
+	{
+		this.x0 = x0;
+	}
+
+	public void setY0(int y0)
+	{
+		this.y0 = y0;
 	}
 
 	public int getLargeur()
