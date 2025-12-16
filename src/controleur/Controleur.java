@@ -15,6 +15,11 @@ public class Controleur
 	private Stack<BufferedImage> historiqueImages;
 	private Stack<BufferedImage> imagesAnnulees;
 	private static final int LIMITE_HISTORIQUE = 15;
+	
+	// Calque texte temporaire
+	private BufferedImage calqueTexte;
+	private int calqueTexteX;
+	private int calqueTexteY;
 
 	public Controleur()
 	{
@@ -24,6 +29,9 @@ public class Controleur
 		this.imageUtil = new ImageUtil(this.cheminImageCourant);
 		this.historiqueImages = new Stack<>();
 		this.imagesAnnulees = new Stack<>();
+		this.calqueTexte = null;
+		this.calqueTexteX = 0;
+		this.calqueTexteY = 0;
 		this.framePrincipale = new FramePrincipale(this);
 	}
 
@@ -64,6 +72,64 @@ public class Controleur
 	public void setPosY(int y)
 	{
 		this.imageUtil.setY0(y);
+	}
+
+	public BufferedImage getCalqueTexte()
+	{
+		return this.calqueTexte;
+	}
+
+	public int getCalqueTexteX()
+	{
+		return this.calqueTexteX;
+	}
+
+	public int getCalqueTexteY()
+	{
+		return this.calqueTexteY;
+	}
+
+	public void setCalqueTexteX(int x)
+	{
+		this.calqueTexteX = x;
+	}
+
+	public void setCalqueTexteY(int y)
+	{
+		this.calqueTexteY = y;
+	}
+
+	public boolean contientCalqueTexte(int x, int y)
+	{
+		if (this.calqueTexte == null) return false;
+		return (x >= this.calqueTexteX && x < this.calqueTexteX + this.calqueTexte.getWidth() &&
+		        y >= this.calqueTexteY && y < this.calqueTexteY + this.calqueTexte.getHeight());
+	}
+
+	public void fusionnerCalqueTexte()
+	{
+		if (this.calqueTexte != null)
+		{
+			this.sauvegarderEtat();
+			BufferedImage imgFond = this.imageUtil.getImage();
+			
+			// Appliquer l'image de fond dans le masque de texte a la position actuelle
+			BufferedImage texteRempli = TexteImage.appliquerImageDansTexte(
+				this.calqueTexte, 
+				imgFond, 
+				this.calqueTexteX, 
+				this.calqueTexteY, 
+				this.getPosX(), 
+				this.getPosY()
+			);
+			
+			// Remplacer l'image par le texte rempli uniquement
+			this.calqueTexte = null;
+			this.imageUtil.setImage(texteRempli);
+			this.imageUtil.setX0(this.calqueTexteX);
+			this.imageUtil.setY0(this.calqueTexteY);
+			this.framePrincipale.afficherImage(texteRempli);
+		}
 	}
 
 	private BufferedImage copierImage(BufferedImage src)
@@ -232,13 +298,15 @@ public class Controleur
 
 	public void appliquerCreationImageTexte(String texte, int taillePolice)
 	{
-		BufferedImage src, out;
-
-		this.sauvegarderEtat();
-		src = this.imageUtil.getImage();
-		out = TexteImage.creerTexteImage(src,texte, taillePolice);
-		this.imageUtil.setImage(out);
-		this.framePrincipale.afficherImage(out);
+		BufferedImage src = this.imageUtil.getImage();
+		// Creer juste le masque (blanc sur transparent)
+		this.calqueTexte = TexteImage.creerMasqueTexte(texte, taillePolice);
+		
+		// Positionner le texte à droite de l'image
+		this.calqueTexteX = this.getPosX() + src.getWidth() + 20;
+		this.calqueTexteY = this.getPosY();
+		
+		this.framePrincipale.majIHM();
 	}
 
 	public static void main(String[] args)

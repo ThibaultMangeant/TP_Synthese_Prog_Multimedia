@@ -99,4 +99,44 @@ public class FramePrincipale extends JFrame
 	{
 		this.panelPrincipal.setImage(image);
 	}
+
+	public BufferedImage getCalqueTexte()
+	{
+		return this.controleur.getCalqueTexte();
+	}
+
+	public int getCalqueTexteX()
+	{
+		return this.controleur.getCalqueTexteX();
+	}
+
+	public int getCalqueTexteY()
+	{
+		return this.controleur.getCalqueTexteY();
+	}
+
+	public void setCalqueTexteX(int x)
+	{
+		this.controleur.setCalqueTexteX(x);
+	}
+
+	public void setCalqueTexteY(int y)
+	{
+		this.controleur.setCalqueTexteY(y);
+	}
+
+	public boolean contientCalqueTexte(int x, int y)
+	{
+		return this.controleur.contientCalqueTexte(x, y);
+	}
+
+	public void fusionnerCalqueTexte()
+	{
+		this.controleur.fusionnerCalqueTexte();
+	}
+
+	public void majIHM()
+	{
+		this.panelPrincipal.majIHM();
+	}
 }
