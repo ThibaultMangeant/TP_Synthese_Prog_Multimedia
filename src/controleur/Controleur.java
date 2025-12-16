@@ -175,7 +175,10 @@ public class Controleur
 
 	public void appliquerAntiAliasing()
 	{
-		System.out.println("Anti-aliasing appliqué.");
+		BufferedImage src = this.imageUtil.getImage();
+        BufferedImage out = AntiAlias.appliquerAntiAliasing(src);
+        this.imageUtil.setImage(out);
+        this.framePrincipale.afficherImage(out);
 	}
 
 	public void rotation(int angle)
