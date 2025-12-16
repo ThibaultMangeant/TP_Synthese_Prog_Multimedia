@@ -62,7 +62,7 @@ public class MenuImage extends JMenu implements ActionListener
 			{
 				int angle = Integer.parseInt(JOptionPane.showInputDialog("Rentrer l'angle : "));
 
-				this.controleur.appliquerRotation(angle);
+				this.controleur.rotation(angle);
 			}
 
 			if (e.getSource() == this.itemRedimensionner)

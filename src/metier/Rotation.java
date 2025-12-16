@@ -40,66 +40,11 @@ public class Rotation
 	public void rotation(double angle)
 	{
 		BufferedImage img = this.imageUtil.getImage();
-		
-		// Conversion de l'angle de degres en radians
-		double a = Math.toRadians(angle);
-
-		// Dimensions de l'image source
-		int w = img.getWidth();
-		int h = img.getHeight();
-
-		// Calcul des dimensions de l'image apres rotation
-		// pour contenir toute l'image sans decoupage
-		int[] size = rotatedSize(w, h, a);
-		int newW = size[0];
-		int newH = size[1];
-
-		// Creation de l'image destination avec transparence (ARGB)
-		BufferedImage dest = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-
-		// Precalcul du cosinus et sinus pour optimiser les performances
-		double ca = Math.cos(a);
-		double sa = Math.sin(a);
-
-		// Coordonnees du centre de l'image source
-		double i0 = w / 2.0;
-		double j0 = h / 2.0;
-		
-		// Coordonnees du centre de l'image destination
-		double i0r = newW / 2.0;
-		double j0r = newH / 2.0;
-
-		// Parcours de chaque pixel de l'image destination
-		for (int jd = 0; jd < newH; jd++) {
-			for (int id = 0; id < newW; id++) {
-				// Coordonnees du pixel destination par rapport au centre
-				double xp = id - i0r;
-				double yp = jd - j0r;
-
-				// Application de la rotation inverse pour trouver
-				// le pixel correspondant dans l'image source
-				// Formules : x = x'*cos(a) - y'*sin(a)
-				//           y = x'*sin(a) + y'*cos(a)
-				double x = xp * ca - yp * sa;
-				double y = xp * sa + yp * ca;
-
-				// Conversion en coordonnees absolues dans l'image source
-				int is = (int) Math.round(x + i0);
-				int js = (int) Math.round(y + j0);
-
-				// Verification que le pixel source est dans les limites de l'image
-				if (is >= 0 && is < w && js >= 0 && js < h) {
-					// Copie du pixel source vers le pixel destination
-					int rgb = img.getRGB(is, js);
-					dest.setRGB(id, jd, rgb);
-				}
-				// Sinon, le pixel reste transparent (valeur par defaut)
-			}
-		}
-
-		// Mise a jour de l'image et sauvegarde
+		BufferedImage dest = appliquerRotation(img, angle);
 		this.imageUtil.setImage(dest);
-		this.imageUtil.sauvegarderImage(this.fichierDest);
+		if (this.fichierDest != null && !this.fichierDest.isEmpty()) {
+			this.imageUtil.sauvegarderImage(this.fichierDest);
+		}
 	}
 	
 	/**
@@ -152,6 +97,52 @@ public class Rotation
 	}
 
 	/**
+	 * Methode statique: applique la rotation en memoire et retourne l'image tournee.
+	 */
+	public static BufferedImage appliquerRotation(BufferedImage src, double angle)
+	{
+		// Conversion de l'angle de degres en radians
+		double a = Math.toRadians(angle);
+
+		int w = src.getWidth();
+		int h = src.getHeight();
+
+		int[] size = rotatedSize(w, h, a);
+		int newW = size[0];
+		int newH = size[1];
+
+		BufferedImage dest = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+		double ca = Math.cos(a);
+		double sa = Math.sin(a);
+
+		double i0 = w / 2.0;
+		double j0 = h / 2.0;
+		double i0r = newW / 2.0;
+		double j0r = newH / 2.0;
+
+		for (int jd = 0; jd < newH; jd++) {
+			for (int id = 0; id < newW; id++) {
+				double xp = id - i0r;
+				double yp = jd - j0r;
+
+				double x = xp * ca - yp * sa;
+				double y = xp * sa + yp * ca;
+
+				int is = (int) Math.round(x + i0);
+				int js = (int) Math.round(y + j0);
+
+				if (is >= 0 && is < w && js >= 0 && js < h) {
+					int rgb = src.getRGB(is, js);
+					dest.setRGB(id, jd, rgb);
+				}
+			}
+		}
+
+		return dest;
+	}
+
+	/**
 	 * Rotation 90° (horaire)
 	 */
 	public void rotation90()
@@ -174,5 +165,12 @@ public class Rotation
 	{
 		rotation(270.0);
 	}
+
+	/**
+	 * Aides statiques pour angles fixes
+	 */
+	public static BufferedImage appliquerRotation90(BufferedImage src) { return appliquerRotation(src, 90.0); }
+	public static BufferedImage appliquerRotation180(BufferedImage src) { return appliquerRotation(src, 180.0); }
+	public static BufferedImage appliquerRotation270(BufferedImage src) { return appliquerRotation(src, 270.0); }
 
 }
