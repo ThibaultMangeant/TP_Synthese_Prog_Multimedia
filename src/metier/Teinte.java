@@ -10,9 +10,9 @@ import java.util.List;
 public class Teinte
 {
 
-	ImageUtil imgUtil;
-	String fichierSource;
-	String fichierDest;
+	private ImageUtil imgUtil;
+	private String    fichierSource;
+	private String    fichierDest;
 
 	/**
 	 * Constructeur
@@ -23,8 +23,8 @@ public class Teinte
 	public Teinte(String fichierSource, String fichierDest)
 	{
 		this.fichierSource = fichierSource;
-		this.fichierDest = fichierDest;
-		this.imgUtil = new ImageUtil(fichierSource);
+		this.fichierDest   = fichierDest;
+		this.imgUtil       = new ImageUtil(fichierSource);
 	}
 
 	/**
@@ -36,8 +36,10 @@ public class Teinte
 	 */
 	public void teinter(int teinteRouge, int teinteVerte, int teinteBleue)
 	{
-		BufferedImage src = this.imgUtil.getImage();
-		BufferedImage out = appliquerTeinte(src, teinteRouge, teinteVerte, teinteBleue);
+		BufferedImage src, out;
+
+		src = this.imgUtil.getImage();
+		out = appliquerTeinte(src, teinteRouge, teinteVerte, teinteBleue);
 		this.imgUtil.setImage(out);
 		this.imgUtil.sauvegarderImage(this.fichierDest);
 	}
@@ -52,26 +54,30 @@ public class Teinte
 	 */
 	public static BufferedImage appliquerTeinte(BufferedImage src, int teinteRouge, int teinteVerte, int teinteBleue)
 	{
-		int largeur = src.getWidth();
-		int hauteur = src.getHeight();
-		BufferedImage out = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage out;
+		int largeur, hauteur;
+		int a, r, g, b, nr, ng, nb, pixel, rgba;
+
+		largeur = src.getWidth();
+		hauteur = src.getHeight();
+		out = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_ARGB);
 
 		for (int x = 0; x < largeur; x++)
 		{
 			for (int y = 0; y < hauteur; y++)
 			{
-				int pixel = src.getRGB(x, y);
+				pixel = src.getRGB(x, y);
 				// Extraire RGBA correctement
-				int a = (pixel >>> 24) & 0xFF;
-				int r = (pixel >>> 16) & 0xFF;
-				int g = (pixel >>> 8)  & 0xFF;
-				int b = pixel & 0xFF;
+				a = (pixel >>> 24) & 0xFF;
+				r = (pixel >>> 16) & 0xFF;
+				g = (pixel >>> 8)  & 0xFF;
+				b = pixel & 0xFF;
 
-				int nr = Math.max(0, Math.min(255, r + teinteRouge));
-				int ng = Math.max(0, Math.min(255, g + teinteVerte));
-				int nb = Math.max(0, Math.min(255, b + teinteBleue));
+				nr = Math.max(0, Math.min(255, r + teinteRouge));
+				ng = Math.max(0, Math.min(255, g + teinteVerte));
+				nb = Math.max(0, Math.min(255, b + teinteBleue));
 
-				int rgba = (a << 24) | (nr << 16) | (ng << 8) | (nb);
+				rgba = (a << 24) | (nr << 16) | (ng << 8) | (nb);
 				out.setRGB(x, y, rgba);
 			}
 		}

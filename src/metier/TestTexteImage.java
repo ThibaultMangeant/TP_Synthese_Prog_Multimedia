@@ -1,7 +1,5 @@
 package metier;
 
-import java.awt.Color;
-
 /**
  * Classe de test pour l'ajout de texte sur une image.
  * Par defaut utilise l'image du dossier src/images et produit deux fichiers:
@@ -12,9 +10,11 @@ public class TestTexteImage
 {
 	public static void main(String[] args)
 	{
-		String src = args.length > 0 ? args[0] : "src/images/david_tennant.png";
-		String destTexte = args.length > 1 ? args[1] : "src/images/david_tennant_texte.png";
-		String destCentre = args.length > 2 ? args[2] : "src/images/david_tennant_texte_centre.png";
+		String src, destTexte, destCentre;
+
+		src        = args.length > 0 ? args[0] : "src/images/david_tennant.png";
+		destTexte  = args.length > 1 ? args[1] : "src/images/david_tennant_texte.png";
+		destCentre = args.length > 2 ? args[2] : "src/images/david_tennant_texte_centre.png";
 
 		System.out.println("[TestTexteImage] Source: " + src);
 		System.out.println("[TestTexteImage] Dest texte: " + destTexte);

@@ -1,7 +1,7 @@
 package metier;
 
-public class Luminosite {
-	
+public class Luminosite
+{	
 	ImageUtil imgUtil;
 	String cheminImage;
 

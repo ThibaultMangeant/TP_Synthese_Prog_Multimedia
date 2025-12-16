@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -15,9 +14,9 @@ import java.awt.image.BufferedImage;
  */
 public class TexteImage
 {
-	ImageUtil imgUtil;
-	String fichierSource;
-	String fichierDest;
+	private ImageUtil imgUtil;
+	private String    fichierSource;
+	private String    fichierDest;
 
 	/**
 	 * Constructeur

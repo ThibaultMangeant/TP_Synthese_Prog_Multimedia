@@ -7,11 +7,10 @@ import java.awt.image.BufferedImage;
  */
 public class Superposition
 {
-	
-	ImageUtil imgUtil1;
-	ImageUtil imgUtil2;
-	String cheminImage1;
-	String cheminImage2;
+	private ImageUtil imgUtil1;
+	private ImageUtil imgUtil2;
+	private String    cheminImage1;
+	private String    cheminImage2;
 
 	/**
 	 * Constructeur
@@ -35,34 +34,45 @@ public class Superposition
 	 */
 	public void superposer(Point position)
 	{
-		BufferedImage image1 = imgUtil1.getImage();
-		BufferedImage image2 = imgUtil2.getImage();
+		BufferedImage image1, image2;
+		int           largeur2, hauteur2;
+		int           pixel1, pixel2;
+		int           alpha2;
+		int           r1, g1, b1;
+		int           r2, g2, b2;
+		int           rFinal, gFinal, bFinal, pixelFinal;
 
-		int largeur2 = image2.getWidth();
-		int hauteur2 = image2.getHeight();
+		image1 = imgUtil1.getImage();
+		image2 = imgUtil2.getImage();
 
-		for (int i = 0; i < largeur2; i++) {
-			for (int j = 0; j < hauteur2; j++) {
-				int pixel2 = image2.getRGB(i, j);
-				int alpha2 = (pixel2 >> 24) & 0xff;
+		largeur2 = image2.getWidth();
+		hauteur2 = image2.getHeight();
 
-				if (alpha2 > 0) { // Si le pixel n'est pas totalement transparent
-					int pixel1 = image1.getRGB(position.x + i, position.y + j);
+		for (int i = 0; i < largeur2; i++)
+		{
+			for (int j = 0; j < hauteur2; j++)
+			{
+				pixel2 = image2.getRGB(i, j);
+				alpha2 = (pixel2 >> 24) & 0xff;
+
+				if (alpha2 > 0)
+				{ // Si le pixel n'est pas totalement transparent
+					pixel1 = image1.getRGB(position.x + i, position.y + j);
 
 					// Calcul de la nouvelle couleur en fonction de l'alpha
-					int r1 = (pixel1 >> 16) & 0xff;
-					int g1 = (pixel1 >> 8) & 0xff;
-					int b1 = pixel1 & 0xff;
+					r1 = (pixel1 >> 16) & 0xff;
+					g1 = (pixel1 >> 8) & 0xff;
+					b1 = pixel1 & 0xff;
 
-					int r2 = (pixel2 >> 16) & 0xff;
-					int g2 = (pixel2 >> 8) & 0xff;
-					int b2 = pixel2 & 0xff;
+					r2 = (pixel2 >> 16) & 0xff;
+					g2 = (pixel2 >> 8) & 0xff;
+					b2 = pixel2 & 0xff;
 
-					int rFinal = (r2 * alpha2 + r1 * (255 - alpha2)) / 255;
-					int gFinal = (g2 * alpha2 + g1 * (255 - alpha2)) / 255;
-					int bFinal = (b2 * alpha2 + b1 * (255 - alpha2)) / 255;
+					rFinal = (r2 * alpha2 + r1 * (255 - alpha2)) / 255;
+					gFinal = (g2 * alpha2 + g1 * (255 - alpha2)) / 255;
+					bFinal = (b2 * alpha2 + b1 * (255 - alpha2)) / 255;
 
-					int pixelFinal = (255 << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
+					pixelFinal = (255 << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
 					image1.setRGB(position.x + i, position.y + j, pixelFinal);
 				}
 			}
