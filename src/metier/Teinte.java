@@ -1,8 +1,6 @@
 package metier;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 /**
  * Classe pour gerer les teintes de couleurs
@@ -11,7 +9,6 @@ public class Teinte
 {
 
 	private ImageUtil imgUtil;
-	private String    fichierSource;
 	private String    fichierDest;
 
 	/**
@@ -22,7 +19,6 @@ public class Teinte
 	 */
 	public Teinte(String fichierSource, String fichierDest)
 	{
-		this.fichierSource = fichierSource;
 		this.fichierDest   = fichierDest;
 		this.imgUtil       = new ImageUtil(fichierSource);
 	}

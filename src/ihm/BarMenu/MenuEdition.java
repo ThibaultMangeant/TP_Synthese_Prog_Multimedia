@@ -4,9 +4,12 @@ import controleur.Controleur;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 
 public class MenuEdition extends JMenu implements ActionListener
 {
@@ -24,6 +27,8 @@ public class MenuEdition extends JMenu implements ActionListener
 		/* Création des items */
 		this.itemAnnuler = new JMenuItem("Annuler");
 		this.itemRepeter = new JMenuItem("Répéter");
+		this.itemAnnuler.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
+		this.itemRepeter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
 
 		/* Ajout des items au menu Édition */
 		this.add(this.itemAnnuler);
@@ -38,11 +43,11 @@ public class MenuEdition extends JMenu implements ActionListener
 	{
 		if (e.getSource() == this.itemAnnuler)
 		{
-			System.out.println("Annuler");
+			this.controleur.annuler();
 		}
 		else if (e.getSource() == this.itemRepeter)
 		{
-			System.out.println("Répéter");
+			this.controleur.refaire();
 		}
 	}
 }

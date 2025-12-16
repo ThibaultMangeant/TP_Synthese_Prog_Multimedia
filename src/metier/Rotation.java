@@ -9,7 +9,6 @@ public class Rotation
 {
 
 	private ImageUtil imageUtil;
-	private String    fichierSource;
 	private String    fichierDest;
 
 
@@ -21,7 +20,6 @@ public class Rotation
 	 */
 	public Rotation(String fichierSource, String fichierDest)
 	{
-		this.fichierSource = fichierSource;
 		this.fichierDest   = fichierDest;
 		this.imageUtil     = new ImageUtil(fichierSource);
 	}

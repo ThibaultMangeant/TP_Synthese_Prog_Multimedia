@@ -15,7 +15,6 @@ import java.awt.image.BufferedImage;
 public class TexteImage
 {
 	private ImageUtil imgUtil;
-	private String    fichierSource;
 	private String    fichierDest;
 
 	/**
@@ -26,9 +25,8 @@ public class TexteImage
 	 */
 	public TexteImage(String fichierSource, String fichierDest)
 	{
-		this.fichierSource = fichierSource;
-		this.fichierDest = fichierDest;
-		this.imgUtil = new ImageUtil(fichierSource);
+		this.fichierDest   = fichierDest;
+		this.imgUtil       = new ImageUtil(fichierSource);
 	}
 
 	/**
@@ -44,18 +42,19 @@ public class TexteImage
 		
 		// Calcul de la taille du texte
 		BufferedImage imgTemp = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2dTemp = imgTemp.createGraphics();
-		Font police = new Font("Arial", Font.BOLD, taillePolice);
+		Graphics2D    g2dTemp = imgTemp.createGraphics();
+		Font          police  = new Font("Arial", Font.BOLD, taillePolice);
+
 		g2dTemp.setFont(police);
 		
 		FontRenderContext contexte = g2dTemp.getFontRenderContext();
-		Rectangle2D limites = police.getStringBounds(texte, contexte);
+		Rectangle2D       limites  = police.getStringBounds(texte, contexte);
 		g2dTemp.dispose();
 		
 		// Dimensions du texte
 		int largeurTexte = (int) Math.ceil(limites.getWidth());
 		int hauteurTexte = (int) Math.ceil(limites.getHeight());
-		int posY = (int) Math.ceil(-limites.getY());
+		int posY         = (int) Math.ceil(-limites.getY());
 		
 		// Creation du masque du texte
 		BufferedImage masqueTexte = new BufferedImage(largeurTexte, hauteurTexte, BufferedImage.TYPE_INT_ARGB);
@@ -80,9 +79,10 @@ public class TexteImage
 				if (alpha > 0)
 				{
 					// Copier le pixel correspondant de l'image source
-					int xs = x % imgSource.getWidth();
-					int ys = y % imgSource.getHeight();
+					int xs      = x % imgSource.getWidth();
+					int ys      = y % imgSource.getHeight();
 					int couleur = imgSource.getRGB(xs, ys);
+					
 					imgFinale.setRGB(x, y, couleur);
 				}
 				// Sinon le pixel reste transparent
