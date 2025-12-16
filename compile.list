@@ -8,8 +8,10 @@
 ./src/metier/Contraste.java
 ./src/metier/ImageUtil.java
 ./src/metier/Miroir.java
+./src/metier/Point.java
 ./src/metier/PotPeinture.java
 ./src/metier/Redimensionnement.java
+./src/metier/Rotation.java
 ./src/metier/Teinte.java
 ./src/metier/TexteImage.java
 ./src/metier/TestMiroir.java
