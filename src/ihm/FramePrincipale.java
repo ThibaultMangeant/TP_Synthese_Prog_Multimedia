@@ -1,6 +1,8 @@
 package ihm;
 
 import controleur.Controleur;
+import ihm.BarMenu.BarMenu;
+
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 

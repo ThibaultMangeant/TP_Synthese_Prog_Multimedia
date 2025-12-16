@@ -1,4 +1,4 @@
-package ihm;
+package ihm.BarMenu;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
