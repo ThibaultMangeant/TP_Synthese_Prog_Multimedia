@@ -93,4 +93,67 @@ public class TexteImage
 		this.imgUtil.setImage(imgFinale);
 		this.imgUtil.sauvegarderImage(this.fichierDest);
 	}
+
+	/**
+	 * Version statique : cree une image de la taille du texte avec l'image source comme texture
+	 * Seules les lettres sont visibles avec l'image dedans
+	 * 
+	 * @param imgSource L'image source a utiliser comme texture
+	 * @param texte Le texte a afficher
+	 * @param taillePolice Taille de la police
+	 * @return L'image finale avec le texte texture
+	 */
+	public static BufferedImage creerTexteImage(BufferedImage imgSource, String texte, int taillePolice)
+	{
+		// Calcul de la taille du texte
+		BufferedImage imgTemp = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D    g2dTemp = imgTemp.createGraphics();
+		Font          police  = new Font("Arial", Font.BOLD, taillePolice);
+
+		g2dTemp.setFont(police);
+		
+		FontRenderContext contexte = g2dTemp.getFontRenderContext();
+		Rectangle2D       limites  = police.getStringBounds(texte, contexte);
+		g2dTemp.dispose();
+		
+		// Dimensions du texte
+		int largeurTexte = (int) Math.ceil(limites.getWidth());
+		int hauteurTexte = (int) Math.ceil(limites.getHeight());
+		int posY         = (int) Math.ceil(-limites.getY());
+		
+		// Creation du masque du texte
+		BufferedImage masqueTexte = new BufferedImage(largeurTexte, hauteurTexte, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2dMasque = masqueTexte.createGraphics();
+		g2dMasque.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2dMasque.setFont(police);
+		g2dMasque.setColor(Color.WHITE);
+		g2dMasque.drawString(texte, 0, posY);
+		g2dMasque.dispose();
+		
+		// Creation de l'image finale de la taille du texte
+		BufferedImage imgFinale = new BufferedImage(largeurTexte, hauteurTexte, BufferedImage.TYPE_INT_ARGB);
+		
+		// Application du masque : copier les pixels de l'image source ou le texte est
+		for (int y = 0; y < hauteurTexte; y++)
+		{
+			for (int x = 0; x < largeurTexte; x++)
+			{
+				// Si le pixel fait partie du texte
+				int alpha = (masqueTexte.getRGB(x, y) >> 24) & 0xff;
+				
+				if (alpha > 0)
+				{
+					// Copier le pixel correspondant de l'image source
+					int xs      = x % imgSource.getWidth();
+					int ys      = y % imgSource.getHeight();
+					int couleur = imgSource.getRGB(xs, ys);
+					
+					imgFinale.setRGB(x, y, couleur);
+				}
+				// Sinon le pixel reste transparent
+			}
+		}
+		
+		return imgFinale;
+	}
 }
