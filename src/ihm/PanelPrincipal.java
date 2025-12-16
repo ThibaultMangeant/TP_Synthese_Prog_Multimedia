@@ -1,13 +1,13 @@
 package ihm;
 
 import javax.swing.*;
-import javax.imageio.ImageIO;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelPrincipal extends JPanel
 {
@@ -21,7 +21,9 @@ public class PanelPrincipal extends JPanel
 		this.setLayout(new BorderLayout());
 		
 		// Charger l'image initiale
-		this.chargerImage(this.frame.getImage());
+		this.chargerImage();
+
+		this.addMouseListener(new GestionSouris());
 	}
 	
 	protected void paintComponent(Graphics g)
@@ -30,7 +32,7 @@ public class PanelPrincipal extends JPanel
 		
 		if (this.bufferedImage != null)
 		{
-			g.drawImage(this.bufferedImage, 0, 0, getWidth(), getHeight(), this);
+			g.drawImage(this.bufferedImage, 50, 50, this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this);
 		}
 	}
 
@@ -45,17 +47,24 @@ public class PanelPrincipal extends JPanel
 		this.majIHM();
 	}
 
-	public void chargerImage(String path)
+	public void chargerImage()
 	{
-		try
+		this.bufferedImage = this.frame.getImage();
+		this.majIHM();
+	}
+
+	private class GestionSouris extends MouseAdapter
+	{
+		@Override
+		public void mouseClicked(MouseEvent e)
 		{
-			this.bufferedImage = ImageIO.read(new File(path));
-			this.majIHM();
+			System.out.println("Clic en position: (" + e.getX() + ", " + e.getY() + ")");
 		}
-		catch (IOException e)
+
+		@Override
+		public void mouseDragged(MouseEvent e)
 		{
-			System.err.println("Erreur: impossible de charger l'image: " + path);
-			e.printStackTrace();
+			System.out.println("Souris déplacée en position: (" + e.getX() + ", " + e.getY() + ")");
 		}
 	}
 }

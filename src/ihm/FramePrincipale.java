@@ -34,14 +34,14 @@ public class FramePrincipale extends JFrame
 		this.setJMenuBar(new BarMenu(this.controleur));
 	}
 
-	public String getImage()
+	public BufferedImage getImage()
 	{
 		return this.controleur.getImage();
 	}
 
 	public void afficherImage(String path)
 	{
-		this.panelPrincipal.chargerImage(path);
+		this.panelPrincipal.chargerImage();
 	}
 
 	public void afficherImage(BufferedImage image)
