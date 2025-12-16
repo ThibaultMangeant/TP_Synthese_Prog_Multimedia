@@ -23,23 +23,54 @@ public class Contraste
 
 	public void appliquerContraste(int contraste)
 	{
-		int couleur;
-		BufferedImage imgModif = this.imgUtil.getImage();
+		BufferedImage src = this.imgUtil.getImage();
+		BufferedImage out = appliquerContraste(src, contraste);
+		this.imgUtil.setImage(out);
+		this.imgUtil.sauvegarderImage(this.fichierDest);
+	}
 
-		for (int x = 0; x < imgModif.getWidth(); x++)
+	/**
+	 * Méthode statique: applique un contraste sur une image et retourne le résultat (préserve l'alpha).
+	 * Le calcul suit: c' = clamp(c + (contraste * (c - 127)) / 100).
+	 *
+	 * @param src       Image source
+	 * @param contraste Valeur du contraste (-100..100 typiquement)
+	 * @return          Nouvelle image avec contraste appliqué
+	 */
+	public static BufferedImage appliquerContraste(BufferedImage src, int contraste)
+	{
+		int largeur = src.getWidth();
+		int hauteur = src.getHeight();
+		BufferedImage out = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_ARGB);
+
+		// Convertit la valeur [-100..100] en échelle [-255..255] puis calcule le facteur standard
+		double c = Math.max(-100, Math.min(100, contraste));
+		double c255 = c * 255.0 / 100.0;
+		double factor = (259.0 * (c255 + 255.0)) / (255.0 * (259.0 - c255));
+
+		for (int x = 0; x < largeur; x++)
 		{
-			for (int y = 0; y < imgModif.getHeight(); y++)
+			for (int y = 0; y < hauteur; y++)
 			{
-				couleur = imgModif.getRGB(x, y) & 0xFFFFFF;
-				Color c = new Color(couleur);
-				int r = Math.min(255, Math.max(0, c.getRed()  + (contraste * (c.getRed()  - 127)) / 100));
-				int v = Math.min(255, Math.max(0, c.getGreen()+ (contraste * (c.getGreen()- 127)) / 100));
-				int b = Math.min(255, Math.max(0, c.getBlue() + (contraste * (c.getBlue() - 127)) / 100));
-				imgModif.setRGB(x, y, new Color(r, v, b).getRGB());
+				int pixel = src.getRGB(x, y);
+				int a = (pixel >>> 24) & 0xFF;
+				int r = (pixel >>> 16) & 0xFF;
+				int g = (pixel >>> 8)  & 0xFF;
+				int b = pixel & 0xFF;
+
+				int nr = (int)Math.round(factor * (r - 128) + 128);
+				int ng = (int)Math.round(factor * (g - 128) + 128);
+				int nb = (int)Math.round(factor * (b - 128) + 128);
+
+				nr = Math.min(255, Math.max(0, nr));
+				ng = Math.min(255, Math.max(0, ng));
+				nb = Math.min(255, Math.max(0, nb));
+
+				int rgba = (a << 24) | (nr << 16) | (ng << 8) | (nb);
+				out.setRGB(x, y, rgba);
 			}
 		}
 
-		this.imgUtil.setImage(imgModif);
-		this.imgUtil.sauvegarderImage(this.fichierDest);
+		return out;
 	}
 }

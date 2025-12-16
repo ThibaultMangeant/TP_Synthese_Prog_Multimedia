@@ -150,11 +150,10 @@ public class Controleur
 
     public void appliquerContraste(int valeurContraste)
     {
-        Contraste contraste = new Contraste(this.cheminImageCourant, "image_temp.png");
-        contraste.appliquerContraste(valeurContraste);
-
-        // Mettre à jour l'affichage
-        this.framePrincipale.afficherImage("image_temp.png");
+        BufferedImage src = this.imageUtil.getImage();
+        BufferedImage out = Contraste.appliquerContraste(src, valeurContraste);
+        this.imageUtil.setImage(out);
+        this.framePrincipale.afficherImage(out);
     }
 
     public void appliquerSuperpositionImages()
