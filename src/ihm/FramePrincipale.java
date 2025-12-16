@@ -34,6 +34,11 @@ public class FramePrincipale extends JFrame
 		this.setJMenuBar(new BarMenu(this.controleur));
 	}
 
+	public boolean contient(int x, int y)
+	{
+		return this.controleur.contient(x, y);
+	}
+
 	public BufferedImage getImage()
 	{
 		return this.controleur.getImage();

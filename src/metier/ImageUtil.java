@@ -37,6 +37,10 @@ public class ImageUtil
 		}
 	}
 
+	public boolean contient(int x, int y)
+	{
+		return (x >= 0 && x < this.largeur && y >= 0 && y < this.hauteur);
+	}
 
 	public int getLargeur()
 	{

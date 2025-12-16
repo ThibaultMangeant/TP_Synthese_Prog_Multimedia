@@ -29,6 +29,11 @@ public class Controleur
 		return this.imageUtil.getImage();
 	}
 
+	public boolean contient(int x, int y)
+	{
+		return this.imageUtil.contient(x, y);
+	}
+
 	public void ouvrirImage(String path)
 	{
 		this.cheminImageCourant = path;
