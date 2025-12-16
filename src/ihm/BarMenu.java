@@ -41,19 +41,19 @@ public class BarMenu extends JMenuBar implements ActionListener
 		this.menuFichier = new JMenu("Fichier");
 		this.menuEdition = new JMenu("Édition");
 		
-		this.itemOuvrir = new JMenuItem("Ouvrir");
+		this.itemOuvrir  = new JMenuItem("Ouvrir");
 		this.itemQuitter = new JMenuItem("Quitter");
 
-		this.itemRotation = new JMenuItem("Rotation");
-		this.itemMiroirH = new JMenuItem("Miroir Horizontal");
-		this.itemMiroirV = new JMenuItem("Miroir Vertical");
+		this.itemRotation       = new JMenuItem("Rotation");
+		this.itemMiroirH        = new JMenuItem("Miroir Horizontal");
+		this.itemMiroirV        = new JMenuItem("Miroir Vertical");
 		this.itemRedimensionner = new JMenuItem("Redimensionner");
-		this.itemPeinture = new JMenuItem("Effet Peinture");
-		this.itemTeinte = new JMenuItem("Ajuster Teinte");
-		this.itemAntiAliasing = new JMenuItem("Anti-Aliasing");
-		this.itemContraste = new JMenuItem("Ajuster Contraste");
-		this.itemSuperposition = new JMenuItem("Superposition d'Images");
-		this.itemTexteImage = new JMenuItem("Créer une Image à partir de Texte");
+		this.itemPeinture       = new JMenuItem("Effet Peinture");
+		this.itemTeinte         = new JMenuItem("Ajuster Teinte");
+		this.itemAntiAliasing   = new JMenuItem("Anti-Aliasing");
+		this.itemContraste      = new JMenuItem("Ajuster Contraste");
+		this.itemSuperposition  = new JMenuItem("Superposition d'Images");
+		this.itemTexteImage     = new JMenuItem("Créer une Image à partir de Texte");
 
 		/* Ajout des items au menu Fichier */
 		menuFichier.add(itemOuvrir);
