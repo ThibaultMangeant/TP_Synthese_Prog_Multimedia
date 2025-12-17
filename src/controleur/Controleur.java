@@ -43,75 +43,25 @@ public class Controleur
 		this.framePrincipale = new FramePrincipale(this);
 	}
 
-	public String getCheminImageCourant()
-	{
-		return this.cheminImageCourant;
-	}
+	public String getCheminImageCourant() { return this.cheminImageCourant; }
+	public BufferedImage getImage() { return this.imageUtil.getImage(); }
+	public boolean contient(int x, int y) { return this.imageUtil.contient(x, y); }
 
-	public BufferedImage getImage()
-	{
-		return this.imageUtil.getImage();
-	}
+	public int getPosX() { return this.imageUtil.getX0(); }
+	public int getPosY() { return this.imageUtil.getY0(); }
+	public void setPosX(int x) { this.imageUtil.setX0(x); }
+	public void setPosY(int y) { this.imageUtil.setY0(y); }
 
-	/**
-	 * Méthode importée depuis la version GitHub.
-	 * Vérifie si les coordonnées sont dans l'image.
-	 */
-	public boolean contient(int x, int y)
-	{
-		return this.imageUtil.contient(x, y);
-	}
+	public BufferedImage getCalqueTexte() { return this.calqueTexte; }
 
-	public int getPosX()
-	{
-		return this.imageUtil.getX0();
-	}
-
-	public int getPosY()
-	{
-		return this.imageUtil.getY0();
-	}
-
-	public void setPosX(int x)
-	{
-		this.imageUtil.setX0(x);
-	}
-
-	public void setPosY(int y)
-	{
-		this.imageUtil.setY0(y);
-	}
-
-	public BufferedImage getCalqueTexte()
-	{
-		return this.calqueTexte;
-	}
-
-	public int getCalqueTexteX()
-	{
-		return this.calqueTexteX;
-	}
-
-	public int getCalqueTexteY()
-	{
-		return this.calqueTexteY;
-	}
-
-	public void setCalqueTexteX(int x)
-	{
-		this.calqueTexteX = x;
-	}
-
-	public void setCalqueTexteY(int y)
-	{
-		this.calqueTexteY = y;
-	}
+	public int getCalqueTexteX() { return this.calqueTexteX; }
+	public int getCalqueTexteY() { return this.calqueTexteY; }
+	public void setCalqueTexteX(int x) { this.calqueTexteX = x; }
+	public void setCalqueTexteY(int y) { this.calqueTexteY = y; }
 
 	public boolean contientCalqueTexte(int x, int y)
 	{
-		if (this.calqueTexte == null) return false;
-		return (x >= this.calqueTexteX && x < this.calqueTexteX + this.calqueTexte.getWidth() &&
-		        y >= this.calqueTexteY && y < this.calqueTexteY + this.calqueTexte.getHeight());
+		return contientCalque(this.calqueTexte, x, y, this.calqueTexteX, this.calqueTexteY);
 	}
 
 	public void fusionnerCalqueTexte()
@@ -140,36 +90,23 @@ public class Controleur
 		}
 	}
 
-	public BufferedImage getCalqueSuperposition()
-	{
-		return this.calqueSuperposition;
-	}
+	public BufferedImage getCalqueSuperposition() { return this.calqueSuperposition; }
 
-	public int getCalqueSuperpositionX()
-	{
-		return this.calqueSuperpositionX;
-	}
-
-	public int getCalqueSuperpositionY()
-	{
-		return this.calqueSuperpositionY;
-	}
-
-	public void setCalqueSuperpositionX(int x)
-	{
-		this.calqueSuperpositionX = x;
-	}
-
-	public void setCalqueSuperpositionY(int y)
-	{
-		this.calqueSuperpositionY = y;
-	}
+	public int getCalqueSuperpositionX() { return this.calqueSuperpositionX; }
+	public int getCalqueSuperpositionY() { return this.calqueSuperpositionY; }
+	public void setCalqueSuperpositionX(int x) { this.calqueSuperpositionX = x; }
+	public void setCalqueSuperpositionY(int y) { this.calqueSuperpositionY = y; }
 
 	public boolean contientCalqueSuperposition(int x, int y)
 	{
-		if (this.calqueSuperposition == null) return false;
-		return (x >= this.calqueSuperpositionX && x < this.calqueSuperpositionX + this.calqueSuperposition.getWidth() &&
-		        y >= this.calqueSuperpositionY && y < this.calqueSuperpositionY + this.calqueSuperposition.getHeight());
+		return contientCalque(this.calqueSuperposition, x, y, this.calqueSuperpositionX, this.calqueSuperpositionY);
+	}
+
+	private boolean contientCalque(BufferedImage calque, int x, int y, int calqueX, int calqueY)
+	{
+		if (calque == null) return false;
+		return (x >= calqueX && x < calqueX + calque.getWidth() &&
+		        y >= calqueY && y < calqueY + calque.getHeight());
 	}
 
 	public void fusionnerCalqueSuperposition()
@@ -178,18 +115,7 @@ public class Controleur
 		{
 			this.sauvegarderEtat();
 			BufferedImage imgFond = this.imageUtil.getImage();
-			
-			// Creer une image de la meme taille que le fond
-			BufferedImage imgFinale = new BufferedImage(imgFond.getWidth(), imgFond.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			
-			// Copier l'image de fond
-			for (int y = 0; y < imgFond.getHeight(); y++)
-			{
-				for (int x = 0; x < imgFond.getWidth(); x++)
-				{
-					imgFinale.setRGB(x, y, imgFond.getRGB(x, y));
-				}
-			}
+			BufferedImage imgFinale = copierImage(imgFond);
 			
 			// Superposer le calque avec alpha blending
 			for (int y = 0; y < this.calqueSuperposition.getHeight(); y++)
@@ -207,20 +133,7 @@ public class Controleur
 						if (alpha > 0)
 						{
 							int rgbFond = imgFinale.getRGB(posX, posY);
-							
-							int r1 = (rgbFond >> 16) & 0xff;
-							int g1 = (rgbFond >> 8) & 0xff;
-							int b1 = rgbFond & 0xff;
-							
-							int r2 = (rgbSup >> 16) & 0xff;
-							int g2 = (rgbSup >> 8) & 0xff;
-							int b2 = rgbSup & 0xff;
-							
-							int rFinal = (r2 * alpha + r1 * (255 - alpha)) / 255;
-							int gFinal = (g2 * alpha + g1 * (255 - alpha)) / 255;
-							int bFinal = (b2 * alpha + b1 * (255 - alpha)) / 255;
-							
-							int pixelFinal = (255 << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
+							int pixelFinal = alphaBlend(rgbSup, rgbFond, alpha);
 							imgFinale.setRGB(posX, posY, pixelFinal);
 						}
 					}
@@ -231,6 +144,23 @@ public class Controleur
 			this.imageUtil.setImage(imgFinale);
 			this.framePrincipale.afficherImage(imgFinale);
 		}
+	}
+
+	private int alphaBlend(int rgbSrc, int rgbDst, int alpha)
+	{
+		int r1 = (rgbDst >> 16) & 0xff;
+		int g1 = (rgbDst >> 8) & 0xff;
+		int b1 = rgbDst & 0xff;
+		
+		int r2 = (rgbSrc >> 16) & 0xff;
+		int g2 = (rgbSrc >> 8) & 0xff;
+		int b2 = rgbSrc & 0xff;
+		
+		int rFinal = (r2 * alpha + r1 * (255 - alpha)) / 255;
+		int gFinal = (g2 * alpha + g1 * (255 - alpha)) / 255;
+		int bFinal = (b2 * alpha + b1 * (255 - alpha)) / 255;
+		
+		return (255 << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
 	}
 
 	private BufferedImage copierImage(BufferedImage src)
@@ -300,142 +230,97 @@ public class Controleur
 		this.imageUtil.sauvegarderImage(this.cheminImageCourant);
 	}
 
-	public void zoomAvant()
-	{
-		this.framePrincipale.zoomAvant();
-	}
+	public void zoomAvant() { this.framePrincipale.zoomAvant(); }
+	public void zoomArriere() { this.framePrincipale.zoomArriere(); }
 
-	public void zoomArriere()
+	private void appliquerTransformation(BufferedImage resultat)
 	{
-		this.framePrincipale.zoomArriere();
+		this.imageUtil.setImage(resultat);
+		this.framePrincipale.afficherImage(resultat);
 	}
 
 	public void miroirHorizontal()
 	{
 		this.sauvegarderEtat();
-		BufferedImage src = this.imageUtil.getImage();
-		BufferedImage out = Miroir.appliquerMiroirHorizontal(src);
-		this.imageUtil.setImage(out);
-		this.framePrincipale.afficherImage(out);
+		appliquerTransformation(Miroir.appliquerMiroirHorizontal(this.imageUtil.getImage()));
 	}
 
 	public void miroirVertical()
 	{
 		this.sauvegarderEtat();
-		BufferedImage src = this.imageUtil.getImage();
-		BufferedImage out = Miroir.appliquerMiroirVertical(src);
-		this.imageUtil.setImage(out);
-		this.framePrincipale.afficherImage(out);
+		appliquerTransformation(Miroir.appliquerMiroirVertical(this.imageUtil.getImage()));
 	}
 
-	/** * Redimensionne l'image courante à de nouvelles dimensions (largeur et hauteur). 
-	 */
 	public void redimensionner(int newWidth, int newHeight)
 	{
 		this.sauvegarderEtat();
-		BufferedImage src = this.imageUtil.getImage();
-		BufferedImage out = Redimensionnement.redimensionner(src, newWidth, newHeight);
-		this.imageUtil.setImage(out);
-		this.framePrincipale.afficherImage(out);
+		appliquerTransformation(Redimensionnement.redimensionner(this.imageUtil.getImage(), newWidth, newHeight));
 	}
 
-	/** * Redimensionne l'image courante en conservant le ratio via un facteur d'échelle. 
-	 */
 	public void redimensionnerRatio(double scale)
 	{
 		this.sauvegarderEtat();
-		BufferedImage src = this.imageUtil.getImage();
-		BufferedImage out = Redimensionnement.redimensionnerRatio(src, scale);
-		this.imageUtil.setImage(out);
-		this.framePrincipale.afficherImage(out);
+		appliquerTransformation(Redimensionnement.redimensionnerRatio(this.imageUtil.getImage(), scale));
 	}
 
 	public void appliquerAntiAliasing()
 	{
 		this.sauvegarderEtat();
-		BufferedImage src = this.imageUtil.getImage();
-        BufferedImage out = AntiAlias.appliquerAntiAliasing(src);
-        this.imageUtil.setImage(out);
-        this.framePrincipale.afficherImage(out);
+		appliquerTransformation(AntiAlias.appliquerAntiAliasing(this.imageUtil.getImage()));
 	}
 
 	public void rotation(int angle)
 	{
 		this.sauvegarderEtat();
-		BufferedImage src = this.imageUtil.getImage();
-		BufferedImage out = Rotation.appliquerRotation(src, angle);
-		this.imageUtil.setImage(out);
-		this.framePrincipale.afficherImage(out);
+		appliquerTransformation(Rotation.appliquerRotation(this.imageUtil.getImage(), angle));
 	}
 
-	public void appliquerRotation(int angle)
-	{
-		this.rotation(angle);
-	}
-
-	public void appliquerRedimensionnement(int nouvelleLargeur, int nouvelleHauteur)
-	{
-		this.redimensionner(nouvelleLargeur, nouvelleHauteur);
-	}
-
-	public void appliquerPotPeinture()
-	{
-		System.out.println("Pot de peinture appliqué.");
-	}
+	public void appliquerRotation(int angle) { this.rotation(angle); }
+	public void appliquerRedimensionnement(int nouvelleLargeur, int nouvelleHauteur) { this.redimensionner(nouvelleLargeur, nouvelleHauteur); }
+	public void appliquerPotPeinture() { System.out.println("Pot de peinture appliqué."); }
 
 	public void appliquerTeinte(int teinteRouge, int teinteVerte, int teinteBleue)
 	{
 		this.sauvegarderEtat();
-		// Préférer application en mémoire via méthode statique
-		BufferedImage src = this.imageUtil.getImage();
-		BufferedImage out = Teinte.appliquerTeinte(src, teinteRouge, teinteVerte, teinteBleue);
-		this.imageUtil.setImage(out);
-		this.framePrincipale.afficherImage(out);
+		appliquerTransformation(Teinte.appliquerTeinte(this.imageUtil.getImage(), teinteRouge, teinteVerte, teinteBleue));
 	}
 
 	public void appliquerContraste(int valeurContraste)
 	{
 		this.sauvegarderEtat();
-		BufferedImage src = this.imageUtil.getImage();
-		BufferedImage out = Contraste.appliquerContraste(src, valeurContraste);
-		this.imageUtil.setImage(out);
-		this.framePrincipale.afficherImage(out);
+		appliquerTransformation(Contraste.appliquerContraste(this.imageUtil.getImage(), valeurContraste));
 	}
 
 	public void appliquerLuminosite(int valeur)
 	{
 		this.sauvegarderEtat();
+		appliquerTransformation(Luminosite.appliquerLuminosite(this.imageUtil.getImage(), valeur));
+	}
+
+	private void positionnerCalqueADroite(int calqueX[], int calqueY[])
+	{
 		BufferedImage src = this.imageUtil.getImage();
-		BufferedImage out = Luminosite.appliquerLuminosite(src, valeur);
-		this.imageUtil.setImage(out);
-		this.framePrincipale.afficherImage(out);
+		calqueX[0] = this.getPosX() + src.getWidth() + 20;
+		calqueY[0] = this.getPosY();
+		this.framePrincipale.majIHM();
 	}
 
 	public void appliquerSuperpositionImages(String cheminImageSup)
 	{
-		// Charger l'image de superposition
-		ImageUtil imgSup = new ImageUtil(cheminImageSup);
-		this.calqueSuperposition = imgSup.getImage();
-		
-		// Positionner a droite de l'image principale
-		BufferedImage src = this.imageUtil.getImage();
-		this.calqueSuperpositionX = this.getPosX() + src.getWidth() + 20;
-		this.calqueSuperpositionY = this.getPosY();
-		
-		this.framePrincipale.majIHM();
+		this.calqueSuperposition = new ImageUtil(cheminImageSup).getImage();
+		int[] x = new int[1], y = new int[1];
+		positionnerCalqueADroite(x, y);
+		this.calqueSuperpositionX = x[0];
+		this.calqueSuperpositionY = y[0];
 	}
 
 	public void appliquerCreationImageTexte(String texte, int taillePolice)
 	{
-		BufferedImage src = this.imageUtil.getImage();
-		// Creer juste le masque (blanc sur transparent)
 		this.calqueTexte = TexteImage.creerMasqueTexte(texte, taillePolice);
-		
-		// Positionner le texte à droite de l'image
-		this.calqueTexteX = this.getPosX() + src.getWidth() + 20;
-		this.calqueTexteY = this.getPosY();
-		
-		this.framePrincipale.majIHM();
+		int[] x = new int[1], y = new int[1];
+		positionnerCalqueADroite(x, y);
+		this.calqueTexteX = x[0];
+		this.calqueTexteY = y[0];
 	}
 
 	public static void main(String[] args)
