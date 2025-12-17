@@ -402,6 +402,15 @@ public class Controleur
 		this.framePrincipale.afficherImage(out);
 	}
 
+	public void appliquerLuminosite(int valeur)
+	{
+		this.sauvegarderEtat();
+		BufferedImage src = this.imageUtil.getImage();
+		BufferedImage out = Luminosite.appliquerLuminosite(src, valeur);
+		this.imageUtil.setImage(out);
+		this.framePrincipale.afficherImage(out);
+	}
+
 	public void appliquerSuperpositionImages(String cheminImageSup)
 	{
 		// Charger l'image de superposition

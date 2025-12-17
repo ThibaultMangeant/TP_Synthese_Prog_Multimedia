@@ -21,6 +21,7 @@ public class MenuAjustement extends JMenu implements ActionListener
 	private JMenuItem itemContraste;
 	private JMenuItem itemSuperposition;
 	private JMenuItem itemTexteImage;
+	private JMenuItem itemLuminosite;
 
 	public MenuAjustement(Controleur controleur)
 	{
@@ -35,6 +36,7 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.itemContraste      = new JMenuItem("Ajuster Contraste");
 		this.itemSuperposition  = new JMenuItem("Superposition d'Images");
 		this.itemTexteImage     = new JMenuItem("Créer une Image à partir de Texte");
+		this.itemLuminosite     = new JMenuItem("Ajuster Luminosité");
 
 		/* Ajout des items au menu Ajustement */
 		this.add(this.itemPeinture);
@@ -43,6 +45,7 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.add(this.itemContraste);
 		this.add(this.itemSuperposition);
 		this.add(this.itemTexteImage);
+		this.add(this.itemLuminosite);
 
 		/* Activation des composants */
 		this.itemPeinture     .addActionListener(this);
@@ -51,6 +54,7 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.itemContraste    .addActionListener(this);
 		this.itemSuperposition.addActionListener(this);
 		this.itemTexteImage   .addActionListener(this);
+		this.itemLuminosite   .addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -83,22 +87,31 @@ public class MenuAjustement extends JMenu implements ActionListener
 				this.controleur.appliquerContraste(valeurContraste);
 			}
 
-		if (e.getSource() == this.itemSuperposition)
-		{
-			JFileChooser fileChooser = new JFileChooser("../src/images");
-			int result = fileChooser.showOpenDialog(null);
-			
-			if (result == JFileChooser.APPROVE_OPTION)
+			if (e.getSource() == this.itemSuperposition)
 			{
-				String cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
-				this.controleur.appliquerSuperpositionImages(cheminImage);
-			}
-		}			if (e.getSource() == this.itemTexteImage)
+				JFileChooser fileChooser = new JFileChooser("../src/images");
+				int result = fileChooser.showOpenDialog(null);
+				
+				if (result == JFileChooser.APPROVE_OPTION)
+				{
+					String cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
+					this.controleur.appliquerSuperpositionImages(cheminImage);
+				}
+			}	
+			
+			if (e.getSource() == this.itemTexteImage)
 			{
 				String texte = JOptionPane.showInputDialog("Rentrer le texte à afficher : ");
 				int taillePolice = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la taille de la police : "));
 
 				this.controleur.appliquerCreationImageTexte(texte, taillePolice);
+			}
+
+			if (e.getSource() == this.itemLuminosite)
+			{
+				int valeurLuminosite = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la valeur de la luminosité (entre -255 et 255) : "));
+
+				this.controleur.appliquerLuminosite(valeurLuminosite);
 			}
 		}
 	}
