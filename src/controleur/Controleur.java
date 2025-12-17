@@ -2,6 +2,7 @@ package controleur;
 
 import ihm.FramePrincipale;
 import metier.*;
+
 import java.awt.image.BufferedImage;
 import java.util.Stack;
 
@@ -32,8 +33,8 @@ public class Controleur
 		// Chemin relatif depuis le dossier bin/
 		this.cheminImageCourant = "../src/images/david_tennant.png";
 		this.imageUtil = new ImageUtil(this.cheminImageCourant);
-		this.historiqueImages = new Stack<>();
-		this.imagesAnnulees = new Stack<>();
+		this.historiqueImages = new Stack<BufferedImage>();
+		this.imagesAnnulees = new Stack<BufferedImage>();
 		this.calqueTexte = null;
 		this.calqueTexteX = 0;
 		this.calqueTexteY = 0;
@@ -43,19 +44,19 @@ public class Controleur
 		this.framePrincipale = new FramePrincipale(this);
 	}
 
-	public String getCheminImageCourant() { return this.cheminImageCourant; }
-	public BufferedImage getImage() { return this.imageUtil.getImage(); }
-	public boolean contient(int x, int y) { return this.imageUtil.contient(x, y); }
+	public String        getCheminImageCourant() { return this.cheminImageCourant;       }
+	public BufferedImage getImage()              { return this.imageUtil.getImage();     }
+	public boolean       contient(int x, int y)  { return this.imageUtil.contient(x, y); }
 
-	public int getPosX() { return this.imageUtil.getX0(); }
-	public int getPosY() { return this.imageUtil.getY0(); }
+	public int  getPosX()      { return this.imageUtil.getX0(); }
+	public int  getPosY()      { return this.imageUtil.getY0(); }
 	public void setPosX(int x) { this.imageUtil.setX0(x); }
 	public void setPosY(int y) { this.imageUtil.setY0(y); }
 
 	public BufferedImage getCalqueTexte() { return this.calqueTexte; }
 
-	public int getCalqueTexteX() { return this.calqueTexteX; }
-	public int getCalqueTexteY() { return this.calqueTexteY; }
+	public int  getCalqueTexteX()      { return this.calqueTexteX; }
+	public int  getCalqueTexteY()      { return this.calqueTexteY; }
 	public void setCalqueTexteX(int x) { this.calqueTexteX = x; }
 	public void setCalqueTexteY(int y) { this.calqueTexteY = y; }
 
@@ -92,10 +93,10 @@ public class Controleur
 
 	public BufferedImage getCalqueSuperposition() { return this.calqueSuperposition; }
 
-	public int getCalqueSuperpositionX() { return this.calqueSuperpositionX; }
-	public int getCalqueSuperpositionY() { return this.calqueSuperpositionY; }
-	public void setCalqueSuperpositionX(int x) { this.calqueSuperpositionX = x; }
-	public void setCalqueSuperpositionY(int y) { this.calqueSuperpositionY = y; }
+	public int  getCalqueSuperpositionX()      { return this.calqueSuperpositionX; }
+	public int  getCalqueSuperpositionY()      { return this.calqueSuperpositionY; }
+	public void setCalqueSuperpositionX(int x) { this.calqueSuperpositionX = x;    }
+	public void setCalqueSuperpositionY(int y) { this.calqueSuperpositionY = y;    }
 
 	public boolean contientCalqueSuperposition(int x, int y)
 	{
@@ -172,7 +173,7 @@ public class Controleur
 	
 	private void sauvegarderEtat()
 	{
-		BufferedImage copie = copierImage(this.imageUtil.getImage());
+		BufferedImage copie = this.copierImage(this.imageUtil.getImage());
 		this.historiqueImages.push(copie);
 		
 		// Limiter la taille de l'historique
@@ -189,7 +190,7 @@ public class Controleur
 	{
 		if (!this.historiqueImages.isEmpty())
 		{
-			BufferedImage imageActuelle = copierImage(this.imageUtil.getImage());
+			BufferedImage imageActuelle = this.copierImage(this.imageUtil.getImage());
 			this.imagesAnnulees.push(imageActuelle);
 			
 			BufferedImage imagePrec = this.historiqueImages.pop();
@@ -202,7 +203,7 @@ public class Controleur
 	{
 		if (!this.imagesAnnulees.isEmpty())
 		{
-			BufferedImage imageActuelle = copierImage(this.imageUtil.getImage());
+			BufferedImage imageActuelle = this.copierImage(this.imageUtil.getImage());
 			this.historiqueImages.push(imageActuelle);
 			
 			BufferedImage imageSuiv = this.imagesAnnulees.pop();
@@ -242,37 +243,37 @@ public class Controleur
 	public void miroirHorizontal()
 	{
 		this.sauvegarderEtat();
-		appliquerTransformation(Miroir.appliquerMiroirHorizontal(this.imageUtil.getImage()));
+		this.appliquerTransformation(Miroir.appliquerMiroirHorizontal(this.imageUtil.getImage()));
 	}
 
 	public void miroirVertical()
 	{
 		this.sauvegarderEtat();
-		appliquerTransformation(Miroir.appliquerMiroirVertical(this.imageUtil.getImage()));
+		this.appliquerTransformation(Miroir.appliquerMiroirVertical(this.imageUtil.getImage()));
 	}
 
 	public void redimensionner(int newWidth, int newHeight)
 	{
 		this.sauvegarderEtat();
-		appliquerTransformation(Redimensionnement.redimensionner(this.imageUtil.getImage(), newWidth, newHeight));
+		this.appliquerTransformation(Redimensionnement.redimensionner(this.imageUtil.getImage(), newWidth, newHeight));
 	}
 
 	public void redimensionnerRatio(double scale)
 	{
 		this.sauvegarderEtat();
-		appliquerTransformation(Redimensionnement.redimensionnerRatio(this.imageUtil.getImage(), scale));
+		this.appliquerTransformation(Redimensionnement.redimensionnerRatio(this.imageUtil.getImage(), scale));
 	}
 
 	public void appliquerAntiAliasing()
 	{
 		this.sauvegarderEtat();
-		appliquerTransformation(AntiAlias.appliquerAntiAliasing(this.imageUtil.getImage()));
+		this.appliquerTransformation(AntiAlias.appliquerAntiAliasing(this.imageUtil.getImage()));
 	}
 
 	public void rotation(int angle)
 	{
 		this.sauvegarderEtat();
-		appliquerTransformation(Rotation.appliquerRotation(this.imageUtil.getImage(), angle));
+		this.appliquerTransformation(Rotation.appliquerRotation(this.imageUtil.getImage(), angle));
 	}
 
 	public void appliquerRotation(int angle) { this.rotation(angle); }
@@ -282,19 +283,19 @@ public class Controleur
 	public void appliquerTeinte(int teinteRouge, int teinteVerte, int teinteBleue)
 	{
 		this.sauvegarderEtat();
-		appliquerTransformation(Teinte.appliquerTeinte(this.imageUtil.getImage(), teinteRouge, teinteVerte, teinteBleue));
+		this.appliquerTransformation(Teinte.appliquerTeinte(this.imageUtil.getImage(), teinteRouge, teinteVerte, teinteBleue));
 	}
 
 	public void appliquerContraste(int valeurContraste)
 	{
 		this.sauvegarderEtat();
-		appliquerTransformation(Contraste.appliquerContraste(this.imageUtil.getImage(), valeurContraste));
+		this.appliquerTransformation(Contraste.appliquerContraste(this.imageUtil.getImage(), valeurContraste));
 	}
 
 	public void appliquerLuminosite(int valeur)
 	{
 		this.sauvegarderEtat();
-		appliquerTransformation(Luminosite.appliquerLuminosite(this.imageUtil.getImage(), valeur));
+		this.appliquerTransformation(Luminosite.appliquerLuminosite(this.imageUtil.getImage(), valeur));
 	}
 
 	private void positionnerCalqueADroite(int calqueX[], int calqueY[])
