@@ -210,7 +210,6 @@ public class TexteImage
 		// Creation du masque du texte
 		BufferedImage masqueTexte = new BufferedImage(largeurTexte, hauteurTexte, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2dMasque = masqueTexte.createGraphics();
-		g2dMasque.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2dMasque.setFont(police);
 		g2dMasque.setColor(Color.WHITE);
 		g2dMasque.drawString(texte, 0, posY);
