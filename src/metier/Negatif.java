@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 public class Negatif
 {
 	private ImageUtil imgUtil;
-	private String fichierSource;
 	private String fichierDest;
 
 	/**
@@ -16,7 +15,6 @@ public class Negatif
 	 */
 	public Negatif(String fichierSource, String fichierDest)
 	{
-		this.fichierSource = fichierSource;
 		this.fichierDest   = fichierDest;
 		this.imgUtil       = new ImageUtil(fichierSource);
 	}

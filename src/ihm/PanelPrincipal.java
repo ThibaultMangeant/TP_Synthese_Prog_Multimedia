@@ -3,6 +3,7 @@ package ihm;
 import javax.swing.*;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -253,6 +254,22 @@ public class PanelPrincipal extends JPanel
 			else
 			{
 				PanelPrincipal.this.zoomArriere();
+			}
+		}
+
+		public void mouseEntered(MouseEvent e)
+		{
+			if (PanelPrincipal.this.frame.getModePotPeinture() == null)
+			{
+				PanelPrincipal.this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+			}
+		}
+
+		public void mouseExited(MouseEvent e)
+		{
+			if (PanelPrincipal.this.frame.getModePotPeinture() == null)
+			{
+				PanelPrincipal.this.setCursor(curseurNormal);
 			}
 		}
 	}
