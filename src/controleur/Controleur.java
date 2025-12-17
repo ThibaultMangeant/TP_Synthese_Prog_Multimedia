@@ -369,6 +369,12 @@ public class Controleur
 		this.appliquerTransformation(Luminosite.appliquerLuminosite(this.imageUtil.getImage(), valeur));
 	}
 
+	public void appliquerNegatif()
+	{
+		this.sauvegarderEtat();
+		this.appliquerTransformation(Negatif.appliquerNegatif(this.imageUtil.getImage()));
+	}
+
 	private int calculerPositionCalqueX()
 	{
 		BufferedImage src = this.imageUtil.getImage();

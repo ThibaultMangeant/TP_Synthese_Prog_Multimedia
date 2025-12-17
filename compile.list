@@ -13,6 +13,7 @@
 
 ./src/metier/AntiAlias.java
 ./src/metier/Contraste.java
+./src/metier/Negatif.java
 ./src/metier/Luminosite.java
 ./src/metier/ImageUtil.java
 ./src/metier/Miroir.java

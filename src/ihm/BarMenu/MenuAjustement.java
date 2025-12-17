@@ -27,6 +27,7 @@ public class MenuAjustement extends JMenu implements ActionListener
 	private JMenuItem itemSuperposition;
 	private JMenuItem itemTexteImage;
 	private JMenuItem itemLuminosite;
+	private JMenuItem itemNegatif;
 
 	public MenuAjustement(Controleur controleur)
 	{
@@ -43,6 +44,7 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.itemSuperposition  = new JMenuItem("Superposition d'Images");
 		this.itemTexteImage     = new JMenuItem("Créer une Image à partir de Texte");
 		this.itemLuminosite     = new JMenuItem("Ajuster Luminosité");
+		this.itemNegatif        = new JMenuItem("Négatif");
 
 		/* Ajout des items au menu Ajustement */
 		this.add(this.itemRemplirCouleur);
@@ -53,6 +55,7 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.add(this.itemSuperposition);
 		this.add(this.itemTexteImage);
 		this.add(this.itemLuminosite);
+		this.add(this.itemNegatif);
 
 		/* Activation des composants */
 		this.itemRemplirCouleur.addActionListener(this);
@@ -63,6 +66,7 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.itemSuperposition.addActionListener(this);
 		this.itemTexteImage   .addActionListener(this);
 		this.itemLuminosite   .addActionListener(this);
+		this.itemNegatif      .addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -132,6 +136,11 @@ public class MenuAjustement extends JMenu implements ActionListener
 				int valeurLuminosite = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la valeur de la luminosité (entre -255 et 255) : "));
 
 				this.controleur.appliquerLuminosite(valeurLuminosite);
+			}
+
+			if (e.getSource() == this.itemNegatif)
+			{
+				this.controleur.appliquerNegatif();
 			}
 		}
 	}
