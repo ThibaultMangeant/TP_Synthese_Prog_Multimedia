@@ -19,6 +19,7 @@ public class PanelPrincipal extends JPanel
 {
 	private BufferedImage bufferedImage;
 	private FramePrincipale frame;
+	private double zoom = 1.0;
 
 	public PanelPrincipal(FramePrincipale frame)
 	{
@@ -44,7 +45,9 @@ public class PanelPrincipal extends JPanel
 		{
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2d.drawImage(this.bufferedImage, this.frame.getPosX(), this.frame.getPosY(), this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this);
+			int drawW = (int) Math.round(this.bufferedImage.getWidth() * zoom);
+			int drawH = (int) Math.round(this.bufferedImage.getHeight() * zoom);
+			g2d.drawImage(this.bufferedImage, this.frame.getPosX(), this.frame.getPosY(), drawW, drawH, this);
 		}
 		
 		// Dessiner le calque de superposition par dessus
@@ -83,15 +86,7 @@ public class PanelPrincipal extends JPanel
 	{
 		if (this.bufferedImage != null)
 		{
-			
-			int newWidth  = (int)(this.bufferedImage.getWidth()  * 1.2);
-			int newHeight = (int)(this.bufferedImage.getHeight() * 1.2);
-			BufferedImage resized = new BufferedImage(newWidth, newHeight, this.bufferedImage.getType());
-			Graphics2D g = resized.createGraphics();
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			g.drawImage(this.bufferedImage, 0, 0, newWidth, newHeight, null);
-			g.dispose();
-			this.bufferedImage = resized;
+			this.zoom = Math.min(this.zoom * 1.2, 20.0);
 			this.majIHM();
 		}
 	}
@@ -100,14 +95,7 @@ public class PanelPrincipal extends JPanel
 	{
 		if (this.bufferedImage != null)
 		{
-			int newWidth  = (int)(this.bufferedImage.getWidth()  / 1.2);
-			int newHeight = (int)(this.bufferedImage.getHeight() / 1.2);
-			BufferedImage resized = new BufferedImage(newWidth, newHeight, this.bufferedImage.getType());
-			Graphics2D g = resized.createGraphics();
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			g.drawImage(this.bufferedImage, 0, 0, newWidth, newHeight, null);
-			g.dispose();
-			this.bufferedImage = resized;
+			this.zoom = Math.max(this.zoom / 1.2, 0.05);
 			this.majIHM();
 		}
 	}
