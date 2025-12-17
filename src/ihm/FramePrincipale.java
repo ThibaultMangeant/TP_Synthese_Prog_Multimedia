@@ -4,13 +4,9 @@ import controleur.Controleur;
 import ihm.BarMenu.BarMenu;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 /** Frame principale de l'application
@@ -27,7 +23,7 @@ public class FramePrincipale extends JFrame
 		this.controleur = ctrl;
 		
 		this.panelPrincipal = new PanelPrincipal(this);
-		this.barreOutil     = new BarreOutil    (this);
+		this.barreOutil     = new BarreOutil    (ctrl);
 		
 		this.setTitle("Application Multimedia");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,39 +32,11 @@ public class FramePrincipale extends JFrame
 		this.setLocation(200, 200);
 
 		this.setLayout(new BorderLayout());
-		this.initMenu();
-		this.initRaccourcisClavier();
+		this.setJMenuBar(new BarMenu(this.controleur));
 
 		this.add(this.barreOutil    , BorderLayout.NORTH );
 		this.add(this.panelPrincipal, BorderLayout.CENTER);
 		this.setVisible(true);
-	}
-
-	private void initMenu()
-	{
-		this.setJMenuBar(new BarMenu(this.controleur));
-	}
-
-	private void initRaccourcisClavier()
-	{
-		// Raccourcis Ctrl+Z et Ctrl+Y pour undo/redo
-		InputMap inputMap = this.panelPrincipal.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		ActionMap actionMap = this.panelPrincipal.getActionMap();
-
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK), "redo");
-
-		actionMap.put("undo", new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				controleur.annuler();
-			}
-		});
-
-		actionMap.put("redo", new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				controleur.refaire();
-			}
-		});
 	}
 
 	public boolean contient(int x, int y)

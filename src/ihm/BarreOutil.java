@@ -1,14 +1,20 @@
 package ihm;
 
+import controleur.Controleur;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
 
 /** Barre d'outils de l'application
@@ -16,6 +22,8 @@ import java.awt.event.ActionEvent;
  */
 public class BarreOutil extends JPanel implements ActionListener
 {
+	private Controleur controleur;
+
 	private JButton btnOuvrir        , btnEnregistrer;
 	private JButton btnAnnuler       , btnRepeter;
 	private JButton btnZoom          , btnDezoom;
@@ -23,7 +31,7 @@ public class BarreOutil extends JPanel implements ActionListener
 	private JButton btnMiroirH       , btnMiroirV;
 	private JButton btnPotPeinture;
 
-	public BarreOutil(FramePrincipale frame)
+	public BarreOutil(Controleur controleur)
 	{
 		Dimension dimension;
 		ImageIcon iconOuvrir        , iconEnregistrer;
@@ -34,6 +42,9 @@ public class BarreOutil extends JPanel implements ActionListener
 		ImageIcon iconPotPeinture;
 
 
+		this.controleur = controleur;
+
+		/* Configuration du JPanel */
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		this.setBackground(new Color(230, 230, 230));
 
@@ -110,47 +121,86 @@ public class BarreOutil extends JPanel implements ActionListener
 	{
 		if (e.getSource() == this.btnZoom)
 		{
-			System.out.println("Zoom !");
+			this.controleur.zoomAvant();
 		}
 		else if (e.getSource() == this.btnDezoom)
 		{
-			System.out.println("Dézoom !");
+			this.controleur.zoomArriere();
 		}
 		else if (e.getSource() == this.btnOuvrir)
 		{
-			System.out.println("Ouvrir !");
+			JFileChooser selecteurFichier;
+			int          result;
+			File         fichierChoisi;
+			String       chemin;
+
+			selecteurFichier = new JFileChooser();
+			selecteurFichier.setAcceptAllFileFilterUsed(false);
+			selecteurFichier.setFileFilter(new FileNameExtensionFilter("Images (png)", "png"));
+
+			result = selecteurFichier.showOpenDialog(null);
+			if (result == JFileChooser.APPROVE_OPTION)
+			{
+				fichierChoisi = selecteurFichier.getSelectedFile();
+				chemin = fichierChoisi.getAbsolutePath();
+				if (chemin.toLowerCase().endsWith(".png"))
+				{
+					System.out.println(chemin);
+					if (this.controleur != null)
+					{
+						this.controleur.ouvrirImage(chemin);
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez sélectionner un fichier PNG.", "Format invalide", javax.swing.JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else if (result == JFileChooser.CANCEL_OPTION)
+			{
+				System.out.println("Opération annulée par l'utilisateur.");
+			}
+			else if (result == JFileChooser.ERROR_OPTION)
+			{
+				System.out.println("Une erreur est survenue lors de la sélection du fichier.");
+			}
 		}
 		else if (e.getSource() == this.btnEnregistrer)
 		{
-			System.out.println("Enregistrer !");
+			this.controleur.sauvegarderImage();
 		}
 		else if (e.getSource() == this.btnAnnuler)
 		{
-			System.out.println("Annuler !");
+			this.controleur.annuler();
 		}
 		else if (e.getSource() == this.btnRepeter)
 		{
-			System.out.println("Répéter !");
+			this.controleur.refaire();
 		}
 		else if (e.getSource() == this.btnRedimensionner)
 		{
-			System.out.println("Redimensionner !");
+			int nouvelleLargeur  = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle largeur : "));
+			int nouvelleHauteur  = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle hauteur : "));
+
+			this.controleur.redimensionner(nouvelleLargeur, nouvelleHauteur);
 		}
 		else if (e.getSource() == this.btnRotation)
 		{
-			System.out.println("Rotation !");
+			int angle = Integer.parseInt(JOptionPane.showInputDialog("Rentrer l'angle : "));
+
+			this.controleur.rotation(angle);
 		}
 		else if (e.getSource() == this.btnMiroirH)
 		{
-			System.out.println("Miroir Horizontal !");
+			this.controleur.miroirHorizontal();
 		}
 		else if (e.getSource() == this.btnMiroirV)
 		{
-			System.out.println("Miroir Vertical !");
+			this.controleur.miroirVertical();
 		}
 		else if (e.getSource() == this.btnPotPeinture)
 		{
-			System.out.println("Pot de Peinture !");
+			this.controleur.activerModeRemplirCouleur();
 		}
 	}
 }
