@@ -187,4 +187,40 @@ public class FramePrincipale extends JFrame
 	{
 		this.panelPrincipal.majIHM();
 	}
+
+	public String choisirImageInitiale()
+	{
+		JFileChooser fileChooser;
+		int          resultat;
+		String       cheminImage;
+
+		fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Sélectionner une image à ouvrir");
+		fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+			"Images", "jpg", "jpeg", "png", "gif", "bmp"
+		));
+
+		resultat = fileChooser.showOpenDialog(this);
+
+		if (resultat == JFileChooser.APPROVE_OPTION)
+		{
+			cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
+			return cheminImage;
+		}
+		else if (resultat == JFileChooser.CANCEL_OPTION)
+		{
+			System.exit(0);
+		}
+		else if (resultat == JFileChooser.ERROR_OPTION)
+		{
+			JOptionPane.showMessageDialog(
+				this,
+				"Une erreur est survenue lors de la sélection de l'image.",
+				"Erreur",
+				JOptionPane.ERROR_MESSAGE
+			);
+		}
+		
+		return null;
+	}
 }

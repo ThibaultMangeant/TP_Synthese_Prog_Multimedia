@@ -33,9 +33,8 @@ public class Controleur
 
 	public Controleur()
 	{
-		// Initialisation avec l'image par defaut
-		// Chemin relatif depuis le dossier bin/
-		this.cheminImageCourant = "../src/images/david_tennant.png";
+		// Initialisation avec l'image par defaut pour eviter imageUtil null
+		this.cheminImageCourant = "../src/images/blanc.png";
 		this.imageUtil = new ImageUtil(this.cheminImageCourant);
 		this.historiqueImages = new Stack<BufferedImage>();
 		this.imagesAnnulees = new Stack<BufferedImage>();
@@ -46,6 +45,7 @@ public class Controleur
 		this.calqueSuperpositionX = 0;
 		this.calqueSuperpositionY = 0;
 		this.framePrincipale = new FramePrincipale(this);
+		this.initImage();
 	}
 
 	public String        getCheminImageCourant() { return this.cheminImageCourant;       }
@@ -358,6 +358,16 @@ public class Controleur
 		this.positionnerCalqueADroite(x, y);
 		this.calqueTexteX = x[0];
 		this.calqueTexteY = y[0];
+	}
+
+	public void initImage()
+	{
+		String chemin;
+
+		chemin = this.framePrincipale.choisirImageInitiale();
+		this.cheminImageCourant = chemin;
+		this.imageUtil = new ImageUtil(chemin);
+		this.framePrincipale.afficherImage(chemin);
 	}
 
 	public static void main(String[] args)
