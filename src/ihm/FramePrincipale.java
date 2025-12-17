@@ -135,6 +135,41 @@ public class FramePrincipale extends JFrame
 		this.controleur.fusionnerCalqueTexte();
 	}
 
+	public BufferedImage getCalqueSuperposition()
+	{
+		return this.controleur.getCalqueSuperposition();
+	}
+
+	public int getCalqueSuperpositionX()
+	{
+		return this.controleur.getCalqueSuperpositionX();
+	}
+
+	public int getCalqueSuperpositionY()
+	{
+		return this.controleur.getCalqueSuperpositionY();
+	}
+
+	public void setCalqueSuperpositionX(int x)
+	{
+		this.controleur.setCalqueSuperpositionX(x);
+	}
+
+	public void setCalqueSuperpositionY(int y)
+	{
+		this.controleur.setCalqueSuperpositionY(y);
+	}
+
+	public boolean contientCalqueSuperposition(int x, int y)
+	{
+		return this.controleur.contientCalqueSuperposition(x, y);
+	}
+
+	public void fusionnerCalqueSuperposition()
+	{
+		this.controleur.fusionnerCalqueSuperposition();
+	}
+
 	public void majIHM()
 	{
 		this.panelPrincipal.majIHM();

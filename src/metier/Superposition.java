@@ -35,7 +35,7 @@ public class Superposition
 	public void superposer(Point position)
 	{
 		BufferedImage image1, image2;
-		int           largeur2, hauteur2;
+		int           largeur1, hauteur1, largeur2, hauteur2;
 		int           pixel1, pixel2;
 		int           alpha2;
 		int           r1, g1, b1;
@@ -45,6 +45,8 @@ public class Superposition
 		image1 = imgUtil1.getImage();
 		image2 = imgUtil2.getImage();
 
+		largeur1 = image1.getWidth();
+		hauteur1 = image1.getHeight();
 		largeur2 = image2.getWidth();
 		hauteur2 = image2.getHeight();
 
@@ -52,28 +54,35 @@ public class Superposition
 		{
 			for (int j = 0; j < hauteur2; j++)
 			{
-				pixel2 = image2.getRGB(i, j);
-				alpha2 = (pixel2 >> 24) & 0xff;
+				// Verifier que les coordonnees sont dans l'image de base
+				int posX = position.x + i;
+				int posY = position.y + j;
+				
+				if (posX >= 0 && posX < largeur1 && posY >= 0 && posY < hauteur1)
+				{
+					pixel2 = image2.getRGB(i, j);
+					alpha2 = (pixel2 >> 24) & 0xff;
 
-				if (alpha2 > 0)
-				{ // Si le pixel n'est pas totalement transparent
-					pixel1 = image1.getRGB(position.x + i, position.y + j);
+					if (alpha2 > 0)
+					{ // Si le pixel n'est pas totalement transparent
+						pixel1 = image1.getRGB(posX, posY);
 
-					// Calcul de la nouvelle couleur en fonction de l'alpha
-					r1 = (pixel1 >> 16) & 0xff;
-					g1 = (pixel1 >> 8) & 0xff;
-					b1 = pixel1 & 0xff;
+						// Calcul de la nouvelle couleur en fonction de l'alpha
+						r1 = (pixel1 >> 16) & 0xff;
+						g1 = (pixel1 >> 8) & 0xff;
+						b1 = pixel1 & 0xff;
 
-					r2 = (pixel2 >> 16) & 0xff;
-					g2 = (pixel2 >> 8) & 0xff;
-					b2 = pixel2 & 0xff;
+						r2 = (pixel2 >> 16) & 0xff;
+						g2 = (pixel2 >> 8) & 0xff;
+						b2 = pixel2 & 0xff;
 
-					rFinal = (r2 * alpha2 + r1 * (255 - alpha2)) / 255;
-					gFinal = (g2 * alpha2 + g1 * (255 - alpha2)) / 255;
-					bFinal = (b2 * alpha2 + b1 * (255 - alpha2)) / 255;
+						rFinal = (r2 * alpha2 + r1 * (255 - alpha2)) / 255;
+						gFinal = (g2 * alpha2 + g1 * (255 - alpha2)) / 255;
+						bFinal = (b2 * alpha2 + b1 * (255 - alpha2)) / 255;
 
-					pixelFinal = (255 << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
-					image1.setRGB(position.x + i, position.y + j, pixelFinal);
+						pixelFinal = (255 << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
+						image1.setRGB(posX, posY, pixelFinal);
+					}
 				}
 			}
 		}
@@ -88,5 +97,15 @@ public class Superposition
 	public void superposer(int x, int y)
 	{
 		superposer(new Point(x, y));
+	}
+
+	/**
+	 * Sauvegarde l'image resultante
+	 * 
+	 * @param cheminDestination Chemin du fichier destination
+	 */
+	public void sauvegarder(String cheminDestination)
+	{
+		this.imgUtil1.sauvegarderImage(cheminDestination);
 	}
 }

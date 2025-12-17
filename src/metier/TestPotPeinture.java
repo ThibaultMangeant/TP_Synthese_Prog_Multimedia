@@ -20,9 +20,9 @@ public class TestPotPeinture
 		int       tolerance;
 		BufferedImage imgSource, imgARGB;
 
-		src = args.length > 0 ? args[0] : "src/images/david_tennant.png";
-		destRemplir = args.length > 1 ? args[1] : "src/images/david_tennant_remplir.png";
-		destRetirer = args.length > 2 ? args[2] : "src/images/david_tennant_retirer.png";
+		src = args.length > 0 ? args[0] : "../src/images/asterix_couleur.png";
+		destRemplir = args.length > 1 ? args[1] : "../src/images/asterix_couleur_remplir.png";
+		destRetirer = args.length > 2 ? args[2] : "../src/images/asterix_couleur_retirer.png";
 
 		System.out.println("[TestPotPeinture] Source: " + src);
 		System.out.println("[TestPotPeinture] Dest remplir: " + destRemplir);

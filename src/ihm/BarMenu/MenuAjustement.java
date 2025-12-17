@@ -2,6 +2,7 @@ package ihm.BarMenu;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JFileChooser;
 
 import controleur.Controleur;
 
@@ -82,12 +83,17 @@ public class MenuAjustement extends JMenu implements ActionListener
 				this.controleur.appliquerContraste(valeurContraste);
 			}
 
-			if (e.getSource() == this.itemSuperposition)
+		if (e.getSource() == this.itemSuperposition)
+		{
+			JFileChooser fileChooser = new JFileChooser("../src/images");
+			int result = fileChooser.showOpenDialog(null);
+			
+			if (result == JFileChooser.APPROVE_OPTION)
 			{
-				this.controleur.appliquerSuperpositionImages();
+				String cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
+				this.controleur.appliquerSuperpositionImages(cheminImage);
 			}
-
-			if (e.getSource() == this.itemTexteImage)
+		}			if (e.getSource() == this.itemTexteImage)
 			{
 				String texte = JOptionPane.showInputDialog("Rentrer le texte à afficher : ");
 				int taillePolice = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la taille de la police : "));

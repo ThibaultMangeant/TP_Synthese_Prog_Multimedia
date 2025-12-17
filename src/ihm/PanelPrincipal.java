@@ -38,6 +38,13 @@ public class PanelPrincipal extends JPanel
 			g.drawImage(this.bufferedImage, this.frame.getPosX(), this.frame.getPosY(), this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this);
 		}
 		
+		// Dessiner le calque de superposition par dessus
+		BufferedImage calqueSuperposition = this.frame.getCalqueSuperposition();
+		if (calqueSuperposition != null)
+		{
+			g.drawImage(calqueSuperposition, this.frame.getCalqueSuperpositionX(), this.frame.getCalqueSuperpositionY(), calqueSuperposition.getWidth(), calqueSuperposition.getHeight(), this);
+		}
+		
 		// Dessiner le calque texte par dessus
 		BufferedImage calqueTexte = this.frame.getCalqueTexte();
 		if (calqueTexte != null)
@@ -68,6 +75,7 @@ public class PanelPrincipal extends JPanel
 		private int lastX, lastY;
 		private boolean dragging = false;
 		private boolean draggingTexte = false;
+		private boolean draggingSuperposition = false;
 
 		@Override
 		public void mouseClicked(MouseEvent e)
@@ -81,30 +89,46 @@ public class PanelPrincipal extends JPanel
 			lastX = e.getX();
 			lastY = e.getY();
 			
-			// Priorité au texte si on clique dessus
+			// Priorite au texte (il est au-dessus)
 			if (PanelPrincipal.this.frame.contientCalqueTexte(e.getX(), e.getY()))
 			{
 				draggingTexte = true;
 				dragging = false;
+				draggingSuperposition = false;
 			}
+			// Puis la superposition
+			else if (PanelPrincipal.this.frame.contientCalqueSuperposition(e.getX(), e.getY()))
+			{
+				draggingSuperposition = true;
+				dragging = false;
+				draggingTexte = false;
+			}
+			// Sinon l'image de fond
 			else
 			{
 				dragging = true;
 				draggingTexte = false;
+				draggingSuperposition = false;
 			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e)
 		{
-			// Si on relâche le texte sur l'image de fond, fusionner
+			// Si on relache le texte sur l'image de fond, fusionner
 			if (draggingTexte && PanelPrincipal.this.frame.contient(e.getX(), e.getY()))
 			{
 				PanelPrincipal.this.frame.fusionnerCalqueTexte();
 			}
+			// Si on relache la superposition sur l'image de fond, fusionner
+			else if (draggingSuperposition && PanelPrincipal.this.frame.contient(e.getX(), e.getY()))
+			{
+				PanelPrincipal.this.frame.fusionnerCalqueSuperposition();
+			}
 			
 			dragging = false;
 			draggingTexte = false;
+			draggingSuperposition = false;
 		}
 
 		@Override
@@ -115,13 +139,19 @@ public class PanelPrincipal extends JPanel
 			
 			if (draggingTexte)
 			{
-				// Déplacer le texte
+				// Deplacer le texte
 				PanelPrincipal.this.frame.setCalqueTexteX(PanelPrincipal.this.frame.getCalqueTexteX() + deltaX);
 				PanelPrincipal.this.frame.setCalqueTexteY(PanelPrincipal.this.frame.getCalqueTexteY() + deltaY);
 			}
+			else if (draggingSuperposition)
+			{
+				// Deplacer la superposition
+				PanelPrincipal.this.frame.setCalqueSuperpositionX(PanelPrincipal.this.frame.getCalqueSuperpositionX() + deltaX);
+				PanelPrincipal.this.frame.setCalqueSuperpositionY(PanelPrincipal.this.frame.getCalqueSuperpositionY() + deltaY);
+			}
 			else if (dragging)
 			{
-				// Déplacer l'image de fond
+				// Deplacer l'image de fond
 				PanelPrincipal.this.frame.setPosX(PanelPrincipal.this.frame.getPosX() + deltaX);
 				PanelPrincipal.this.frame.setPosY(PanelPrincipal.this.frame.getPosY() + deltaY);
 			}

@@ -20,6 +20,11 @@ public class Controleur
 	private BufferedImage calqueTexte;
 	private int calqueTexteX;
 	private int calqueTexteY;
+	
+	// Calque de superposition temporaire
+	private BufferedImage calqueSuperposition;
+	private int calqueSuperpositionX;
+	private int calqueSuperpositionY;
 
 	public Controleur()
 	{
@@ -32,6 +37,9 @@ public class Controleur
 		this.calqueTexte = null;
 		this.calqueTexteX = 0;
 		this.calqueTexteY = 0;
+		this.calqueSuperposition = null;
+		this.calqueSuperpositionX = 0;
+		this.calqueSuperpositionY = 0;
 		this.framePrincipale = new FramePrincipale(this);
 	}
 
@@ -129,6 +137,99 @@ public class Controleur
 			this.imageUtil.setX0(this.calqueTexteX);
 			this.imageUtil.setY0(this.calqueTexteY);
 			this.framePrincipale.afficherImage(texteRempli);
+		}
+	}
+
+	public BufferedImage getCalqueSuperposition()
+	{
+		return this.calqueSuperposition;
+	}
+
+	public int getCalqueSuperpositionX()
+	{
+		return this.calqueSuperpositionX;
+	}
+
+	public int getCalqueSuperpositionY()
+	{
+		return this.calqueSuperpositionY;
+	}
+
+	public void setCalqueSuperpositionX(int x)
+	{
+		this.calqueSuperpositionX = x;
+	}
+
+	public void setCalqueSuperpositionY(int y)
+	{
+		this.calqueSuperpositionY = y;
+	}
+
+	public boolean contientCalqueSuperposition(int x, int y)
+	{
+		if (this.calqueSuperposition == null) return false;
+		return (x >= this.calqueSuperpositionX && x < this.calqueSuperpositionX + this.calqueSuperposition.getWidth() &&
+		        y >= this.calqueSuperpositionY && y < this.calqueSuperpositionY + this.calqueSuperposition.getHeight());
+	}
+
+	public void fusionnerCalqueSuperposition()
+	{
+		if (this.calqueSuperposition != null)
+		{
+			this.sauvegarderEtat();
+			BufferedImage imgFond = this.imageUtil.getImage();
+			
+			// Creer une image de la meme taille que le fond
+			BufferedImage imgFinale = new BufferedImage(imgFond.getWidth(), imgFond.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			
+			// Copier l'image de fond
+			for (int y = 0; y < imgFond.getHeight(); y++)
+			{
+				for (int x = 0; x < imgFond.getWidth(); x++)
+				{
+					imgFinale.setRGB(x, y, imgFond.getRGB(x, y));
+				}
+			}
+			
+			// Superposer le calque avec alpha blending
+			for (int y = 0; y < this.calqueSuperposition.getHeight(); y++)
+			{
+				for (int x = 0; x < this.calqueSuperposition.getWidth(); x++)
+				{
+					int posX = x + this.calqueSuperpositionX - this.getPosX();
+					int posY = y + this.calqueSuperpositionY - this.getPosY();
+					
+					if (posX >= 0 && posX < imgFond.getWidth() && posY >= 0 && posY < imgFond.getHeight())
+					{
+						int rgbSup = this.calqueSuperposition.getRGB(x, y);
+						int alpha = (rgbSup >> 24) & 0xff;
+						
+						if (alpha > 0)
+						{
+							int rgbFond = imgFinale.getRGB(posX, posY);
+							
+							int r1 = (rgbFond >> 16) & 0xff;
+							int g1 = (rgbFond >> 8) & 0xff;
+							int b1 = rgbFond & 0xff;
+							
+							int r2 = (rgbSup >> 16) & 0xff;
+							int g2 = (rgbSup >> 8) & 0xff;
+							int b2 = rgbSup & 0xff;
+							
+							int rFinal = (r2 * alpha + r1 * (255 - alpha)) / 255;
+							int gFinal = (g2 * alpha + g1 * (255 - alpha)) / 255;
+							int bFinal = (b2 * alpha + b1 * (255 - alpha)) / 255;
+							
+							int pixelFinal = (255 << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
+							imgFinale.setRGB(posX, posY, pixelFinal);
+						}
+					}
+				}
+			}
+			
+			this.calqueSuperposition = null;
+			this.imageUtil.setImage(imgFinale);
+			this.framePrincipale.afficherImage(imgFinale);
 		}
 	}
 
@@ -291,9 +392,18 @@ public class Controleur
 		this.framePrincipale.afficherImage(out);
 	}
 
-	public void appliquerSuperpositionImages()
+	public void appliquerSuperpositionImages(String cheminImageSup)
 	{
-		System.out.println("Superposition d'images appliquée.");
+		// Charger l'image de superposition
+		ImageUtil imgSup = new ImageUtil(cheminImageSup);
+		this.calqueSuperposition = imgSup.getImage();
+		
+		// Positionner a droite de l'image principale
+		BufferedImage src = this.imageUtil.getImage();
+		this.calqueSuperpositionX = this.getPosX() + src.getWidth() + 20;
+		this.calqueSuperpositionY = this.getPosY();
+		
+		this.framePrincipale.majIHM();
 	}
 
 	public void appliquerCreationImageTexte(String texte, int taillePolice)
