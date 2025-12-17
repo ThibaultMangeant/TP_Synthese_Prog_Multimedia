@@ -4,6 +4,8 @@ import javax.swing.*;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import java.awt.event.MouseAdapter;
@@ -37,7 +39,9 @@ public class PanelPrincipal extends JPanel
 		// Dessiner l'image de fond
 		if (this.bufferedImage != null)
 		{
-			g.drawImage(this.bufferedImage, this.frame.getPosX(), this.frame.getPosY(), this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this);
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.drawImage(this.bufferedImage, this.frame.getPosX(), this.frame.getPosY(), this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this);
 		}
 		
 		// Dessiner le calque de superposition par dessus
@@ -76,10 +80,12 @@ public class PanelPrincipal extends JPanel
 	{
 		if (this.bufferedImage != null)
 		{
+			
 			int newWidth  = (int)(this.bufferedImage.getWidth()  * 1.2);
 			int newHeight = (int)(this.bufferedImage.getHeight() * 1.2);
 			BufferedImage resized = new BufferedImage(newWidth, newHeight, this.bufferedImage.getType());
-			Graphics g = resized.getGraphics();
+			Graphics2D g = resized.createGraphics();
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			g.drawImage(this.bufferedImage, 0, 0, newWidth, newHeight, null);
 			g.dispose();
 			this.bufferedImage = resized;
@@ -94,7 +100,8 @@ public class PanelPrincipal extends JPanel
 			int newWidth  = (int)(this.bufferedImage.getWidth()  / 1.2);
 			int newHeight = (int)(this.bufferedImage.getHeight() / 1.2);
 			BufferedImage resized = new BufferedImage(newWidth, newHeight, this.bufferedImage.getType());
-			Graphics g = resized.getGraphics();
+			Graphics2D g = resized.createGraphics();
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			g.drawImage(this.bufferedImage, 0, 0, newWidth, newHeight, null);
 			g.dispose();
 			this.bufferedImage = resized;
