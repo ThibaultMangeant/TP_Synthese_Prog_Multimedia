@@ -66,23 +66,26 @@ public class Controleur
 
 	public boolean contientCalqueTexte(int x, int y)
 	{
-		return contientCalque(this.calqueTexte, x, y, this.calqueTexteX, this.calqueTexteY);
+		return this.contientCalque(this.calqueTexte, x, y, this.calqueTexteX, this.calqueTexteY);
 	}
 
 	public void fusionnerCalqueTexte()
 	{
+		BufferedImage imgFond;
+		BufferedImage texteRempli;
+
 		if (this.calqueTexte != null)
 		{
 			this.sauvegarderEtat();
-			BufferedImage imgFond = this.imageUtil.getImage();
+			imgFond = this.imageUtil.getImage();
 			
 			// Appliquer l'image de fond dans le masque de texte a la position actuelle
-			BufferedImage texteRempli = TexteImage.appliquerImageDansTexte(
-				this.calqueTexte, 
-				imgFond, 
-				this.calqueTexteX, 
-				this.calqueTexteY, 
-				this.getPosX(), 
+			texteRempli = TexteImage.appliquerImageDansTexte(
+				this.calqueTexte,
+				imgFond,
+				this.calqueTexteX,
+				this.calqueTexteY,
+				this.getPosX(),
 				this.getPosY()
 			);
 			
@@ -104,7 +107,7 @@ public class Controleur
 
 	public boolean contientCalqueSuperposition(int x, int y)
 	{
-		return contientCalque(this.calqueSuperposition, x, y, this.calqueSuperpositionX, this.calqueSuperpositionY);
+		return this.contientCalque(this.calqueSuperposition, x, y, this.calqueSuperpositionX, this.calqueSuperpositionY);
 	}
 
 	private boolean contientCalque(BufferedImage calque, int x, int y, int calqueX, int calqueY)
@@ -116,29 +119,38 @@ public class Controleur
 
 	public void fusionnerCalqueSuperposition()
 	{
+		BufferedImage imgFond;
+		BufferedImage imgFinale;
+		int          posX;
+		int          posY;
+		int          rgbSup;
+		int          alpha;
+		int          rgbFond;
+		int          pixelFinal;
+
 		if (this.calqueSuperposition != null)
 		{
 			this.sauvegarderEtat();
-			BufferedImage imgFond = this.imageUtil.getImage();
-			BufferedImage imgFinale = copierImage(imgFond);
+			imgFond   = this.imageUtil.getImage();
+			imgFinale = this.copierImage(imgFond);
 			
 			// Superposer le calque avec alpha blending
 			for (int y = 0; y < this.calqueSuperposition.getHeight(); y++)
 			{
 				for (int x = 0; x < this.calqueSuperposition.getWidth(); x++)
 				{
-					int posX = x + this.calqueSuperpositionX - this.getPosX();
-					int posY = y + this.calqueSuperpositionY - this.getPosY();
+					posX = x + this.calqueSuperpositionX - this.getPosX();
+					posY = y + this.calqueSuperpositionY - this.getPosY();
 					
 					if (posX >= 0 && posX < imgFond.getWidth() && posY >= 0 && posY < imgFond.getHeight())
 					{
-						int rgbSup = this.calqueSuperposition.getRGB(x, y);
-						int alpha = (rgbSup >> 24) & 0xff;
+						rgbSup = this.calqueSuperposition.getRGB(x, y);
+						alpha  = (rgbSup >> 24) & 0xff;
 						
 						if (alpha > 0)
 						{
-							int rgbFond = imgFinale.getRGB(posX, posY);
-							int pixelFinal = alphaBlend(rgbSup, rgbFond, alpha);
+							rgbFond   = imgFinale.getRGB(posX, posY);
+							pixelFinal = this.alphaBlend(rgbSup, rgbFond, alpha);
 							imgFinale.setRGB(posX, posY, pixelFinal);
 						}
 					}
@@ -153,31 +165,39 @@ public class Controleur
 
 	private int alphaBlend(int rgbSrc, int rgbDst, int alpha)
 	{
-		int r1 = (rgbDst >> 16) & 0xff;
-		int g1 = (rgbDst >> 8) & 0xff;
-		int b1 = rgbDst & 0xff;
-		
-		int r2 = (rgbSrc >> 16) & 0xff;
-		int g2 = (rgbSrc >> 8) & 0xff;
-		int b2 = rgbSrc & 0xff;
-		
-		int rFinal = (r2 * alpha + r1 * (255 - alpha)) / 255;
-		int gFinal = (g2 * alpha + g1 * (255 - alpha)) / 255;
-		int bFinal = (b2 * alpha + b1 * (255 - alpha)) / 255;
-		
+		int r1, g1, b1;
+		int r2, g2, b2;
+		int rFinal, gFinal, bFinal;
+
+		r1 = (rgbDst >> 16) & 0xff;
+		g1 = (rgbDst >> 8)  & 0xff;
+		b1 =  rgbDst        & 0xff;
+
+		r2 = (rgbSrc >> 16) & 0xff;
+		g2 = (rgbSrc >> 8)  & 0xff;
+		b2 =  rgbSrc        & 0xff;
+
+		rFinal = (r2 * alpha + r1 * (255 - alpha)) / 255;
+		gFinal = (g2 * alpha + g1 * (255 - alpha)) / 255;
+		bFinal = (b2 * alpha + b1 * (255 - alpha)) / 255;
+
 		return (255 << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
 	}
 
 	private BufferedImage copierImage(BufferedImage src)
 	{
-		BufferedImage copie = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
+		BufferedImage copie;
+
+		copie = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
 		copie.getGraphics().drawImage(src, 0, 0, null);
 		return copie;
 	}
 	
 	private void sauvegarderEtat()
 	{
-		BufferedImage copie = this.copierImage(this.imageUtil.getImage());
+		BufferedImage copie;
+
+		copie = this.copierImage(this.imageUtil.getImage());
 		this.historiqueImages.push(copie);
 		
 		// Limiter la taille de l'historique
@@ -192,12 +212,14 @@ public class Controleur
 	
 	public void annuler()
 	{
+		BufferedImage imageActuelle, imagePrec;
+
 		if (!this.historiqueImages.isEmpty())
 		{
-			BufferedImage imageActuelle = this.copierImage(this.imageUtil.getImage());
+			imageActuelle = this.copierImage(this.imageUtil.getImage());
 			this.imagesAnnulees.push(imageActuelle);
 			
-			BufferedImage imagePrec = this.historiqueImages.pop();
+			imagePrec = this.historiqueImages.pop();
 			this.imageUtil.setImage(imagePrec);
 			this.framePrincipale.afficherImage(imagePrec);
 		}
@@ -205,12 +227,14 @@ public class Controleur
 	
 	public void refaire()
 	{
+		BufferedImage imageActuelle, imageSuiv;
+
 		if (!this.imagesAnnulees.isEmpty())
 		{
-			BufferedImage imageActuelle = this.copierImage(this.imageUtil.getImage());
+			imageActuelle = this.copierImage(this.imageUtil.getImage());
 			this.historiqueImages.push(imageActuelle);
 			
-			BufferedImage imageSuiv = this.imagesAnnulees.pop();
+			imageSuiv = this.imagesAnnulees.pop();
 			this.imageUtil.setImage(imageSuiv);
 			this.framePrincipale.afficherImage(imageSuiv);
 		}
@@ -221,8 +245,8 @@ public class Controleur
 		this.cheminImageCourant = path;
 		this.imageUtil = new ImageUtil(path);
 		this.historiqueImages.clear();
-		this.imagesAnnulees.clear();
-		this.framePrincipale.afficherImage(path);
+		this.imagesAnnulees  .clear();
+		this.framePrincipale .afficherImage(path);
 	}
 
 	public void sauvegarderImageSous(String path)
@@ -304,7 +328,9 @@ public class Controleur
 
 	private void positionnerCalqueADroite(int calqueX[], int calqueY[])
 	{
-		BufferedImage src = this.imageUtil.getImage();
+		BufferedImage src;
+
+		src = this.imageUtil.getImage();
 		calqueX[0] = this.getPosX() + src.getWidth() + 20;
 		calqueY[0] = this.getPosY();
 		this.framePrincipale.majIHM();
@@ -312,18 +338,24 @@ public class Controleur
 
 	public void appliquerSuperpositionImages(String cheminImageSup)
 	{
+		int[] x, y;
+
 		this.calqueSuperposition = new ImageUtil(cheminImageSup).getImage();
-		int[] x = new int[1], y = new int[1];
-		positionnerCalqueADroite(x, y);
+		x = new int[1];
+		y = new int[1];
+		this.positionnerCalqueADroite(x, y);
 		this.calqueSuperpositionX = x[0];
 		this.calqueSuperpositionY = y[0];
 	}
 
 	public void appliquerCreationImageTexte(String texte, int taillePolice)
 	{
+		int[] x, y;
+
 		this.calqueTexte = TexteImage.creerMasqueTexte(texte, taillePolice);
-		int[] x = new int[1], y = new int[1];
-		positionnerCalqueADroite(x, y);
+		x = new int[1];
+		y = new int[1];
+		this.positionnerCalqueADroite(x, y);
 		this.calqueTexteX = x[0];
 		this.calqueTexteY = y[0];
 	}
