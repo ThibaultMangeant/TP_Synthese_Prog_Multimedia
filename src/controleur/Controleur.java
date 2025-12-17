@@ -408,6 +408,23 @@ public class Controleur
 		this.framePrincipale.majIHM();
 	}
 
+	public void appliquerNoirEtBlanc()
+	{
+		this.sauvegarderEtat();
+		BufferedImage resultat = NoirEtBlanc.convertir(this.imageUtil.getImage());
+		this.appliquerTransformation(resultat);
+	}
+
+	public void appliquerFusion(String cheminImage2, int largeurFondue)
+	{
+		this.sauvegarderEtat();
+		BufferedImage img1 = this.imageUtil.getImage();
+		ImageUtil imgUtil2 = new ImageUtil(cheminImage2);
+		BufferedImage img2 = imgUtil2.getImage();
+		BufferedImage resultat = Fusion.fusionnerAvecFondu(img1, img2, largeurFondue);
+		this.appliquerTransformation(resultat);
+	}
+
 	public void initImage()
 	{
 		String chemin;

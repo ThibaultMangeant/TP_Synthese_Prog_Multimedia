@@ -28,6 +28,8 @@ public class MenuAjustement extends JMenu implements ActionListener
 	private JMenuItem itemTexteImage;
 	private JMenuItem itemLuminosite;
 	private JMenuItem itemNegatif;
+	private JMenuItem itemNoirEtBlanc;
+	private JMenuItem itemFusion;
 
 	public MenuAjustement(Controleur controleur)
 	{
@@ -45,6 +47,8 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.itemTexteImage     = new JMenuItem("Créer une Image à partir de Texte");
 		this.itemLuminosite     = new JMenuItem("Ajuster Luminosité");
 		this.itemNegatif        = new JMenuItem("Négatif");
+		this.itemNoirEtBlanc    = new JMenuItem("Noir et Blanc");
+		this.itemFusion         = new JMenuItem("Fusion d'Images");
 
 		/* Ajout des items au menu Ajustement */
 		this.add(this.itemRemplirCouleur);
@@ -56,6 +60,8 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.add(this.itemTexteImage);
 		this.add(this.itemLuminosite);
 		this.add(this.itemNegatif);
+		this.add(this.itemNoirEtBlanc);
+		this.add(this.itemFusion);
 
 		/* Activation des composants */
 		this.itemRemplirCouleur.addActionListener(this);
@@ -67,6 +73,8 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.itemTexteImage   .addActionListener(this);
 		this.itemLuminosite   .addActionListener(this);
 		this.itemNegatif      .addActionListener(this);
+		this.itemNoirEtBlanc  .addActionListener(this);
+		this.itemFusion       .addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -141,6 +149,37 @@ public class MenuAjustement extends JMenu implements ActionListener
 			if (e.getSource() == this.itemNegatif)
 			{
 				this.controleur.appliquerNegatif();
+			}
+
+			if (e.getSource() == this.itemNoirEtBlanc)
+			{
+				this.controleur.appliquerNoirEtBlanc();
+			}
+
+			if (e.getSource() == this.itemFusion)
+			{
+				JFileChooser fileChooser = new JFileChooser("../src/images");
+				fileChooser.setAcceptAllFileFilterUsed(false);
+				fileChooser.setFileFilter(new FileNameExtensionFilter("Images PNG (*.png)", "png"));
+				fileChooser.setDialogTitle("Sélectionner l'image à fusionner");
+				int result = fileChooser.showOpenDialog(null);
+				
+				if (result == JFileChooser.APPROVE_OPTION)
+				{
+					String cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
+					if (!cheminImage.toLowerCase().endsWith(".png"))
+					{
+						JOptionPane.showMessageDialog(null, "Veuillez sélectionner un fichier PNG (.png)", "Format non supporté", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+					
+					String largeurStr = JOptionPane.showInputDialog("Largeur de la zone de fondu (en pixels) :");
+					if (largeurStr != null)
+					{
+						int largeurFondue = Integer.parseInt(largeurStr);
+						this.controleur.appliquerFusion(cheminImage, largeurFondue);
+					}
+				}
 			}
 		}
 	}

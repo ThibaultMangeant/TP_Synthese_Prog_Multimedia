@@ -147,33 +147,17 @@ public class ImageUtil
 	}
 
 	/**
-	 * Calculer la luminance d'une couleur selon un algorithme donné
+	 * Calculer la luminance d'une couleur (ITU-R BT.601)
 	 * 
-	 * @param c
-	 * @param numAlgo
-	 * @return int luminance
+	 * @param c La couleur
+	 * @return int luminance (0-255)
 	 */
-	public static int luminance( Color c, int numAlgo)
+	public static int luminance(Color c)
 	{
-		int min,max;
 		int rouge = c.getRed();
 		int vert  = c.getGreen();
 		int bleu  = c.getBlue();
 
-		switch (numAlgo) {
-			
-			case 2: return (rouge+vert+bleu)/3;
-
-			case 3: return (rouge*299 + vert*587 + bleu*114) / 1000;
-
-			default:
-
-				min = Math.min(vert, bleu);
-				min = Math.min(min,  rouge);
-				max = Math.max(vert, bleu);
-				max = Math.max(max,  rouge);
-
-				return (min+max)/2;
-		}
+		return (rouge * 299 + vert * 587 + bleu * 114) / 1000;
 	}
 }
