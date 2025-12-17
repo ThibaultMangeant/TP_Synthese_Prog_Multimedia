@@ -103,6 +103,11 @@ public class FramePrincipale extends JFrame
 		this.panelPrincipal.setImage(image);
 	}
 
+	public double getZoom()
+	{
+		return this.panelPrincipal.getZoom();
+	}
+
 	public void zoomAvant()
 	{
 		this.panelPrincipal.zoomAvant();

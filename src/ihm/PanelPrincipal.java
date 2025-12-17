@@ -54,14 +54,18 @@ public class PanelPrincipal extends JPanel
 		BufferedImage calqueSuperposition = this.frame.getCalqueSuperposition();
 		if (calqueSuperposition != null)
 		{
-			g.drawImage(calqueSuperposition, this.frame.getCalqueSuperpositionX(), this.frame.getCalqueSuperpositionY(), calqueSuperposition.getWidth(), calqueSuperposition.getHeight(), this);
+			int drawW = (int) Math.round(calqueSuperposition.getWidth() * zoom);
+			int drawH = (int) Math.round(calqueSuperposition.getHeight() * zoom);
+			g.drawImage(calqueSuperposition, this.frame.getCalqueSuperpositionX(), this.frame.getCalqueSuperpositionY(), drawW, drawH, this);
 		}
 		
 		// Dessiner le calque texte par dessus
 		BufferedImage calqueTexte = this.frame.getCalqueTexte();
 		if (calqueTexte != null)
 		{
-			g.drawImage(calqueTexte, this.frame.getCalqueTexteX(), this.frame.getCalqueTexteY(), calqueTexte.getWidth(), calqueTexte.getHeight(), this);
+			int drawW = (int) Math.round(calqueTexte.getWidth() * zoom);
+			int drawH = (int) Math.round(calqueTexte.getHeight() * zoom);
+			g.drawImage(calqueTexte, this.frame.getCalqueTexteX(), this.frame.getCalqueTexteY(), drawW, drawH, this);
 		}
 	}
 
@@ -80,6 +84,11 @@ public class PanelPrincipal extends JPanel
 	{
 		this.bufferedImage = this.frame.getImage();
 		this.majIHM();
+	}
+
+	public double getZoom()
+	{
+		return this.zoom;
 	}
 
 	public void zoomAvant()

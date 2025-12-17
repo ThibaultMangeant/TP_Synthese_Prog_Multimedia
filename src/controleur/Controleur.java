@@ -326,38 +326,32 @@ public class Controleur
 		this.appliquerTransformation(Luminosite.appliquerLuminosite(this.imageUtil.getImage(), valeur));
 	}
 
-	private void positionnerCalqueADroite(int calqueX[], int calqueY[])
+	private int calculerPositionCalqueX()
 	{
-		BufferedImage src;
+		BufferedImage src = this.imageUtil.getImage();
+		double zoom = this.framePrincipale.getZoom();
+		return this.getPosX() + (int)(src.getWidth() * zoom) + 20;
+	}
 
-		src = this.imageUtil.getImage();
-		calqueX[0] = this.getPosX() + src.getWidth() + 20;
-		calqueY[0] = this.getPosY();
-		this.framePrincipale.majIHM();
+	private int calculerPositionCalqueY()
+	{
+		return this.getPosY();
 	}
 
 	public void appliquerSuperpositionImages(String cheminImageSup)
 	{
-		int[] x, y;
-
 		this.calqueSuperposition = new ImageUtil(cheminImageSup).getImage();
-		x = new int[1];
-		y = new int[1];
-		this.positionnerCalqueADroite(x, y);
-		this.calqueSuperpositionX = x[0];
-		this.calqueSuperpositionY = y[0];
+		this.calqueSuperpositionX = calculerPositionCalqueX();
+		this.calqueSuperpositionY = calculerPositionCalqueY();
+		this.framePrincipale.majIHM();
 	}
 
 	public void appliquerCreationImageTexte(String texte, int taillePolice)
 	{
-		int[] x, y;
-
 		this.calqueTexte = TexteImage.creerMasqueTexte(texte, taillePolice);
-		x = new int[1];
-		y = new int[1];
-		this.positionnerCalqueADroite(x, y);
-		this.calqueTexteX = x[0];
-		this.calqueTexteY = y[0];
+		this.calqueTexteX = calculerPositionCalqueX();
+		this.calqueTexteY = calculerPositionCalqueY();
+		this.framePrincipale.majIHM();
 	}
 
 	public void initImage()
