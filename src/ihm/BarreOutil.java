@@ -90,6 +90,18 @@ public class BarreOutil extends JPanel implements ActionListener
 		this.btnMiroirV       .setPreferredSize(dimension);
 		this.btnPotPeinture   .setPreferredSize(dimension);
 
+		// Infobulles
+		this.btnOuvrir        .setToolTipText("Ouvrir une image"                   );
+		this.btnEnregistrer   .setToolTipText("Enregistrer l'image"                );
+		this.btnAnnuler       .setToolTipText("Annuler la dernière action"         );
+		this.btnRepeter       .setToolTipText("Rétablir la dernière action annulée");
+		this.btnZoom          .setToolTipText("Zoom avant"                         );
+		this.btnDezoom        .setToolTipText("Zoom arrière"                       );
+		this.btnRedimensionner.setToolTipText("Redimensionner l'image"             );
+		this.btnRotation      .setToolTipText("Faire une rotation"                 );
+		this.btnMiroirH       .setToolTipText("Miroir horizontal"                  );
+		this.btnMiroirV       .setToolTipText("Miroir vertical"                    );
+		this.btnPotPeinture   .setToolTipText("Activer le pot de peinture"         );
 		/* Ajout des composants */
 		this.add(this.btnOuvrir        );
 		this.add(this.btnEnregistrer   );
