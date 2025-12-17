@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Classe pour les effets miroir (flip horizontal/vertical)
+ * @author Equipe 5
  */
 public class Miroir
 {

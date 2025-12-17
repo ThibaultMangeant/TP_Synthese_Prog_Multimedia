@@ -8,6 +8,9 @@ import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/** Menu pour les options d'affichage
+ * @author Equipe 5
+ */
 public class MenuAffichage extends JMenu implements ActionListener
 {
 	private Controleur controleur;

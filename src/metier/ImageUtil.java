@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 /**
  * Classe utilitaire pour les images
+ * @author Equipe 5
  */
 public class ImageUtil
 {

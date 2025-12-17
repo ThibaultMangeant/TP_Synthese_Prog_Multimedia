@@ -6,6 +6,7 @@ import java.util.Queue;
 
 /**
  * Classe pour l'outil pot de peinture (remplissage et suppression de fond)
+ * @author Equipe 5
  */
 public class PotPeinture
 {

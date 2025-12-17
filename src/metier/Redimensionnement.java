@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Classe pour redimensionner les images
+ * @author Equipe 5
  */
 public class Redimensionnement
 {

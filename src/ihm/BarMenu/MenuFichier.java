@@ -14,6 +14,9 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.awt.event.ActionEvent;
 
+/** Menu pour les options de fichier
+ * @author Equipe 5
+ */
 public class MenuFichier extends JMenu implements ActionListener
 {
 	private Controleur controleur;

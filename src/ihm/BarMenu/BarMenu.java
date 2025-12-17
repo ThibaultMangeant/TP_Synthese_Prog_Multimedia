@@ -4,8 +4,12 @@ import javax.swing.JMenuBar;
 
 import controleur.Controleur;
  
+/** Barre de menu principale de l'application 
+ * @author Equipe 5
+ */
 public class BarMenu extends JMenuBar
 {
+	/** Constructeur de la barre de menu */
 	public BarMenu(Controleur controleur)
 	{
 		MenuFichier    menuFichier;

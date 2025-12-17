@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Classe pour l'anti-aliasing (lissage)
+ * @author Equipe 5
  */
 public class AntiAlias
 {

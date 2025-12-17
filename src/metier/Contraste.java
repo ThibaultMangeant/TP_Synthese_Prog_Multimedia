@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Classe pour gérer le contraste et la lumière
+ * @author Equipe 5
  */
 public class Contraste
 {

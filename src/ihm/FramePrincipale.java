@@ -9,6 +9,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+/** Frame principale de l'application
+ * @author Equipe 5
+ */
 public class FramePrincipale extends JFrame
 {
 	private PanelPrincipal panelPrincipal;

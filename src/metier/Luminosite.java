@@ -2,6 +2,10 @@ package metier;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * Classe pour gérer la luminosité d'une image
+ * @author Equipe 5
+ */
 public class Luminosite
 { 
 	private ImageUtil imgUtil;

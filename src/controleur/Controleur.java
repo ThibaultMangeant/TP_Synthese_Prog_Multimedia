@@ -6,6 +6,10 @@ import metier.*;
 import java.awt.image.BufferedImage;
 import java.util.Stack;
 
+/** Contrôleur principal de l'application
+ * Gère les interactions entre l'interface utilisateur (IHM) et la logique métier
+ * @author Equipe 5
+ */
 public class Controleur
 {
 	private FramePrincipale framePrincipale;

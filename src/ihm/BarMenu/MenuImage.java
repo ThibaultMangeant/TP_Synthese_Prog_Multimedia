@@ -11,6 +11,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 
+/** Menu pour les options d'image
+ * @author Equipe 5
+ */
 public class MenuImage extends JMenu implements ActionListener
 {
 	private Controleur controleur;

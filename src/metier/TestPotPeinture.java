@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
  * Par defaut utilise l'image du dossier src/images et produit deux fichiers:
  *  - src/images/david_tennant_remplir.png (remplissage avec couleur rouge)
  *  - src/images/david_tennant_retirer.png (suppression de fond)
+ * @author Equipe 5
  */
 public class TestPotPeinture
 {

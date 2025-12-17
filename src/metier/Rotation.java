@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Classe pour faire des rotations d'images
+ * @author Equipe 5
  */
 public class Rotation
 {

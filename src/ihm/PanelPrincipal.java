@@ -12,6 +12,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
+/** Panel principal affichant l'image et gérant les interactions utilisateur
+ * @author Equipe 5
+ */
 public class PanelPrincipal extends JPanel
 {
 	private BufferedImage bufferedImage;

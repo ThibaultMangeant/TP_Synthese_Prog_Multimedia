@@ -11,6 +11,9 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/** Menu pour les options d'ajustement d'image
+ * @author Equipe 5
+ */
 public class MenuAjustement extends JMenu implements ActionListener
 {
 	private Controleur controleur;

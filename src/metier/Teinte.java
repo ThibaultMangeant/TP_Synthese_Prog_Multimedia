@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Classe pour gerer les teintes de couleurs
+ * @author Equipe 5
  */
 public class Teinte
 {

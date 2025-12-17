@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 
+/** Menu pour les options d'édition
+ * @author Equipe 5
+ */
 public class MenuEdition extends JMenu implements ActionListener
 {
 	private Controleur controleur;
