@@ -7,8 +7,6 @@ import java.awt.image.BufferedImage;
  */
 public class Redimensionnement
 {
-	/** Chemin du fichier image source. */
-	private String fichierSource;
 	/** Chemin du fichier image destination (sauvegarde apres redimensionnement). */
 	private String fichierDest;
 	/** Utilitaire image pour charger/sauvegarder. */
@@ -21,7 +19,6 @@ public class Redimensionnement
 	 */
 	public Redimensionnement(String fichierSource, String fichierDest)
 	{
-		this.fichierSource = fichierSource;
 		this.fichierDest   = fichierDest;
 		this.imgUtil       = new ImageUtil(fichierSource);
 	}

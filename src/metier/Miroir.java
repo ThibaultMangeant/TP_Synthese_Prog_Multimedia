@@ -7,8 +7,6 @@ import java.awt.image.BufferedImage;
  */
 public class Miroir
 {
-	private String    fichierSource;
-	private String    fichierDest;
 	private ImageUtil imgUtil;
 
 	/**
@@ -17,7 +15,6 @@ public class Miroir
 	 */
 	public Miroir(String fichierSource)
 	{
-		this.fichierSource = fichierSource;
 		this.imgUtil       = new ImageUtil(fichierSource);
 	}
 

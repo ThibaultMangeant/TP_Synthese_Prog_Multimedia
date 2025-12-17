@@ -9,8 +9,6 @@ public class Superposition
 {
 	private ImageUtil imgUtil1;
 	private ImageUtil imgUtil2;
-	private String    cheminImage1;
-	private String    cheminImage2;
 
 	/**
 	 * Constructeur
@@ -20,9 +18,6 @@ public class Superposition
 	 */
 	public Superposition(String cheminImage1, String cheminImage2)
 	{
-		this.cheminImage1 = cheminImage1;
-		this.cheminImage2 = cheminImage2;
-
 		this.imgUtil1 = new ImageUtil(cheminImage1);
 		this.imgUtil2 = new ImageUtil(cheminImage2);
 	}

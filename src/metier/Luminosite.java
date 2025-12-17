@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 public class Luminosite
 { 
 	private ImageUtil imgUtil;
-	private String    cheminImage;
 
 	/**
 	 * Constructeur
@@ -14,7 +13,6 @@ public class Luminosite
 	 */
 	public Luminosite(String cheminImage)
 	{
-		this.cheminImage = cheminImage;
 		this.imgUtil     = new ImageUtil(cheminImage);
 	}
 
