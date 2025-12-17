@@ -9,6 +9,7 @@
 
 ./src/ihm/FramePrincipale.java
 ./src/ihm/PanelPrincipal.java
+./src/ihm/BarreOutil.java
 
 ./src/metier/AntiAlias.java
 ./src/metier/Contraste.java

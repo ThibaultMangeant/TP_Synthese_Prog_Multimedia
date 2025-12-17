@@ -4,8 +4,10 @@ import controleur.Controleur;
 import ihm.BarMenu.BarMenu;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -17,24 +19,28 @@ import java.awt.image.BufferedImage;
 public class FramePrincipale extends JFrame
 {
 	private PanelPrincipal panelPrincipal;
-	private Controleur controleur;
+	private BarreOutil     barreOutil;
+	private Controleur     controleur;
 
 	public FramePrincipale(Controleur ctrl)
 	{
 		this.controleur = ctrl;
 		
 		this.panelPrincipal = new PanelPrincipal(this);
+		this.barreOutil     = new BarreOutil    (this);
 		
 		this.setTitle("Application Multimedia");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(800, 600);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLocation(200, 200);
-		
+
+		this.setLayout(new BorderLayout());
 		this.initMenu();
 		this.initRaccourcisClavier();
 
-		this.add(panelPrincipal);
+		this.add(this.barreOutil    , BorderLayout.NORTH );
+		this.add(this.panelPrincipal, BorderLayout.CENTER);
 		this.setVisible(true);
 	}
 
