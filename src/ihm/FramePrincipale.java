@@ -251,7 +251,7 @@ public class FramePrincipale extends JFrame
 		selecteurFichier.setDialogTitle("Sélectionner une image à ouvrir");
 		
 		selecteurFichier.setFileFilter(new FileNameExtensionFilter(
-			"Images", "png"
+			"Images (png)", "png"
 		));
 
 		resultat = selecteurFichier.showOpenDialog(this);
