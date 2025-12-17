@@ -25,4 +25,4 @@ replay_pid*
 
 *.png
 !blanc.png
-!src/ihm/images/icons/*
+!src/images/icons/*.png

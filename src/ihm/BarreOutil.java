@@ -40,17 +40,17 @@ public class BarreOutil extends JPanel implements ActionListener
 
 		/* Création des composants */
 		// Icones
-		iconOuvrir         = new ImageIcon("../src/images/icons/iconOuvrir.svg"        );
-		iconEnregistrer    = new ImageIcon("../src/images/icons/iconEnregistrer.svg"   );
-		iconAnnuler        = new ImageIcon("../src/images/icons/iconAnnuler.svg"       );
-		iconRepeter        = new ImageIcon("../src/images/icons/iconRepeter.svg"       );
-		iconZoom           = new ImageIcon("../src/images/icons/iconZoom.svg"          );
-		iconDezoom         = new ImageIcon("../src/images/icons/iconDezoom.svg"        );
-		iconRedimensionner = new ImageIcon("../src/images/icons/iconRedimensionner.svg");
-		iconRotation       = new ImageIcon("../src/images/icons/iconRotation.svg"      );
-		iconMiroirH        = new ImageIcon("../src/images/icons/iconMiroirH.svg"       );
-		iconMiroirV        = new ImageIcon("../src/images/icons/iconMiroirV.svg"       );
-		iconPotPeinture    = new ImageIcon("../src/images/icons/iconPotPeinture.svg"   );
+		iconOuvrir         = new ImageIcon("../src/images/icons/iconOuvrir.png"        );
+		iconEnregistrer    = new ImageIcon("../src/images/icons/iconEnregistrer.png"   );
+		iconAnnuler        = new ImageIcon("../src/images/icons/iconAnnuler.png"       );
+		iconRepeter        = new ImageIcon("../src/images/icons/iconRepeter.png"       );
+		iconZoom           = new ImageIcon("../src/images/icons/iconZoom.png"          );
+		iconDezoom         = new ImageIcon("../src/images/icons/iconDezoom.png"        );
+		iconRedimensionner = new ImageIcon("../src/images/icons/iconRedimensionner.png");
+		iconRotation       = new ImageIcon("../src/images/icons/iconRotation.png"      );
+		iconMiroirH        = new ImageIcon("../src/images/icons/iconMiroirH.png"       );
+		iconMiroirV        = new ImageIcon("../src/images/icons/iconMiroirV.png"       );
+		iconPotPeinture    = new ImageIcon("../src/images/icons/iconPotPeinture.png"   );
 
 		// Boutons
 		this.btnOuvrir         = new JButton(iconOuvrir        );
