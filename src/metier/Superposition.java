@@ -19,6 +19,11 @@ public class Superposition
 	 */
 	public Superposition(String cheminImage1, String cheminImage2)
 	{
+		if (cheminImage1 == null || !cheminImage1.toLowerCase().endsWith(".png") ||
+		    cheminImage2 == null || !cheminImage2.toLowerCase().endsWith(".png"))
+		{
+			throw new IllegalArgumentException("Superposition: seuls les fichiers PNG (.png) sont acceptés");
+		}
 		this.imgUtil1 = new ImageUtil(cheminImage1);
 		this.imgUtil2 = new ImageUtil(cheminImage2);
 	}

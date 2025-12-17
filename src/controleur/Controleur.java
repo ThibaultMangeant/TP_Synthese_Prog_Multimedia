@@ -5,6 +5,7 @@ import metier.*;
 
 import java.awt.image.BufferedImage;
 import java.util.Stack;
+import javax.swing.JOptionPane;
 
 /** Contrôleur principal de l'application
  * Gère les interactions entre l'interface utilisateur (IHM) et la logique métier
@@ -382,6 +383,11 @@ public class Controleur
 
 	public void appliquerSuperpositionImages(String cheminImageSup)
 	{
+		if (cheminImageSup == null || !cheminImageSup.toLowerCase().endsWith(".png"))
+		{
+			JOptionPane.showMessageDialog(null, "La superposition n'accepte que des fichiers PNG (.png)", "Format non supporté", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		this.calqueSuperposition = new ImageUtil(cheminImageSup).getImage();
 		this.calqueSuperpositionX = calculerPositionCalqueX();
 		this.calqueSuperpositionY = calculerPositionCalqueY();

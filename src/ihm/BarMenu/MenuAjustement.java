@@ -3,6 +3,7 @@ package ihm.BarMenu;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controleur.Controleur;
 
@@ -102,11 +103,18 @@ public class MenuAjustement extends JMenu implements ActionListener
 			if (e.getSource() == this.itemSuperposition)
 			{
 				JFileChooser fileChooser = new JFileChooser("../src/images");
+				fileChooser.setAcceptAllFileFilterUsed(false);
+				fileChooser.setFileFilter(new FileNameExtensionFilter("Images PNG (*.png)", "png"));
 				int result = fileChooser.showOpenDialog(null);
 				
 				if (result == JFileChooser.APPROVE_OPTION)
 				{
 					String cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
+					if (!cheminImage.toLowerCase().endsWith(".png"))
+					{
+						JOptionPane.showMessageDialog(null, "Veuillez sélectionner un fichier PNG (.png)", "Format non supporté", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
 					this.controleur.appliquerSuperpositionImages(cheminImage);
 				}
 			}	
