@@ -102,6 +102,7 @@ public class BarreOutil extends JPanel implements ActionListener
 		this.btnMiroirH       .setToolTipText("Miroir horizontal"                  );
 		this.btnMiroirV       .setToolTipText("Miroir vertical"                    );
 		this.btnPotPeinture   .setToolTipText("Activer le pot de peinture"         );
+
 		/* Ajout des composants */
 		this.add(this.btnOuvrir        );
 		this.add(this.btnEnregistrer   );

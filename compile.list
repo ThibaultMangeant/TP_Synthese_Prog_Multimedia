@@ -13,7 +13,9 @@
 
 ./src/metier/AntiAlias.java
 ./src/metier/Contraste.java
+./src/metier/Fusion.java
 ./src/metier/Negatif.java
+./src/metier/NoirEtBlanc.java
 ./src/metier/Luminosite.java
 ./src/metier/ImageUtil.java
 ./src/metier/Miroir.java
