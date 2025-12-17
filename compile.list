@@ -3,6 +3,7 @@
 ./src/ihm/BarMenu/BarMenu.java
 ./src/ihm/BarMenu/MenuFichier.java
 ./src/ihm/BarMenu/MenuEdition.java
+./src/ihm/BarMenu/MenuAffichage.java
 ./src/ihm/BarMenu/MenuImage.java
 ./src/ihm/BarMenu/MenuAjustement.java
 

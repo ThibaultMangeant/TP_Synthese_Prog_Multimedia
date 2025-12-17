@@ -100,6 +100,16 @@ public class FramePrincipale extends JFrame
 		this.panelPrincipal.setImage(image);
 	}
 
+	public void zoomAvant()
+	{
+		this.panelPrincipal.zoomAvant();
+	}
+
+	public void zoomArriere()
+	{
+		this.panelPrincipal.zoomArriere();
+	}
+
 	public BufferedImage getCalqueTexte()
 	{
 		return this.controleur.getCalqueTexte();

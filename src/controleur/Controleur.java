@@ -300,6 +300,16 @@ public class Controleur
 		this.imageUtil.sauvegarderImage(this.cheminImageCourant);
 	}
 
+	public void zoomAvant()
+	{
+		this.framePrincipale.zoomAvant();
+	}
+
+	public void zoomArriere()
+	{
+		this.framePrincipale.zoomArriere();
+	}
+
 	public void miroirHorizontal()
 	{
 		this.sauvegarderEtat();
