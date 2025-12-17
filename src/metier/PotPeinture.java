@@ -153,13 +153,15 @@ public class PotPeinture
 			if (visite[p.x][p.y])
 				continue;
 			
-			couleurActuelle = new Color(imgUtil.img.getRGB(p.x, p.y));
+			couleurActuelle = new Color(imgUtil.img.getRGB(p.x, p.y), true);
 			
 			if (!PotPeinture.couleurProche(couleurActuelle, couleurCible, tolerance))
 				continue;
 			
 			visite[p.x][p.y] = true;
-			imgUtil.img.setRGB(p.x, p.y, nouvelleCouleur.getRGB());
+			// Construire ARGB avec alpha opaque
+			int argb = (255 << 24) | (nouvelleCouleur.getRGB() & 0x00FFFFFF);
+			imgUtil.img.setRGB(p.x, p.y, argb);
 			
 			// Ajouter les voisins
 			file.add(new Point(p.x + 1, p.y));

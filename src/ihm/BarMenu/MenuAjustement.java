@@ -18,7 +18,8 @@ public class MenuAjustement extends JMenu implements ActionListener
 {
 	private Controleur controleur;
 
-	private JMenuItem itemPeinture;
+	private JMenuItem itemRemplirCouleur;
+	private JMenuItem itemRetirerCouleur;
 	private JMenuItem itemTeinte;
 	private JMenuItem itemAntiAliasing;
 	private JMenuItem itemContraste;
@@ -33,7 +34,8 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.controleur = controleur;
 
 		/* Création des items */
-		this.itemPeinture       = new JMenuItem("Effet Peinture");
+		this.itemRemplirCouleur = new JMenuItem("Pot de Peinture - Remplir");
+		this.itemRetirerCouleur = new JMenuItem("Pot de Peinture - Retirer");
 		this.itemTeinte         = new JMenuItem("Ajuster Teinte");
 		this.itemAntiAliasing   = new JMenuItem("Anti-Aliasing");
 		this.itemContraste      = new JMenuItem("Ajuster Contraste");
@@ -42,7 +44,8 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.itemLuminosite     = new JMenuItem("Ajuster Luminosité");
 
 		/* Ajout des items au menu Ajustement */
-		this.add(this.itemPeinture);
+		this.add(this.itemRemplirCouleur);
+		this.add(this.itemRetirerCouleur);
 		this.add(this.itemTeinte);
 		this.add(this.itemAntiAliasing);
 		this.add(this.itemContraste);
@@ -51,7 +54,8 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.add(this.itemLuminosite);
 
 		/* Activation des composants */
-		this.itemPeinture     .addActionListener(this);
+		this.itemRemplirCouleur.addActionListener(this);
+		this.itemRetirerCouleur.addActionListener(this);
 		this.itemTeinte       .addActionListener(this);
 		this.itemAntiAliasing .addActionListener(this);
 		this.itemContraste    .addActionListener(this);
@@ -69,9 +73,14 @@ public class MenuAjustement extends JMenu implements ActionListener
 				this.controleur.appliquerAntiAliasing();
 			}
 
-			if (e.getSource() == this.itemPeinture)
+			if (e.getSource() == this.itemRemplirCouleur)
 			{
-				this.controleur.appliquerPotPeinture();
+				this.controleur.activerModeRemplirCouleur();
+			}
+
+			if (e.getSource() == this.itemRetirerCouleur)
+			{
+				this.controleur.activerModeRetirerCouleur();
 			}
 
 			if (e.getSource() == this.itemTeinte)

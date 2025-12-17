@@ -30,6 +30,9 @@ public class Controleur
 	private BufferedImage calqueSuperposition;
 	private int calqueSuperpositionX;
 	private int calqueSuperpositionY;
+	
+	// Mode pot de peinture
+	private String modePotPeinture; // "remplir", "retirer" ou null
 
 	public Controleur()
 	{
@@ -44,6 +47,7 @@ public class Controleur
 		this.calqueSuperposition = null;
 		this.calqueSuperpositionX = 0;
 		this.calqueSuperpositionY = 0;
+		this.modePotPeinture = null;
 		this.framePrincipale = new FramePrincipale(this);
 		this.initImage();
 	}
@@ -306,7 +310,45 @@ public class Controleur
 
 	public void appliquerRotation(int angle) { this.rotation(angle); }
 	public void appliquerRedimensionnement(int nouvelleLargeur, int nouvelleHauteur) { this.redimensionner(nouvelleLargeur, nouvelleHauteur); }
-	public void appliquerPotPeinture() { System.out.println("Pot de peinture appliqué."); }
+
+	public void activerModeRemplirCouleur()
+	{
+		this.modePotPeinture = "remplir";
+		this.framePrincipale.activerCurseurPotPeinture();
+		javax.swing.JOptionPane.showMessageDialog(null, "Mode Remplir activé : Cliquez sur l'image pour remplir.\nClic droit pour annuler.");
+	}
+
+	public void activerModeRetirerCouleur()
+	{
+		this.modePotPeinture = "retirer";
+		this.framePrincipale.activerCurseurPotPeinture();
+		javax.swing.JOptionPane.showMessageDialog(null, "Mode Retirer activé : Cliquez sur l'image pour retirer.\nClic droit pour annuler.");
+	}
+
+	public void desactiverModePotPeinture()
+	{
+		this.modePotPeinture = null;
+	}
+
+	public String getModePotPeinture() { return this.modePotPeinture; }
+
+	public void appliquerPotPeintureRemplir(int x, int y)
+	{
+		this.sauvegarderEtat();
+		java.awt.Color couleur = javax.swing.JColorChooser.showDialog(null, "Choisir une couleur", java.awt.Color.RED);
+		if (couleur != null)
+		{
+			PotPeinture.remplir(this.imageUtil, x, y, couleur, 30);
+			this.framePrincipale.afficherImage(this.imageUtil.getImage());
+		}
+	}
+
+	public void appliquerPotPeintureRetirer(int x, int y)
+	{
+		this.sauvegarderEtat();
+		PotPeinture.retirerCouleur(this.imageUtil, x, y, 30);
+		this.framePrincipale.afficherImage(this.imageUtil.getImage());
+	}
 
 	public void appliquerTeinte(int teinteRouge, int teinteVerte, int teinteBleue)
 	{

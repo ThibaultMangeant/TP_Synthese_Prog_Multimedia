@@ -70,6 +70,21 @@ public class FramePrincipale extends JFrame
 		return this.controleur.contient(x, y);
 	}
 
+	public boolean contientAvecZoom(int x, int y)
+	{
+		double zoom = this.getZoom();
+		int posX = this.getPosX();
+		int posY = this.getPosY();
+		BufferedImage img = this.getImage();
+		
+		if (img == null) return false;
+		
+		int largeurZoomee = (int)(img.getWidth() * zoom);
+		int hauteurZoomee = (int)(img.getHeight() * zoom);
+		
+		return (x >= posX && x < posX + largeurZoomee && y >= posY && y < posY + hauteurZoomee);
+	}
+
 	public int getPosX()
 	{
 		return this.controleur.getPosX();
@@ -188,6 +203,36 @@ public class FramePrincipale extends JFrame
 	public void fusionnerCalqueSuperposition()
 	{
 		this.controleur.fusionnerCalqueSuperposition();
+	}
+
+	public String getModePotPeinture()
+	{
+		return this.controleur.getModePotPeinture();
+	}
+
+	public void appliquerPotPeintureRemplir(int x, int y)
+	{
+		this.controleur.appliquerPotPeintureRemplir(x, y);
+	}
+
+	public void appliquerPotPeintureRetirer(int x, int y)
+	{
+		this.controleur.appliquerPotPeintureRetirer(x, y);
+	}
+
+	public void desactiverModePotPeinture()
+	{
+		this.controleur.desactiverModePotPeinture();
+	}
+
+	public void activerCurseurPotPeinture()
+	{
+		this.panelPrincipal.activerCurseurPotPeinture();
+	}
+
+	public void desactiverCurseurPotPeinture()
+	{
+		this.panelPrincipal.desactiverCurseurPotPeinture();
 	}
 
 	public void majIHM()

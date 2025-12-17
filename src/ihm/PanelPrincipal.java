@@ -20,10 +20,14 @@ public class PanelPrincipal extends JPanel
 	private BufferedImage bufferedImage;
 	private FramePrincipale frame;
 	private double zoom = 1.0;
+	private java.awt.Cursor curseurNormal;
+	private java.awt.Cursor curseurPotPeinture;
 
 	public PanelPrincipal(FramePrincipale frame)
 	{
 		this.frame = frame;
+		this.curseurNormal = java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.DEFAULT_CURSOR);
+		this.curseurPotPeinture = java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.CROSSHAIR_CURSOR);
 
 		this.setLayout(new BorderLayout());
 		
@@ -86,6 +90,16 @@ public class PanelPrincipal extends JPanel
 		this.majIHM();
 	}
 
+	public void activerCurseurPotPeinture()
+	{
+		this.setCursor(curseurPotPeinture);
+	}
+
+	public void desactiverCurseurPotPeinture()
+	{
+		this.setCursor(curseurNormal);
+	}
+
 	public double getZoom()
 	{
 		return this.zoom;
@@ -119,7 +133,35 @@ public class PanelPrincipal extends JPanel
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
-			System.out.println("Clic en position: (" + e.getX() + ", " + e.getY() + ")");
+			String modePot = PanelPrincipal.this.frame.getModePotPeinture();
+			
+			// Clic droit : désactiver le mode pot de peinture
+			if (e.getButton() == MouseEvent.BUTTON3 && modePot != null)
+			{
+				PanelPrincipal.this.frame.desactiverModePotPeinture();
+				PanelPrincipal.this.setCursor(curseurNormal);
+				return;
+			}
+			
+			if (modePot != null && PanelPrincipal.this.frame.contientAvecZoom(e.getX(), e.getY()))
+			{
+				// Convertir les coordonnées de l'écran vers l'image
+				int imgX = e.getX() - PanelPrincipal.this.frame.getPosX();
+				int imgY = e.getY() - PanelPrincipal.this.frame.getPosY();
+				
+				// Ajuster pour le zoom
+				imgX = (int)(imgX / zoom);
+				imgY = (int)(imgY / zoom);
+				
+				if (modePot.equals("remplir"))
+				{
+					PanelPrincipal.this.frame.appliquerPotPeintureRemplir(imgX, imgY);
+				}
+				else if (modePot.equals("retirer"))
+				{
+					PanelPrincipal.this.frame.appliquerPotPeintureRetirer(imgX, imgY);
+				}
+			}
 		}
 
 		@Override
@@ -155,12 +197,12 @@ public class PanelPrincipal extends JPanel
 		public void mouseReleased(MouseEvent e)
 		{
 			// Si on relache le texte sur l'image de fond, fusionner
-			if (draggingTexte && PanelPrincipal.this.frame.contient(e.getX(), e.getY()))
+			if (draggingTexte && PanelPrincipal.this.frame.contientAvecZoom(e.getX(), e.getY()))
 			{
 				PanelPrincipal.this.frame.fusionnerCalqueTexte();
 			}
 			// Si on relache la superposition sur l'image de fond, fusionner
-			else if (draggingSuperposition && PanelPrincipal.this.frame.contient(e.getX(), e.getY()))
+			else if (draggingSuperposition && PanelPrincipal.this.frame.contientAvecZoom(e.getX(), e.getY()))
 			{
 				PanelPrincipal.this.frame.fusionnerCalqueSuperposition();
 			}
