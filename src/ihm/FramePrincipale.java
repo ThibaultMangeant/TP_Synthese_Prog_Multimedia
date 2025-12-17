@@ -4,6 +4,8 @@ import controleur.Controleur;
 import ihm.BarMenu.BarMenu;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -195,21 +197,23 @@ public class FramePrincipale extends JFrame
 
 	public String choisirImageInitiale()
 	{
-		JFileChooser fileChooser;
+		JFileChooser selecteurFichier;
 		int          resultat;
 		String       cheminImage;
 
-		fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Sélectionner une image à ouvrir");
-		fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
-			"Images", "jpg", "jpeg", "png", "gif", "bmp"
+		selecteurFichier = new JFileChooser();
+		selecteurFichier.setAcceptAllFileFilterUsed(false);
+		selecteurFichier.setDialogTitle("Sélectionner une image à ouvrir");
+		
+		selecteurFichier.setFileFilter(new FileNameExtensionFilter(
+			"Images", "png"
 		));
 
-		resultat = fileChooser.showOpenDialog(this);
+		resultat = selecteurFichier.showOpenDialog(this);
 
 		if (resultat == JFileChooser.APPROVE_OPTION)
 		{
-			cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
+			cheminImage = selecteurFichier.getSelectedFile().getAbsolutePath();
 			return cheminImage;
 		}
 		else if (resultat == JFileChooser.CANCEL_OPTION)
