@@ -46,15 +46,20 @@ public class FramePrincipale extends JFrame
 
 	public boolean contientAvecZoom(int x, int y)
 	{
-		double zoom = this.getZoom();
-		int posX = this.getPosX();
-		int posY = this.getPosY();
-		BufferedImage img = this.getImage();
+		double        zoom;
+		int           posX, posY;
+		BufferedImage img;
+		int           largeurZoomee, hauteurZoomee;
 		
-		if (img == null) return false;
+		zoom = this.getZoom();
+		posX = this.getPosX();
+		posY = this.getPosY();
+		img  = this.getImage();
 		
-		int largeurZoomee = (int)(img.getWidth() * zoom);
-		int hauteurZoomee = (int)(img.getHeight() * zoom);
+		if (img == null) { return false; }
+		
+		largeurZoomee = (int)(img.getWidth() * zoom);
+		hauteurZoomee = (int)(img.getHeight() * zoom);
 		
 		return (x >= posX && x < posX + largeurZoomee && y >= posY && y < posY + hauteurZoomee);
 	}
@@ -244,16 +249,14 @@ public class FramePrincipale extends JFrame
 		selecteurFichier = new JFileChooser();
 		selecteurFichier.setAcceptAllFileFilterUsed(false);
 		selecteurFichier.setDialogTitle("Sélectionner une image à ouvrir");
-		
-		selecteurFichier.setFileFilter(new FileNameExtensionFilter(
-			"Images (png)", "png"
-		));
+		selecteurFichier.setFileFilter(new FileNameExtensionFilter("Images (png)", "png"));
 
 		resultat = selecteurFichier.showOpenDialog(this);
 
 		if (resultat == JFileChooser.APPROVE_OPTION)
 		{
 			cheminImage = selecteurFichier.getSelectedFile().getAbsolutePath();
+			
 			return cheminImage;
 		}
 		else if (resultat == JFileChooser.CANCEL_OPTION)

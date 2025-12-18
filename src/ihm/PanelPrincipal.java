@@ -26,8 +26,10 @@ public class PanelPrincipal extends JPanel
 
 	public PanelPrincipal(FramePrincipale frame)
 	{
-		this.frame = frame;
-		this.curseurNormal = java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.DEFAULT_CURSOR);
+		GestionSouris gestionSouris;
+		
+		this.frame              = frame;
+		this.curseurNormal      = java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.DEFAULT_CURSOR);
 		this.curseurPotPeinture = java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.CROSSHAIR_CURSOR);
 
 		this.setLayout(new BorderLayout());
@@ -35,7 +37,7 @@ public class PanelPrincipal extends JPanel
 		// Charger l'image initiale
 		this.chargerImage();
 
-		GestionSouris gestionSouris = new GestionSouris();
+		gestionSouris = new GestionSouris();
 		this.addMouseListener(gestionSouris);
 		this.addMouseMotionListener(gestionSouris);
 		this.addMouseWheelListener(gestionSouris);
@@ -43,33 +45,37 @@ public class PanelPrincipal extends JPanel
 	
 	protected void paintComponent(Graphics g)
 	{
+		Graphics2D    g2d;
+		int           drawW, drawH;
+		BufferedImage calqueSuperposition, calqueTexte;
+		
 		super.paintComponent(g);
 		
 		// Dessiner l'image de fond
 		if (this.bufferedImage != null)
 		{
-			Graphics2D g2d = (Graphics2D) g;
+			g2d   = (Graphics2D) g;
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			int drawW = (int) Math.round(this.bufferedImage.getWidth() * zoom);
-			int drawH = (int) Math.round(this.bufferedImage.getHeight() * zoom);
+			drawW = (int) Math.round(this.bufferedImage.getWidth() * zoom);
+			drawH = (int) Math.round(this.bufferedImage.getHeight() * zoom);
 			g2d.drawImage(this.bufferedImage, this.frame.getPosX(), this.frame.getPosY(), drawW, drawH, this);
 		}
 		
 		// Dessiner le calque de superposition par dessus
-		BufferedImage calqueSuperposition = this.frame.getCalqueSuperposition();
+		calqueSuperposition = this.frame.getCalqueSuperposition();
 		if (calqueSuperposition != null)
 		{
-			int drawW = (int) Math.round(calqueSuperposition.getWidth() * zoom);
-			int drawH = (int) Math.round(calqueSuperposition.getHeight() * zoom);
+			drawW = (int) Math.round(calqueSuperposition.getWidth() * zoom);
+			drawH = (int) Math.round(calqueSuperposition.getHeight() * zoom);
 			g.drawImage(calqueSuperposition, this.frame.getCalqueSuperpositionX(), this.frame.getCalqueSuperpositionY(), drawW, drawH, this);
 		}
 		
 		// Dessiner le calque texte par dessus
-		BufferedImage calqueTexte = this.frame.getCalqueTexte();
+		calqueTexte = this.frame.getCalqueTexte();
 		if (calqueTexte != null)
 		{
-			int drawW = (int) Math.round(calqueTexte.getWidth() * zoom);
-			int drawH = (int) Math.round(calqueTexte.getHeight() * zoom);
+			drawW = (int) Math.round(calqueTexte.getWidth() * zoom);
+			drawH = (int) Math.round(calqueTexte.getHeight() * zoom);
 			g.drawImage(calqueTexte, this.frame.getCalqueTexteX(), this.frame.getCalqueTexteY(), drawW, drawH, this);
 		}
 	}
@@ -134,7 +140,10 @@ public class PanelPrincipal extends JPanel
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
-			String modePot = PanelPrincipal.this.frame.getModePotPeinture();
+			String modePot;
+			int    imgX, imgY;
+			
+			modePot = PanelPrincipal.this.frame.getModePotPeinture();
 			
 			// Clic droit : désactiver le mode pot de peinture
 			if (e.getButton() == MouseEvent.BUTTON3 && modePot != null)
@@ -147,8 +156,8 @@ public class PanelPrincipal extends JPanel
 			if (modePot != null && PanelPrincipal.this.frame.contientAvecZoom(e.getX(), e.getY()))
 			{
 				// Convertir les coordonnées de l'écran vers l'image
-				int imgX = e.getX() - PanelPrincipal.this.frame.getPosX();
-				int imgY = e.getY() - PanelPrincipal.this.frame.getPosY();
+				imgX = e.getX() - PanelPrincipal.this.frame.getPosX();
+				imgY = e.getY() - PanelPrincipal.this.frame.getPosY();
 				
 				// Ajuster pour le zoom
 				imgX = (int)(imgX / zoom);
@@ -177,8 +186,8 @@ public class PanelPrincipal extends JPanel
 
 				if (PanelPrincipal.this.frame.contientAvecZoom(e.getX(), e.getY()))
 				{
-					int imgX = e.getX() - PanelPrincipal.this.frame.getPosX();
-					int imgY = e.getY() - PanelPrincipal.this.frame.getPosY();
+					imgX = e.getX() - PanelPrincipal.this.frame.getPosX();
+					imgY = e.getY() - PanelPrincipal.this.frame.getPosY();
 					imgX = (int)(imgX / zoom);
 					imgY = (int)(imgY / zoom);
 					PanelPrincipal.this.frame.enregistrerPointDecoupage(imgX, imgY);
@@ -195,22 +204,22 @@ public class PanelPrincipal extends JPanel
 			// Priorite au texte (il est au-dessus)
 			if (PanelPrincipal.this.frame.contientCalqueTexte(e.getX(), e.getY()))
 			{
-				draggingTexte = true;
-				dragging = false;
+				draggingTexte         = true;
+				dragging              = false;
 				draggingSuperposition = false;
 			}
 			// Puis la superposition
 			else if (PanelPrincipal.this.frame.contientCalqueSuperposition(e.getX(), e.getY()))
 			{
 				draggingSuperposition = true;
-				dragging = false;
-				draggingTexte = false;
+				dragging              = false;
+				draggingTexte         = false;
 			}
 			// Sinon l'image de fond
 			else
 			{
-				dragging = true;
-				draggingTexte = false;
+				dragging              = true;
+				draggingTexte         = false;
 				draggingSuperposition = false;
 			}
 		}
@@ -219,26 +228,22 @@ public class PanelPrincipal extends JPanel
 		public void mouseReleased(MouseEvent e)
 		{
 			// Si on relache le texte sur l'image de fond, fusionner
-			if (draggingTexte && PanelPrincipal.this.frame.contientAvecZoom(e.getX(), e.getY()))
-			{
-				PanelPrincipal.this.frame.fusionnerCalqueTexte();
-			}
+			if (draggingTexte && PanelPrincipal.this.frame.contientAvecZoom(e.getX(), e.getY())) { PanelPrincipal.this.frame.fusionnerCalqueTexte(); }
 			// Si on relache la superposition sur l'image de fond, fusionner
-			else if (draggingSuperposition && PanelPrincipal.this.frame.contientAvecZoom(e.getX(), e.getY()))
-			{
-				PanelPrincipal.this.frame.fusionnerCalqueSuperposition();
-			}
+			else if (draggingSuperposition && PanelPrincipal.this.frame.contientAvecZoom(e.getX(), e.getY())) { PanelPrincipal.this.frame.fusionnerCalqueSuperposition(); }
 			
-			dragging = false;
-			draggingTexte = false;
+			dragging              = false;
+			draggingTexte         = false;
 			draggingSuperposition = false;
 		}
 
 		@Override
 		public void mouseDragged(MouseEvent e)
 		{
-			int deltaX = e.getX() - lastX;
-			int deltaY = e.getY() - lastY;
+			int deltaX, deltaY;
+			
+			deltaX = e.getX() - lastX;
+			deltaY = e.getY() - lastY;
 			
 			if (draggingTexte)
 			{
@@ -268,30 +273,18 @@ public class PanelPrincipal extends JPanel
 		public void mouseWheelMoved(MouseWheelEvent e)
 		{
 			// Zoomer ou dezoomer en fonction de la direction de la molette
-			if (e.getWheelRotation() < 0)
-			{
-				PanelPrincipal.this.zoomAvant();
-			}
-			else
-			{
-				PanelPrincipal.this.zoomArriere();
-			}
+			if (e.getWheelRotation() < 0) { PanelPrincipal.this.zoomAvant(); }
+			else { PanelPrincipal.this.zoomArriere(); }
 		}
 
 		public void mouseEntered(MouseEvent e)
 		{
-			if (PanelPrincipal.this.frame.getModePotPeinture() == null && !PanelPrincipal.this.frame.isModeDecoupageActif())
-			{
-				PanelPrincipal.this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
-			}
+			if (PanelPrincipal.this.frame.getModePotPeinture() == null && !PanelPrincipal.this.frame.isModeDecoupageActif()) { PanelPrincipal.this.setCursor(new Cursor(Cursor.MOVE_CURSOR)); }
 		}
 
 		public void mouseExited(MouseEvent e)
 		{
-			if (PanelPrincipal.this.frame.getModePotPeinture() == null && !PanelPrincipal.this.frame.isModeDecoupageActif())
-			{
-				PanelPrincipal.this.setCursor(curseurNormal);
-			}
+			if (PanelPrincipal.this.frame.getModePotPeinture() == null && !PanelPrincipal.this.frame.isModeDecoupageActif()) { PanelPrincipal.this.setCursor(curseurNormal); }
 		}
 	}
 }

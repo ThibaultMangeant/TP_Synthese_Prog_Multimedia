@@ -25,7 +25,7 @@ public class MenuAffichage extends JMenu implements ActionListener
 		this.controleur = controleur;
 
 		/* Création des items */
-		this.itemZoomAvant = new JMenuItem("Zoom Avant");
+		this.itemZoomAvant   = new JMenuItem("Zoom Avant");
 		this.itemZoomArriere = new JMenuItem("Zoom Arrière");
 
 		/* Ajout des items au menu Affichage */
@@ -33,7 +33,7 @@ public class MenuAffichage extends JMenu implements ActionListener
 		this.add(this.itemZoomArriere);
 
 		/* Activation des composants */
-		this.itemZoomAvant.addActionListener(this);
+		this.itemZoomAvant.  addActionListener(this);
 		this.itemZoomArriere.addActionListener(this);
 	}
 

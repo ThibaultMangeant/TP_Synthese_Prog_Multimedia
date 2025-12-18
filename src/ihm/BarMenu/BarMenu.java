@@ -27,10 +27,10 @@ public class BarMenu extends JMenuBar
 		menuAjustement = new MenuAjustement(controleur);
 
 		/* Positionnement des composants */
-		this.add(menuFichier);
-		this.add(menuEdition);
-		this.add(menuAffichage);
-		this.add(menuImage);
+		this.add(menuFichier   );
+		this.add(menuEdition   );
+		this.add(menuAffichage );
+		this.add(menuImage     );
 		this.add(menuAjustement);
 	}
 }

@@ -98,50 +98,65 @@ public class MenuAjustement extends JMenu implements ActionListener
 
 			if (e.getSource() == this.itemTeinte)
 			{
-				int teinteR = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte rouge (entre -255 et 255) : "));
-				int teinteV = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte verte (entre -255 et 255) : "));
-				int teinteB = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte bleue (entre -255 et 255) : "));
+				int teinteR, teinteV, teinteB;
+				
+				teinteR = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte rouge (entre -255 et 255) : "));
+				teinteV = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte verte (entre -255 et 255) : "));
+				teinteB = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la teinte bleue (entre -255 et 255) : "));
 
-				this.controleur.appliquerTeinte(teinteR , teinteV, teinteB);
+				this.controleur.appliquerTeinte(teinteR, teinteV, teinteB);
 			}
 
 			if (e.getSource() == this.itemContraste)
 			{
-				int valeurContraste = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la valeur du contraste (entre -100 et 100) : "));
+				int valeurContraste;
+				
+				valeurContraste = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la valeur du contraste (entre -100 et 100) : "));
 
 				this.controleur.appliquerContraste(valeurContraste);
 			}
 
 			if (e.getSource() == this.itemSuperposition)
 			{
-				JFileChooser fileChooser = new JFileChooser("../src/images");
+				JFileChooser fileChooser;
+				int          result;
+				String       cheminImage;
+				
+				fileChooser = new JFileChooser("../src/images");
 				fileChooser.setAcceptAllFileFilterUsed(false);
 				fileChooser.setFileFilter(new FileNameExtensionFilter("Images PNG (*.png)", "png"));
-				int result = fileChooser.showOpenDialog(null);
+				result = fileChooser.showOpenDialog(null);
 				
 				if (result == JFileChooser.APPROVE_OPTION)
 				{
-					String cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
+					cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
+					
 					if (!cheminImage.toLowerCase().endsWith(".png"))
 					{
 						JOptionPane.showMessageDialog(null, "Veuillez sélectionner un fichier PNG (.png)", "Format non supporté", JOptionPane.WARNING_MESSAGE);
 						return;
 					}
+					
 					this.controleur.appliquerSuperpositionImages(cheminImage);
 				}
 			}	
 			
 			if (e.getSource() == this.itemTexteImage)
 			{
-				String texte = JOptionPane.showInputDialog("Rentrer le texte à afficher : ");
-				int taillePolice = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la taille de la police : "));
+				String texte;
+				int    taillePolice;
+				
+				texte        = JOptionPane.showInputDialog("Rentrer le texte à afficher : ");
+				taillePolice = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la taille de la police : "));
 
 				this.controleur.appliquerCreationImageTexte(texte, taillePolice);
 			}
 
 			if (e.getSource() == this.itemLuminosite)
 			{
-				int valeurLuminosite = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la valeur de la luminosité (entre -255 et 255) : "));
+				int valeurLuminosite;
+				
+				valeurLuminosite = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la valeur de la luminosité (entre -255 et 255) : "));
 
 				this.controleur.appliquerLuminosite(valeurLuminosite);
 			}
@@ -158,25 +173,33 @@ public class MenuAjustement extends JMenu implements ActionListener
 
 			if (e.getSource() == this.itemFusion)
 			{
-				JFileChooser fileChooser = new JFileChooser("../src/images");
+				JFileChooser fileChooser;
+				int          result;
+				String       cheminImage, largeurStr;
+				int          largeurFondue;
+				
+				fileChooser = new JFileChooser("../src/images");
 				fileChooser.setAcceptAllFileFilterUsed(false);
 				fileChooser.setFileFilter(new FileNameExtensionFilter("Images PNG (*.png)", "png"));
 				fileChooser.setDialogTitle("Sélectionner l'image à fusionner");
-				int result = fileChooser.showOpenDialog(null);
+				result = fileChooser.showOpenDialog(null);
 				
 				if (result == JFileChooser.APPROVE_OPTION)
 				{
-					String cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
+					cheminImage = fileChooser.getSelectedFile().getAbsolutePath();
+					
 					if (!cheminImage.toLowerCase().endsWith(".png"))
 					{
 						JOptionPane.showMessageDialog(null, "Veuillez sélectionner un fichier PNG (.png)", "Format non supporté", JOptionPane.WARNING_MESSAGE);
 						return;
 					}
 					
-					String largeurStr = JOptionPane.showInputDialog("Largeur de la zone de fondu (en pixels) :");
+					largeurStr = JOptionPane.showInputDialog("Largeur de la zone de fondu (en pixels) :");
+					
 					if (largeurStr != null)
 					{
-						int largeurFondue = Integer.parseInt(largeurStr);
+						largeurFondue = Integer.parseInt(largeurStr);
+						
 						this.controleur.appliquerFusion(cheminImage, largeurFondue);
 					}
 				}

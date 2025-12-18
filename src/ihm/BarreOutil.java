@@ -34,20 +34,18 @@ public class BarreOutil extends JPanel implements ActionListener
 	public BarreOutil(Controleur controleur)
 	{
 		Dimension dimension;
-		ImageIcon iconOuvrir        , iconEnregistrer;
-		ImageIcon iconAnnuler       , iconRepeter;
-		ImageIcon iconZoom          , iconDezoom;
+		ImageIcon iconOuvrir, iconEnregistrer;
+		ImageIcon iconAnnuler, iconRepeter;
+		ImageIcon iconZoom, iconDezoom;
 		ImageIcon iconRedimensionner, iconRotation;
-		ImageIcon iconMiroirH       , iconMiroirV;
+		ImageIcon iconMiroirH, iconMiroirV;
 		ImageIcon iconPotPeinture;
-
 
 		this.controleur = controleur;
 
 		/* Configuration du JPanel */
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		this.setBackground(new Color(230, 230, 230));
-
 
 		/* Création des composants */
 		// Icones
@@ -192,14 +190,18 @@ public class BarreOutil extends JPanel implements ActionListener
 		}
 		else if (e.getSource() == this.btnRedimensionner)
 		{
-			int nouvelleLargeur  = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle largeur : "));
-			int nouvelleHauteur  = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle hauteur : "));
+			int nouvelleLargeur, nouvelleHauteur;
+			
+			nouvelleLargeur = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle largeur : "));
+			nouvelleHauteur = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle hauteur : "));
 
 			this.controleur.redimensionner(nouvelleLargeur, nouvelleHauteur);
 		}
 		else if (e.getSource() == this.btnRotation)
 		{
-			int angle = Integer.parseInt(JOptionPane.showInputDialog("Rentrer l'angle : "));
+			int angle;
+			
+			angle = Integer.parseInt(JOptionPane.showInputDialog("Rentrer l'angle : "));
 
 			this.controleur.rotation(angle);
 		}

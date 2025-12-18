@@ -43,21 +43,22 @@ public class Controleur
 	public Controleur()
 	{
 		// Initialisation avec l'image par defaut pour eviter imageUtil null
-		this.cheminImageCourant = "../src/images/blanc.png";
-		this.imageUtil = new ImageUtil(this.cheminImageCourant);
-		this.historiqueImages = new Stack<BufferedImage>();
-		this.imagesAnnulees = new Stack<BufferedImage>();
-		this.calqueTexte = null;
-		this.calqueTexteX = 0;
-		this.calqueTexteY = 0;
-		this.calqueSuperposition = null;
-		this.calqueSuperpositionX = 0;
-		this.calqueSuperpositionY = 0;
-		this.modePotPeinture = null;
-		this.modeDecoupageActif = false;
-		this.pointDecoupe1 = null;
-		this.pointDecoupe2 = null;
-		this.framePrincipale = new FramePrincipale(this);
+		this.cheminImageCourant       = "../src/images/blanc.png";
+		this.imageUtil                = new ImageUtil(this.cheminImageCourant);
+		this.historiqueImages         = new Stack<BufferedImage>();
+		this.imagesAnnulees           = new Stack<BufferedImage>();
+		this.calqueTexte              = null;
+		this.calqueTexteX             = 0;
+		this.calqueTexteY             = 0;
+		this.calqueSuperposition      = null;
+		this.calqueSuperpositionX     = 0;
+		this.calqueSuperpositionY     = 0;
+		this.modePotPeinture          = null;
+		this.modeDecoupageActif       = false;
+		this.pointDecoupe1            = null;
+		this.pointDecoupe2            = null;
+		this.framePrincipale          = new FramePrincipale(this);
+		
 		this.initImage();
 	}
 
@@ -125,21 +126,17 @@ public class Controleur
 
 	private boolean contientCalque(BufferedImage calque, int x, int y, int calqueX, int calqueY)
 	{
-		if (calque == null) return false;
+		if (calque == null) { return false; }
+		
 		return (x >= calqueX && x < calqueX + calque.getWidth() &&
 		        y >= calqueY && y < calqueY + calque.getHeight());
 	}
 
 	public void fusionnerCalqueSuperposition()
 	{
-		BufferedImage imgFond;
-		BufferedImage imgFinale;
-		int          posX;
-		int          posY;
-		int          rgbSup;
-		int          alpha;
-		int          rgbFond;
-		int          pixelFinal;
+		BufferedImage imgFond, imgFinale;
+		int           posX, posY;
+		int           rgbSup, alpha, rgbFond, pixelFinal;
 
 		if (this.calqueSuperposition != null)
 		{
@@ -182,13 +179,13 @@ public class Controleur
 		int r2, g2, b2;
 		int rFinal, gFinal, bFinal;
 
-		r1 = (rgbDst >> 16) & 0xff;
-		g1 = (rgbDst >> 8)  & 0xff;
-		b1 =  rgbDst        & 0xff;
+		r1 = (rgbDst >> 16) & 0xFF;
+		g1 = (rgbDst >> 8)  & 0xFF;
+		b1 =  rgbDst        & 0xFF;
 
-		r2 = (rgbSrc >> 16) & 0xff;
-		g2 = (rgbSrc >> 8)  & 0xff;
-		b2 =  rgbSrc        & 0xff;
+		r2 = (rgbSrc >> 16) & 0xFF;
+		g2 = (rgbSrc >> 8)  & 0xFF;
+		b2 =  rgbSrc        & 0xFF;
 
 		rFinal = (r2 * alpha + r1 * (255 - alpha)) / 255;
 		gFinal = (g2 * alpha + g1 * (255 - alpha)) / 255;
@@ -211,13 +208,11 @@ public class Controleur
 		BufferedImage copie;
 
 		copie = this.copierImage(this.imageUtil.getImage());
+		
 		this.historiqueImages.push(copie);
 		
 		// Limiter la taille de l'historique
-		if (this.historiqueImages.size() > LIMITE_HISTORIQUE)
-		{
-			this.historiqueImages.remove(0);
-		}
+		if (this.historiqueImages.size() > Controleur.LIMITE_HISTORIQUE) { this.historiqueImages.remove(0); }
 		
 		// Vider le redo apres une nouvelle action
 		this.imagesAnnulees.clear();
@@ -399,15 +394,18 @@ public class Controleur
 		this.pointDecoupe2 = new Point(imgX, imgY);
 
 		// Deux points définis: appliquer découpage
+		BufferedImage originale, decoupee;
+		int           minX, minY;
+		
 		this.sauvegarderEtat();
-		BufferedImage originale = this.imageUtil.getImage();
-		BufferedImage decoupee = Decoupage.decouper(originale,
-			this.pointDecoupe1.x, this.pointDecoupe1.y,
-			this.pointDecoupe2.x, this.pointDecoupe2.y);
+		originale = this.imageUtil.getImage();
+		decoupee  = Decoupage.decouper(originale,
+		                               this.pointDecoupe1.x, this.pointDecoupe1.y,
+		                               this.pointDecoupe2.x, this.pointDecoupe2.y);
 
 		// Repositionner l'image au bon endroit (top-left du rectangle sélectionné)
-		int minX = Math.min(this.pointDecoupe1.x, this.pointDecoupe2.x);
-		int minY = Math.min(this.pointDecoupe1.y, this.pointDecoupe2.y);
+		minX = Math.min(this.pointDecoupe1.x, this.pointDecoupe2.x);
+		minY = Math.min(this.pointDecoupe1.y, this.pointDecoupe2.y);
 		this.imageUtil.setImage(decoupee);
 		this.imageUtil.setX0(this.getPosX() + minX);
 		this.imageUtil.setY0(this.getPosY() + minY);
@@ -443,8 +441,12 @@ public class Controleur
 
 	private int calculerPositionCalqueX()
 	{
-		BufferedImage src = this.imageUtil.getImage();
-		double zoom = this.framePrincipale.getZoom();
+		BufferedImage src;
+		double        zoom;
+		
+		src  = this.imageUtil.getImage();
+		zoom = this.framePrincipale.getZoom();
+		
 		return this.getPosX() + (int)(src.getWidth() * zoom) + 20;
 	}
 
@@ -460,34 +462,44 @@ public class Controleur
 			JOptionPane.showMessageDialog(null, "La superposition n'accepte que des fichiers PNG (.png)", "Format non supporté", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		this.calqueSuperposition = new ImageUtil(cheminImageSup).getImage();
-		this.calqueSuperpositionX = calculerPositionCalqueX();
-		this.calqueSuperpositionY = calculerPositionCalqueY();
+		
+		this.calqueSuperposition  = new ImageUtil(cheminImageSup).getImage();
+		this.calqueSuperpositionX = this.calculerPositionCalqueX();
+		this.calqueSuperpositionY = this.calculerPositionCalqueY();
+		
 		this.framePrincipale.majIHM();
 	}
 
 	public void appliquerCreationImageTexte(String texte, int taillePolice)
 	{
-		this.calqueTexte = TexteImage.creerMasqueTexte(texte, taillePolice);
-		this.calqueTexteX = calculerPositionCalqueX();
-		this.calqueTexteY = calculerPositionCalqueY();
+		this.calqueTexte  = TexteImage.creerMasqueTexte(texte, taillePolice);
+		this.calqueTexteX = this.calculerPositionCalqueX();
+		this.calqueTexteY = this.calculerPositionCalqueY();
+		
 		this.framePrincipale.majIHM();
 	}
 
 	public void appliquerNoirEtBlanc()
 	{
+		BufferedImage resultat;
+		
 		this.sauvegarderEtat();
-		BufferedImage resultat = NoirEtBlanc.convertir(this.imageUtil.getImage());
+		resultat = NoirEtBlanc.convertir(this.imageUtil.getImage());
+		
 		this.appliquerTransformation(resultat);
 	}
 
 	public void appliquerFusion(String cheminImage2, int largeurFondue)
 	{
+		BufferedImage img1, img2, resultat;
+		ImageUtil     imgUtil2;
+		
 		this.sauvegarderEtat();
-		BufferedImage img1 = this.imageUtil.getImage();
-		ImageUtil imgUtil2 = new ImageUtil(cheminImage2);
-		BufferedImage img2 = imgUtil2.getImage();
-		BufferedImage resultat = Fusion.fusionnerAvecFondu(img1, img2, largeurFondue);
+		img1      = this.imageUtil.getImage();
+		imgUtil2  = new ImageUtil(cheminImage2);
+		img2      = imgUtil2.getImage();
+		resultat  = Fusion.fusionnerAvecFondu(img1, img2, largeurFondue);
+		
 		this.appliquerTransformation(resultat);
 	}
 
@@ -495,11 +507,13 @@ public class Controleur
 	{
 		String chemin;
 
-		chemin = this.framePrincipale.choisirImageInitiale();
+		chemin                  = this.framePrincipale.choisirImageInitiale();
 		this.cheminImageCourant = chemin;
-		this.imageUtil = new ImageUtil(chemin);
+		this.imageUtil          = new ImageUtil(chemin);
+		
 		this.framePrincipale.afficherImage(chemin);
 	}
+
 
 	public static void main(String[] args)
 	{
