@@ -20,7 +20,7 @@ public class PanelPrincipal extends JPanel
 {
 	private BufferedImage bufferedImage;
 	private FramePrincipale frame;
-	private double zoom = 1.0;
+	private double zoom;
 	private java.awt.Cursor curseurNormal;
 	private java.awt.Cursor curseurPotPeinture;
 
@@ -29,8 +29,9 @@ public class PanelPrincipal extends JPanel
 		GestionSouris gestionSouris;
 		
 		this.frame              = frame;
-		this.curseurNormal      = java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.DEFAULT_CURSOR);
-		this.curseurPotPeinture = java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.CROSSHAIR_CURSOR);
+		this.zoom               = 1.0;
+		this.curseurNormal      = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR  );
+		this.curseurPotPeinture = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
 
 		this.setLayout(new BorderLayout());
 		
@@ -38,9 +39,9 @@ public class PanelPrincipal extends JPanel
 		this.chargerImage();
 
 		gestionSouris = new GestionSouris();
-		this.addMouseListener(gestionSouris);
+		this.addMouseListener      (gestionSouris);
 		this.addMouseMotionListener(gestionSouris);
-		this.addMouseWheelListener(gestionSouris);
+		this.addMouseWheelListener (gestionSouris);
 	}
 	
 	protected void paintComponent(Graphics g)
@@ -56,7 +57,7 @@ public class PanelPrincipal extends JPanel
 		{
 			g2d   = (Graphics2D) g;
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			drawW = (int) Math.round(this.bufferedImage.getWidth() * zoom);
+			drawW = (int) Math.round(this.bufferedImage.getWidth () * zoom);
 			drawH = (int) Math.round(this.bufferedImage.getHeight() * zoom);
 			g2d.drawImage(this.bufferedImage, this.frame.getPosX(), this.frame.getPosY(), drawW, drawH, this);
 		}
@@ -65,7 +66,7 @@ public class PanelPrincipal extends JPanel
 		calqueSuperposition = this.frame.getCalqueSuperposition();
 		if (calqueSuperposition != null)
 		{
-			drawW = (int) Math.round(calqueSuperposition.getWidth() * zoom);
+			drawW = (int) Math.round(calqueSuperposition.getWidth () * zoom);
 			drawH = (int) Math.round(calqueSuperposition.getHeight() * zoom);
 			g.drawImage(calqueSuperposition, this.frame.getCalqueSuperpositionX(), this.frame.getCalqueSuperpositionY(), drawW, drawH, this);
 		}
@@ -74,7 +75,7 @@ public class PanelPrincipal extends JPanel
 		calqueTexte = this.frame.getCalqueTexte();
 		if (calqueTexte != null)
 		{
-			drawW = (int) Math.round(calqueTexte.getWidth() * zoom);
+			drawW = (int) Math.round(calqueTexte.getWidth () * zoom);
 			drawH = (int) Math.round(calqueTexte.getHeight() * zoom);
 			g.drawImage(calqueTexte, this.frame.getCalqueTexteX(), this.frame.getCalqueTexteY(), drawW, drawH, this);
 		}
@@ -132,7 +133,7 @@ public class PanelPrincipal extends JPanel
 
 	private class GestionSouris extends MouseAdapter
 	{
-		private int lastX, lastY;
+		private int     lastX, lastY;
 		private boolean dragging = false;
 		private boolean draggingTexte = false;
 		private boolean draggingSuperposition = false;
@@ -284,7 +285,7 @@ public class PanelPrincipal extends JPanel
 
 		public void mouseExited(MouseEvent e)
 		{
-			if (PanelPrincipal.this.frame.getModePotPeinture() == null && !PanelPrincipal.this.frame.isModeDecoupageActif()) { PanelPrincipal.this.setCursor(curseurNormal); }
+			if (PanelPrincipal.this.frame.getModePotPeinture() == null && !PanelPrincipal.this.frame.isModeDecoupageActif()) { PanelPrincipal.this.setCursor(PanelPrincipal.this.curseurNormal); }
 		}
 	}
 }

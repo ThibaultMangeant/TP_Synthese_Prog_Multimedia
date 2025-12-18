@@ -4,38 +4,48 @@ package metier;
  * Classe de test pour la fusion d'images avec effet de fondu
  * @author Equipe 5
  */
+
+import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import javax.imageio.ImageIO;
+
 public class TestFusion
 {
-	public static void main(String[] args)
+	public static void main(String[] arguments)
 	{
+		BufferedImage   imageRouge;
+		BufferedImage   imageBleue;
+		Graphics2D      graphiqueRouge;
+		Graphics2D      graphiqueBleue;
+		Fusion          fusion1, fusion2, fusion3;
+
 		System.out.println("=== Test de Fusion d'Images avec Fondu ===\n");
 
 		// Création de deux images de couleur unie pour mieux voir le fondu
 		System.out.println("Création des images de test...");
 		try
 		{
-			// Image rouge (300x400)
-			java.awt.image.BufferedImage imgRouge = new java.awt.image.BufferedImage(300, 400, java.awt.image.BufferedImage.TYPE_INT_RGB);
-			java.awt.Graphics2D g1 = imgRouge.createGraphics();
-			g1.setColor(java.awt.Color.RED);
-			g1.fillRect(0, 0, 300, 400);
-			g1.dispose();
-			javax.imageio.ImageIO.write(imgRouge, "png", new java.io.File("../src/images/test_rouge.png"));
+			imageRouge        = new BufferedImage(300, 400, BufferedImage.TYPE_INT_RGB);
+			graphiqueRouge    = imageRouge.createGraphics();
+			graphiqueRouge.setColor(Color.RED);
+			graphiqueRouge.fillRect(0, 0, 300, 400);
+			graphiqueRouge.dispose();
+			ImageIO.write(imageRouge, "png", new java.io.File("../src/images/test_rouge.png"));
 			System.out.println("✓ Image rouge créée");
 
-			// Image bleue (300x400)
-			java.awt.image.BufferedImage imgBleue = new java.awt.image.BufferedImage(300, 400, java.awt.image.BufferedImage.TYPE_INT_RGB);
-			java.awt.Graphics2D g2 = imgBleue.createGraphics();
-			g2.setColor(java.awt.Color.BLUE);
-			g2.fillRect(0, 0, 300, 400);
-			g2.dispose();
-			javax.imageio.ImageIO.write(imgBleue, "png", new java.io.File("../src/images/test_bleue.png"));
+			imageBleue        = new BufferedImage(300, 400, BufferedImage.TYPE_INT_RGB);
+			graphiqueBleue    = imageBleue.createGraphics();
+			graphiqueBleue.setColor(Color.BLUE);
+			graphiqueBleue.fillRect(0, 0, 300, 400);
+			graphiqueBleue.dispose();
+			ImageIO.write(imageBleue, "png", new java.io.File("../src/images/test_bleue.png"));
 			System.out.println("✓ Image bleue créée");
 		}
-		catch (Exception e)
+		catch (Exception exception)
 		{
-			System.out.println("✗ Erreur lors de la création des images : " + e.getMessage());
-			e.printStackTrace();
+			System.out.println("✗ Erreur lors de la création des images : " + exception.getMessage());
+			exception.printStackTrace();
 			return;
 		}
 
@@ -45,7 +55,7 @@ public class TestFusion
 		System.out.println("Test 1 : Fusion rouge-bleue avec fondu de 100 pixels");
 		try
 		{
-			Fusion fusion1 = new Fusion(
+			fusion1 = new Fusion(
 				"../src/images/test_rouge.png",
 				"../src/images/test_bleue.png",
 				"../src/images/fusion_test1.png"
@@ -53,10 +63,10 @@ public class TestFusion
 			fusion1.fusionnerAvecFondu(100);
 			System.out.println("✓ Image fusionnée sauvegardée : fusion_test1.png");
 		}
-		catch (Exception e)
+		catch (Exception exception)
 		{
-			System.out.println("✗ Erreur : " + e.getMessage());
-			e.printStackTrace();
+			System.out.println("✗ Erreur : " + exception.getMessage());
+			exception.printStackTrace();
 		}
 
 		System.out.println();
@@ -65,7 +75,7 @@ public class TestFusion
 		System.out.println("Test 2 : Fusion rouge-bleue avec fondu de 200 pixels");
 		try
 		{
-			Fusion fusion2 = new Fusion(
+			fusion2 = new Fusion(
 				"../src/images/test_rouge.png",
 				"../src/images/test_bleue.png",
 				"../src/images/fusion_test2.png"
@@ -73,10 +83,10 @@ public class TestFusion
 			fusion2.fusionnerAvecFondu(200);
 			System.out.println("✓ Image fusionnée sauvegardée : fusion_test2.png");
 		}
-		catch (Exception e)
+		catch (Exception exception)
 		{
-			System.out.println("✗ Erreur : " + e.getMessage());
-			e.printStackTrace();
+			System.out.println("✗ Erreur : " + exception.getMessage());
+			exception.printStackTrace();
 		}
 
 		System.out.println();
@@ -85,7 +95,7 @@ public class TestFusion
 		System.out.println("Test 3 : Fusion rouge-bleue avec fondu de 50 pixels");
 		try
 		{
-			Fusion fusion3 = new Fusion(
+			fusion3 = new Fusion(
 				"../src/images/test_rouge.png",
 				"../src/images/test_bleue.png",
 				"../src/images/fusion_test3.png"
@@ -93,10 +103,10 @@ public class TestFusion
 			fusion3.fusionnerAvecFondu(50);
 			System.out.println("✓ Image fusionnée sauvegardée : fusion_test3.png");
 		}
-		catch (Exception e)
+		catch (Exception exception)
 		{
-			System.out.println("✗ Erreur : " + e.getMessage());
-			e.printStackTrace();
+			System.out.println("✗ Erreur : " + exception.getMessage());
+			exception.printStackTrace();
 		}
 
 		System.out.println("\n=== Tests terminés ===");

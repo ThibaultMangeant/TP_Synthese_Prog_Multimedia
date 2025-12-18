@@ -33,7 +33,7 @@ public class MenuAffichage extends JMenu implements ActionListener
 		this.add(this.itemZoomArriere);
 
 		/* Activation des composants */
-		this.itemZoomAvant.  addActionListener(this);
+		this.itemZoomAvant  .addActionListener(this);
 		this.itemZoomArriere.addActionListener(this);
 	}
 
@@ -41,14 +41,8 @@ public class MenuAffichage extends JMenu implements ActionListener
 	{
 		if (this.controleur != null)
 		{
-			if (e.getSource() == this.itemZoomAvant)
-			{
-				this.controleur.zoomAvant();
-			}
-			else if (e.getSource() == this.itemZoomArriere)
-			{
-				this.controleur.zoomArriere();
-			}
+			if      (e.getSource() == this.itemZoomAvant  ) { this.controleur.zoomAvant  (); }
+			else if (e.getSource() == this.itemZoomArriere) { this.controleur.zoomArriere(); }
 		}
 	}
 }

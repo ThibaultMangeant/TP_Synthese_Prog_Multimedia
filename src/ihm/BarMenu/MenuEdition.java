@@ -46,13 +46,7 @@ public class MenuEdition extends JMenu implements ActionListener
 
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getSource() == this.itemAnnuler)
-		{
-			this.controleur.annuler();
-		}
-		else if (e.getSource() == this.itemRepeter)
-		{
-			this.controleur.refaire();
-		}
+		if      (e.getSource() == this.itemAnnuler) { this.controleur.annuler(); }
+		else if (e.getSource() == this.itemRepeter) { this.controleur.refaire(); }
 	}
 }

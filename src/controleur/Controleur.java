@@ -3,8 +3,11 @@ package controleur;
 import ihm.FramePrincipale;
 import metier.*;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Stack;
+
+import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 
 /** Contrôleur principal de l'application
@@ -66,17 +69,17 @@ public class Controleur
 	public BufferedImage getImage()              { return this.imageUtil.getImage();     }
 	public boolean       contient(int x, int y)  { return this.imageUtil.contient(x, y); }
 
-	public int  getPosX()      { return this.imageUtil.getX0(); }
-	public int  getPosY()      { return this.imageUtil.getY0(); }
-	public void setPosX(int x) { this.imageUtil.setX0(x); }
-	public void setPosY(int y) { this.imageUtil.setY0(y); }
+	public int  getPosX()      { return this.imageUtil.getX0( ); }
+	public int  getPosY()      { return this.imageUtil.getY0( ); }
+	public void setPosX(int x) {        this.imageUtil.setX0(x); }
+	public void setPosY(int y) {        this.imageUtil.setY0(y); }
 
 	public BufferedImage getCalqueTexte() { return this.calqueTexte; }
 
-	public int  getCalqueTexteX()      { return this.calqueTexteX; }
-	public int  getCalqueTexteY()      { return this.calqueTexteY; }
-	public void setCalqueTexteX(int x) { this.calqueTexteX = x; }
-	public void setCalqueTexteY(int y) { this.calqueTexteY = y; }
+	public int  getCalqueTexteX()      { return this.calqueTexteX    ; }
+	public int  getCalqueTexteY()      { return this.calqueTexteY    ; }
+	public void setCalqueTexteX(int x) {        this.calqueTexteX = x; }
+	public void setCalqueTexteY(int y) {        this.calqueTexteY = y; }
 
 	public boolean contientCalqueTexte(int x, int y)
 	{
@@ -114,10 +117,10 @@ public class Controleur
 
 	public BufferedImage getCalqueSuperposition() { return this.calqueSuperposition; }
 
-	public int  getCalqueSuperpositionX()      { return this.calqueSuperpositionX; }
-	public int  getCalqueSuperpositionY()      { return this.calqueSuperpositionY; }
-	public void setCalqueSuperpositionX(int x) { this.calqueSuperpositionX = x;    }
-	public void setCalqueSuperpositionY(int y) { this.calqueSuperpositionY = y;    }
+	public int  getCalqueSuperpositionX()      { return this.calqueSuperpositionX    ; }
+	public int  getCalqueSuperpositionY()      { return this.calqueSuperpositionY    ; }
+	public void setCalqueSuperpositionX(int x) {        this.calqueSuperpositionX = x; }
+	public void setCalqueSuperpositionY(int y) {        this.calqueSuperpositionY = y; }
 
 	public boolean contientCalqueSuperposition(int x, int y)
 	{
@@ -267,12 +270,12 @@ public class Controleur
 		this.imageUtil.sauvegarderImage(this.cheminImageCourant);
 	}
 
-	public void zoomAvant() { this.framePrincipale.zoomAvant(); }
+	public void zoomAvant  () { this.framePrincipale.zoomAvant  (); }
 	public void zoomArriere() { this.framePrincipale.zoomArriere(); }
 
 	private void appliquerTransformation(BufferedImage resultat)
 	{
-		this.imageUtil.setImage(resultat);
+		this.imageUtil      .setImage     (resultat);
 		this.framePrincipale.afficherImage(resultat);
 	}
 
@@ -338,8 +341,10 @@ public class Controleur
 
 	public void appliquerPotPeintureRemplir(int x, int y)
 	{
+		Color couleur;
+
 		this.sauvegarderEtat();
-		java.awt.Color couleur = javax.swing.JColorChooser.showDialog(null, "Choisir une couleur", java.awt.Color.RED);
+		couleur = JColorChooser.showDialog(null, "Choisir une couleur", Color.RED);
 		if (couleur != null)
 		{
 			PotPeinture.remplir(this.imageUtil, x, y, couleur, 30);
@@ -364,7 +369,7 @@ public class Controleur
 		this.pointDecoupe1 = null;
 		this.pointDecoupe2 = null;
 		this.framePrincipale.activerCurseurPotPeinture();
-		javax.swing.JOptionPane.showMessageDialog(null,
+		JOptionPane.showMessageDialog(null,
 			"Mode Découpage activé : Cliquez deux fois sur l'image pour découper le rectangle.\nClic droit pour annuler.");
 	}
 
@@ -400,12 +405,12 @@ public class Controleur
 		this.sauvegarderEtat();
 		originale = this.imageUtil.getImage();
 		decoupee  = Decoupage.decouper(originale,
-		                               this.pointDecoupe1.x, this.pointDecoupe1.y,
-		                               this.pointDecoupe2.x, this.pointDecoupe2.y);
+		                               this.pointDecoupe1.x(), this.pointDecoupe1.y(),
+		                               this.pointDecoupe2.x(), this.pointDecoupe2.y());
 
 		// Repositionner l'image au bon endroit (top-left du rectangle sélectionné)
-		minX = Math.min(this.pointDecoupe1.x, this.pointDecoupe2.x);
-		minY = Math.min(this.pointDecoupe1.y, this.pointDecoupe2.y);
+		minX = Math.min(this.pointDecoupe1.x(), this.pointDecoupe2.x());
+		minY = Math.min(this.pointDecoupe1.y(), this.pointDecoupe2.y());
 		this.imageUtil.setImage(decoupee);
 		this.imageUtil.setX0(this.getPosX() + minX);
 		this.imageUtil.setY0(this.getPosY() + minY);

@@ -33,10 +33,10 @@ public class MenuFichier extends JMenu implements ActionListener
 		this.controleur = controleur;
 
 		/* Création des items */
-		this.itemOuvrir          = new JMenuItem("Ouvrir");
+		this.itemOuvrir          = new JMenuItem("Ouvrir"             );
 		this.itemSauvegarderSous = new JMenuItem("Sauvegarder sous...");
-		this.itemSauvegarder     = new JMenuItem("Sauvegarder");
-		this.itemQuitter         = new JMenuItem("Quitter");
+		this.itemSauvegarder     = new JMenuItem("Sauvegarder"        );
+		this.itemQuitter         = new JMenuItem("Quitter"            );
 
 		/* Définition des raccourcis clavier */
 		this.itemOuvrir         .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+O
@@ -45,18 +45,18 @@ public class MenuFichier extends JMenu implements ActionListener
 		this.itemQuitter		.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+Q
 
 		/* Ajout des items au menu Fichier */
-		this.add(this.itemOuvrir);
+		this.add(this.itemOuvrir         );
 		this.addSeparator();
 		this.add(this.itemSauvegarderSous);
-		this.add(this.itemSauvegarder);
+		this.add(this.itemSauvegarder    );
 		this.addSeparator();
-		this.add(this.itemQuitter);
+		this.add(this.itemQuitter        );
 
 		/* Activation des composants */
-		this.itemOuvrir.addActionListener(this);
+		this.itemOuvrir         .addActionListener(this);
 		this.itemSauvegarderSous.addActionListener(this);
-		this.itemSauvegarder.addActionListener(this);
-		this.itemQuitter.addActionListener(this);
+		this.itemSauvegarder    .addActionListener(this);
+		this.itemQuitter        .addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -137,14 +137,7 @@ public class MenuFichier extends JMenu implements ActionListener
 			}
 		}
 
-		if (e.getSource() == this.itemSauvegarder)
-		{
-			this.controleur.sauvegarderImage();
-		}
-
-		if (e.getSource() == this.itemQuitter)
-		{
-			System.exit(0);
-		}
+		if (e.getSource() == this.itemSauvegarder) { this.controleur.sauvegarderImage(); }
+		if (e.getSource() == this.itemQuitter    ) { System.exit(0); }
 	}
 }

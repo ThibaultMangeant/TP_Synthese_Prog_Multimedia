@@ -43,7 +43,7 @@ public class TexteImage
 
 		imageSource   = this.imgUtil.getImage();
 		masqueTexte   = TexteImage.creerMasqueTexte(texte, taillePolice);
-		largeurMasque = masqueTexte.getWidth();
+		largeurMasque = masqueTexte.getWidth ();
 		hauteurMasque = masqueTexte.getHeight();
 		imageFinale   = new BufferedImage(largeurMasque, hauteurMasque, BufferedImage.TYPE_INT_ARGB);
 		
@@ -55,7 +55,7 @@ public class TexteImage
 				
 				if (alpha > 0)
 				{
-					xSource = x % imageSource.getWidth();
+					xSource = x % imageSource.getWidth ();
 					ySource = y % imageSource.getHeight();
 					couleur = imageSource.getRGB(xSource, ySource);
 					
@@ -114,10 +114,10 @@ public class TexteImage
 		int           xFond, yFond;
 		int           couleur;
 
-		largeurMasque = masqueTexte.getWidth();
+		largeurMasque = masqueTexte.getWidth ();
 		hauteurMasque = masqueTexte.getHeight();
-		largeurFond   = imageFond.getWidth();
-		hauteurFond   = imageFond.getHeight();
+		largeurFond   = imageFond  .getWidth ();
+		hauteurFond   = imageFond  .getHeight();
 		imageFinale   = new BufferedImage(largeurMasque, hauteurMasque, BufferedImage.TYPE_INT_ARGB);
 		
 		for (y = 0; y < hauteurMasque; y++)

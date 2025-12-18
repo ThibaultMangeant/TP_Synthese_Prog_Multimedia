@@ -11,6 +11,7 @@ public class TestTexteImage
 	public static void main(String[] args)
 	{
 		String src, destTexte, destCentre;
+		TexteImage txt1, txt2;
 
 		src        = args.length > 0 ? args[0] : "src/images/david_tennant.png";
 		destTexte  = args.length > 1 ? args[1] : "src/images/david_tennant_texte.png";
@@ -23,12 +24,12 @@ public class TestTexteImage
 		try
 		{
 			// Test 1: Creer un texte avec l'image en fond
-			TexteImage txt1 = new TexteImage(src, destTexte);
+			txt1 = new TexteImage(src, destTexte);
 			txt1.creerTexteImage("DOCTOR WHO", 120);
 			System.out.println("[TestTexteImage] Texte avec image OK");
 
 			// Test 2: Un autre texte
-			TexteImage txt2 = new TexteImage(src, destCentre);
+			txt2 = new TexteImage(src, destCentre);
 			txt2.creerTexteImage("TENNANT", 150);
 			System.out.println("[TestTexteImage] Texte 2 avec image OK");
 		}

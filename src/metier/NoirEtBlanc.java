@@ -52,7 +52,7 @@ public class NoirEtBlanc
 		int           gris;
 		int           couleurGris;
 
-		largeur          = imageSource.getWidth();
+		largeur          = imageSource.getWidth ();
 		hauteur          = imageSource.getHeight();
 		imageDestination = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_RGB);
 

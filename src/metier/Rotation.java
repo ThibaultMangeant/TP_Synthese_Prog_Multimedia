@@ -24,7 +24,7 @@ public class Rotation
 		this.fichierDest   = fichierDest;
 		this.imageUtil     = new ImageUtil(fichierSource);
 	}
-    
+
 	/**
 	 * Effectue une rotation de l'image d'un angle en degres,
 	 * en centrant la rotation et en ajustant la taille de sortie pour
@@ -71,8 +71,8 @@ public class Rotation
 
 		// Coordonnees des 4 coins de l'image source par rapport au centre
 		// Coin haut-gauche, haut-droit, bas-droit, bas-gauche
-		coordonneesX = new double[] { -largeur/2.0, largeur/2.0, largeur/2.0, -largeur/2.0 };
-		coordonneesY = new double[] { -hauteur/2.0, -hauteur/2.0, hauteur/2.0, hauteur/2.0 };
+		coordonneesX = new double[] { -largeur/2.0,  largeur/2.0, largeur/2.0, -largeur/2.0 };
+		coordonneesY = new double[] { -hauteur/2.0, -hauteur/2.0, hauteur/2.0,  hauteur/2.0 };
 		
 		// Precalcul du cosinus et sinus
 		cosinus = Math.cos(angleRad);
@@ -131,7 +131,7 @@ public class Rotation
 		// Conversion de l'angle de degres en radians
 		angleRad = Math.toRadians(angle);
 
-		largeur = source.getWidth();
+		largeur = source.getWidth ();
 		hauteur = source.getHeight();
 
 		taille            = Rotation.rotatedSize(largeur, hauteur, angleRad);

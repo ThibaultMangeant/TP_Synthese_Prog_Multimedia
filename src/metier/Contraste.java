@@ -74,12 +74,12 @@ public class Contraste
 				nouveauG = (int)Math.round(facteur * (g - 128) + 128);
 				nouveauB = (int)Math.round(facteur * (b - 128) + 128);
 
-				if (nouveauR < 0)       { nouveauR = 0;   } 
-				else if (nouveauR > 255) { nouveauR = 255;}
-				if (nouveauG < 0)       { nouveauG = 0;   }
-				else if (nouveauG > 255) { nouveauG = 255;}
-				if (nouveauB < 0)       { nouveauB = 0;   } 
-				else if (nouveauB > 255) { nouveauB = 255;}
+				if      (nouveauR < 0)   { nouveauR = 0;   }
+				else if (nouveauR > 255) { nouveauR = 255; }
+				if      (nouveauG < 0)   { nouveauG = 0;   }
+				else if (nouveauG > 255) { nouveauG = 255; }
+				if      (nouveauB < 0)   { nouveauB = 0;   }
+				else if (nouveauB > 255) { nouveauB = 255; }
 
 				rgba = (a << 24) | (nouveauR << 16) | (nouveauG << 8) | (nouveauB);
 				

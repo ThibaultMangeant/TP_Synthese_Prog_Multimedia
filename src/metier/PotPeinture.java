@@ -20,16 +20,16 @@ public class PotPeinture
 	{
 		Color couleurCible;
 
-		if (position.x < 0 || position.x >= imgUtil.getLargeur() || position.y < 0 || position.y >= imgUtil.getHauteur())
+		if (position.x() < 0 || position.x() >= imgUtil.getLargeur() || position.y() < 0 || position.y() >= imgUtil.getHauteur())
 		{
 			return;
 		}
 		
 		// Recuperer la couleur cliquee
-		couleurCible = new Color(imgUtil.getImage().getRGB(position.x, position.y));
+		couleurCible = new Color(imgUtil.getImage().getRGB(position.x(), position.y()));
 		
 		// Algorithme de remplissage pour retirer la couleur
-		PotPeinture.retirerCouleurIteratif(imgUtil, position.x, position.y, couleurCible, tolerance);
+		PotPeinture.retirerCouleurIteratif(imgUtil, position.x(), position.y(), couleurCible, tolerance);
 	}
 	
 	/**
@@ -65,29 +65,29 @@ public class PotPeinture
 			p = file.poll();
 			
 			// Verifier les limites
-			if (p.x < 0 || p.x >= imgUtil.getLargeur() || p.y < 0 || p.y >= imgUtil.getHauteur()) { continue; }
+			if (p.x() < 0 || p.x() >= imgUtil.getLargeur() || p.y() < 0 || p.y() >= imgUtil.getHauteur()) { continue; }
 			
 			// Si deja visite, passer
-			if (visite[p.x][p.y]) { continue; }
+			if (visite[p.x()][p.y()]) { continue; }
 			
-			couleurActuelle = new Color(imgUtil.getImage().getRGB(p.x, p.y), true);
+			couleurActuelle = new Color(imgUtil.getImage().getRGB(p.x(), p.y()), true);
 			
 			// Verifier si la couleur est proche de la couleur cible
 			if (!PotPeinture.couleurProche(couleurActuelle, couleurCible, tolerance)) { continue; }
 			
 			// Marquer comme visite
-			visite[p.x][p.y] = true;
+			visite[p.x()][p.y()] = true;
 			
 			// Rendre transparent (Alpha = 0)
-			rgb         = imgUtil.getImage().getRGB(p.x, p.y);
+			rgb         = imgUtil.getImage().getRGB(p.x(), p.y());
 			transparent = rgb & 0x00FFFFFF; // Garde RGB, met Alpha a 0
-			imgUtil.getImage().setRGB(p.x, p.y, transparent);
+			imgUtil.getImage().setRGB(p.x(), p.y(), transparent);
 			
 			// Ajouter les 4 voisins (haut, bas, gauche, droite)
-			file.add(new Point(p.x + 1, p.y));
-			file.add(new Point(p.x - 1, p.y));
-			file.add(new Point(p.x, p.y + 1));
-			file.add(new Point(p.x, p.y - 1));
+			file.add(new Point(p.x() + 1, p.y()    ));
+			file.add(new Point(p.x() - 1, p.y()    ));
+			file.add(new Point(p.x()    , p.y() + 1));
+			file.add(new Point(p.x()    , p.y() - 1));
 		}
 	}
 	
@@ -102,14 +102,14 @@ public class PotPeinture
 	{
 		Color couleurCible;
 
-		if (position.x < 0 || position.x >= imgUtil.getLargeur() || position.y < 0 || position.y >= imgUtil.getHauteur()) { return; }
+		if (position.x() < 0 || position.x() >= imgUtil.getLargeur() || position.y() < 0 || position.y() >= imgUtil.getHauteur()) { return; }
 		
-		couleurCible = new Color(imgUtil.getImage().getRGB(position.x, position.y));
+		couleurCible = new Color(imgUtil.getImage().getRGB(position.x(), position.y()));
 		
 		// Si meme couleur, ne rien faire
 		if (PotPeinture.couleurProche(couleurCible, nouvelleCouleur, 0)) { return; }
 		
-		PotPeinture.remplirIteratif(imgUtil, position.x, position.y, couleurCible, nouvelleCouleur, tolerance);
+		PotPeinture.remplirIteratif(imgUtil, position.x(), position.y(), couleurCible, nouvelleCouleur, tolerance);
 	}
 	
 	/**
@@ -145,25 +145,25 @@ public class PotPeinture
 		{
 			p = file.poll();
 			
-			if (p.x < 0 || p.x >= imgUtil.getLargeur() || p.y < 0 || p.y >= imgUtil.getHauteur()) { continue; }
+			if (p.x() < 0 || p.x() >= imgUtil.getLargeur() || p.y() < 0 || p.y() >= imgUtil.getHauteur()) { continue; }
 			
-			if (visite[p.x][p.y]) { continue; }
+			if (visite[p.x()][p.y()]) { continue; }
 			
-			couleurActuelle = new Color(imgUtil.getImage().getRGB(p.x, p.y), true);
+			couleurActuelle = new Color(imgUtil.getImage().getRGB(p.x(), p.y()), true);
 			
 			if (!PotPeinture.couleurProche(couleurActuelle, couleurCible, tolerance)) { continue; }
 			
-			visite[p.x][p.y] = true;
+			visite[p.x()][p.y()] = true;
 			
 			// Construire ARGB avec alpha opaque
 			argb = (255 << 24) | (nouvelleCouleur.getRGB() & 0x00FFFFFF);
-			imgUtil.getImage().setRGB(p.x, p.y, argb);
+			imgUtil.getImage().setRGB(p.x(), p.y(), argb);
 			
 			// Ajouter les voisins
-			file.add(new Point(p.x + 1, p.y));
-			file.add(new Point(p.x - 1, p.y));
-			file.add(new Point(p.x, p.y + 1));
-			file.add(new Point(p.x, p.y - 1));
+			file.add(new Point(p.x() + 1, p.y()    ));
+			file.add(new Point(p.x() - 1, p.y()    ));
+			file.add(new Point(p.x()    , p.y() + 1));
+			file.add(new Point(p.x()    , p.y() - 1));
 		}
 	}
 	
@@ -174,9 +174,9 @@ public class PotPeinture
 	{
 		int diffRouge, diffVert, diffBleu;
 
-		diffRouge = Math.abs(c1.getRed() - c2.getRed());
-		diffVert = Math.abs(c1.getGreen() - c2.getGreen());
-		diffBleu = Math.abs(c1.getBlue() - c2.getBlue());
+		diffRouge = Math.abs(c1.getRed  () - c2.getRed  ());
+		diffVert  = Math.abs(c1.getGreen() - c2.getGreen());
+		diffBleu  = Math.abs(c1.getBlue () - c2.getBlue ());
 		
 		return diffRouge <= tolerance && diffVert <= tolerance && diffBleu <= tolerance;
 	}

@@ -44,7 +44,7 @@ public class BarreOutil extends JPanel implements ActionListener
 		this.controleur = controleur;
 
 		/* Configuration du JPanel */
-		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+		this.setLayout    (new FlowLayout(FlowLayout.LEFT));
 		this.setBackground(new Color(230, 230, 230));
 
 		/* Création des composants */
@@ -130,14 +130,8 @@ public class BarreOutil extends JPanel implements ActionListener
 
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getSource() == this.btnZoom)
-		{
-			this.controleur.zoomAvant();
-		}
-		else if (e.getSource() == this.btnDezoom)
-		{
-			this.controleur.zoomArriere();
-		}
+		if      (e.getSource() == this.btnZoom  ) { this.controleur.zoomAvant  (); }
+		else if (e.getSource() == this.btnDezoom) { this.controleur.zoomArriere(); }
 		else if (e.getSource() == this.btnOuvrir)
 		{
 			JFileChooser selecteurFichier;
@@ -176,18 +170,9 @@ public class BarreOutil extends JPanel implements ActionListener
 				System.out.println("Une erreur est survenue lors de la sélection du fichier.");
 			}
 		}
-		else if (e.getSource() == this.btnEnregistrer)
-		{
-			this.controleur.sauvegarderImage();
-		}
-		else if (e.getSource() == this.btnAnnuler)
-		{
-			this.controleur.annuler();
-		}
-		else if (e.getSource() == this.btnRepeter)
-		{
-			this.controleur.refaire();
-		}
+		else if (e.getSource() == this.btnEnregistrer) { this.controleur.sauvegarderImage(); }
+		else if (e.getSource() == this.btnAnnuler    ) { this.controleur.annuler()         ; }
+		else if (e.getSource() == this.btnRepeter    ) { this.controleur.refaire()         ; }
 		else if (e.getSource() == this.btnRedimensionner)
 		{
 			int nouvelleLargeur, nouvelleHauteur;
@@ -205,17 +190,8 @@ public class BarreOutil extends JPanel implements ActionListener
 
 			this.controleur.rotation(angle);
 		}
-		else if (e.getSource() == this.btnMiroirH)
-		{
-			this.controleur.miroirHorizontal();
-		}
-		else if (e.getSource() == this.btnMiroirV)
-		{
-			this.controleur.miroirVertical();
-		}
-		else if (e.getSource() == this.btnPotPeinture)
-		{
-			this.controleur.activerModeRemplirCouleur();
-		}
+		else if (e.getSource() == this.btnMiroirH    ) { this.controleur.miroirHorizontal         (); }
+		else if (e.getSource() == this.btnMiroirV    ) { this.controleur.miroirVertical           (); }
+		else if (e.getSource() == this.btnPotPeinture) { this.controleur.activerModeRemplirCouleur(); }
 	}
 }

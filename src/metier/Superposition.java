@@ -59,8 +59,8 @@ public class Superposition
 			for (j = 0; j < hauteur2; j++)
 			{
 				// Verifier que les coordonnees sont dans l'image de base
-				posX = position.x + i;
-				posY = position.y + j;
+				posX = position.x() + i;
+				posY = position.y() + j;
 				
 				if (posX >= 0 && posX < largeur1 && posY >= 0 && posY < hauteur1)
 				{

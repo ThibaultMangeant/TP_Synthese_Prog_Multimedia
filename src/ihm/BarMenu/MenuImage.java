@@ -31,10 +31,10 @@ public class MenuImage extends JMenu implements ActionListener
 		this.controleur = controleur;
 
 		/* Création des items */
-		this.itemRotation       = new JMenuItem("Rotation");
-		this.itemMiroirH        = new JMenuItem("Miroir Horizontal");
-		this.itemMiroirV        = new JMenuItem("Miroir Vertical");
-		this.itemRedimensionner = new JMenuItem("Redimensionner");
+		this.itemRotation       = new JMenuItem("Rotation"          );
+		this.itemMiroirH        = new JMenuItem("Miroir Horizontal" );
+		this.itemMiroirV        = new JMenuItem("Miroir Vertical"   );
+		this.itemRedimensionner = new JMenuItem("Redimensionner"    );
 		this.itemDecouper       = new JMenuItem("Découper (2 clics)");
 
 		/* Définition des raccourcis clavier */
@@ -45,12 +45,12 @@ public class MenuImage extends JMenu implements ActionListener
 
 		/* Ajout des items au menu Image */
 		this.add(this.itemRedimensionner);
-		this.add(this.itemRotation);
+		this.add(this.itemRotation      );
 		this.addSeparator();
-		this.add(this.itemMiroirH);
-		this.add(this.itemMiroirV);
+		this.add(this.itemMiroirH       );
+		this.add(this.itemMiroirV       );
 		this.addSeparator();
-		this.add(this.itemDecouper);
+		this.add(this.itemDecouper      );
 
 		/* Activation des composants */
 		this.itemRotation      .addActionListener(this);
@@ -64,15 +64,9 @@ public class MenuImage extends JMenu implements ActionListener
 	{
 		if (this.controleur != null)
 		{
-			if (e.getSource() == this.itemMiroirH)
-			{
-				this.controleur.miroirHorizontal();
-			}
+			if (e.getSource() == this.itemMiroirH) { this.controleur.miroirHorizontal(); }
 
-			if (e.getSource() == this.itemMiroirV)
-			{
-				this.controleur.miroirVertical();
-			}
+			if (e.getSource() == this.itemMiroirV) { this.controleur.miroirVertical  (); }
 
 			if (e.getSource() == this.itemRotation)
 			{

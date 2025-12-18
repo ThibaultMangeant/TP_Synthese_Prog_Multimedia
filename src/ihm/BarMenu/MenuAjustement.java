@@ -38,63 +38,54 @@ public class MenuAjustement extends JMenu implements ActionListener
 		this.controleur = controleur;
 
 		/* Création des items */
-		this.itemRemplirCouleur = new JMenuItem("Pot de Peinture - Remplir");
-		this.itemRetirerCouleur = new JMenuItem("Pot de Peinture - Retirer");
-		this.itemTeinte         = new JMenuItem("Ajuster Teinte");
-		this.itemAntiAliasing   = new JMenuItem("Anti-Aliasing");
-		this.itemContraste      = new JMenuItem("Ajuster Contraste");
-		this.itemSuperposition  = new JMenuItem("Superposition d'Images");
+		this.itemRemplirCouleur = new JMenuItem("Pot de Peinture - Remplir"        );
+		this.itemRetirerCouleur = new JMenuItem("Pot de Peinture - Retirer"        );
+		this.itemTeinte         = new JMenuItem("Ajuster Teinte"                   );
+		this.itemAntiAliasing   = new JMenuItem("Anti-Aliasing"                    );
+		this.itemContraste      = new JMenuItem("Ajuster Contraste"                );
+		this.itemSuperposition  = new JMenuItem("Superposition d'Images"           );
 		this.itemTexteImage     = new JMenuItem("Créer une Image à partir de Texte");
-		this.itemLuminosite     = new JMenuItem("Ajuster Luminosité");
-		this.itemNegatif        = new JMenuItem("Négatif");
-		this.itemNoirEtBlanc    = new JMenuItem("Noir et Blanc");
-		this.itemFusion         = new JMenuItem("Fusion d'Images");
+		this.itemLuminosite     = new JMenuItem("Ajuster Luminosité"               );
+		this.itemNegatif        = new JMenuItem("Négatif"                          );
+		this.itemNoirEtBlanc    = new JMenuItem("Noir et Blanc"                    );
+		this.itemFusion         = new JMenuItem("Fusion d'Images"                  );
 
 		/* Ajout des items au menu Ajustement */
 		this.add(this.itemRemplirCouleur);
 		this.add(this.itemRetirerCouleur);
-		this.add(this.itemTeinte);
-		this.add(this.itemAntiAliasing);
-		this.add(this.itemContraste);
-		this.add(this.itemSuperposition);
-		this.add(this.itemTexteImage);
-		this.add(this.itemLuminosite);
-		this.add(this.itemNegatif);
-		this.add(this.itemNoirEtBlanc);
-		this.add(this.itemFusion);
+		this.add(this.itemTeinte        );
+		this.add(this.itemAntiAliasing  );
+		this.add(this.itemContraste     );
+		this.add(this.itemSuperposition );
+		this.add(this.itemTexteImage    );
+		this.add(this.itemLuminosite    );
+		this.add(this.itemNegatif       );
+		this.add(this.itemNoirEtBlanc   );
+		this.add(this.itemFusion        );
 
 		/* Activation des composants */
 		this.itemRemplirCouleur.addActionListener(this);
 		this.itemRetirerCouleur.addActionListener(this);
-		this.itemTeinte       .addActionListener(this);
-		this.itemAntiAliasing .addActionListener(this);
-		this.itemContraste    .addActionListener(this);
-		this.itemSuperposition.addActionListener(this);
-		this.itemTexteImage   .addActionListener(this);
-		this.itemLuminosite   .addActionListener(this);
-		this.itemNegatif      .addActionListener(this);
-		this.itemNoirEtBlanc  .addActionListener(this);
-		this.itemFusion       .addActionListener(this);
+		this.itemTeinte        .addActionListener(this);
+		this.itemAntiAliasing  .addActionListener(this);
+		this.itemContraste     .addActionListener(this);
+		this.itemSuperposition .addActionListener(this);
+		this.itemTexteImage    .addActionListener(this);
+		this.itemLuminosite    .addActionListener(this);
+		this.itemNegatif       .addActionListener(this);
+		this.itemNoirEtBlanc   .addActionListener(this);
+		this.itemFusion        .addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e)
 	{
 		if (this.controleur != null)
 		{
-			if (e.getSource() == this.itemAntiAliasing)
-			{
-				this.controleur.appliquerAntiAliasing();
-			}
+			if (e.getSource() == this.itemAntiAliasing  ) { this.controleur.appliquerAntiAliasing    (); }
 
-			if (e.getSource() == this.itemRemplirCouleur)
-			{
-				this.controleur.activerModeRemplirCouleur();
-			}
+			if (e.getSource() == this.itemRemplirCouleur) { this.controleur.activerModeRemplirCouleur(); }
 
-			if (e.getSource() == this.itemRetirerCouleur)
-			{
-				this.controleur.activerModeRetirerCouleur();
-			}
+			if (e.getSource() == this.itemRetirerCouleur) { this.controleur.activerModeRetirerCouleur(); }
 
 			if (e.getSource() == this.itemTeinte)
 			{
@@ -161,15 +152,9 @@ public class MenuAjustement extends JMenu implements ActionListener
 				this.controleur.appliquerLuminosite(valeurLuminosite);
 			}
 
-			if (e.getSource() == this.itemNegatif)
-			{
-				this.controleur.appliquerNegatif();
-			}
+			if (e.getSource() == this.itemNegatif    ) { this.controleur.appliquerNegatif    (); }
 
-			if (e.getSource() == this.itemNoirEtBlanc)
-			{
-				this.controleur.appliquerNoirEtBlanc();
-			}
+			if (e.getSource() == this.itemNoirEtBlanc) { this.controleur.appliquerNoirEtBlanc(); }
 
 			if (e.getSource() == this.itemFusion)
 			{

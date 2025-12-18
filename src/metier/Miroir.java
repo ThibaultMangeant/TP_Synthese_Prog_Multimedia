@@ -61,10 +61,7 @@ public class Miroir
 		hauteur = src.getHeight();
 		
 		typeImage = src.getType();
-		if (typeImage == 0)
-		{
-			typeImage = BufferedImage.TYPE_INT_ARGB;
-		}
+		if (typeImage == 0) { typeImage = BufferedImage.TYPE_INT_ARGB; }
 		
 		sortie = new BufferedImage(largeur, hauteur, typeImage);
 		
@@ -89,7 +86,7 @@ public class Miroir
 		int           x, y;
 		int           typeImage;
 
-		largeur = src.getWidth();
+		largeur = src.getWidth ();
 		hauteur = src.getHeight();
 		
 		typeImage = src.getType();

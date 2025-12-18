@@ -84,7 +84,7 @@ public class Redimensionnement
 
 		if (nouvelleLargeur <= 0 || nouvelleHauteur <= 0) { return source; }
 
-		largeur = source.getWidth();
+		largeur = source.getWidth ();
 		hauteur = source.getHeight();
 
 		// On force l'ARGB pour conserver la transparence si besoin
