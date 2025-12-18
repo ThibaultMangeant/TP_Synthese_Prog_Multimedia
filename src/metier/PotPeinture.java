@@ -20,11 +20,13 @@ public class PotPeinture
 	{
 		Color couleurCible;
 
-		if (position.x < 0 || position.x >= imgUtil.img.getWidth() || position.y < 0 || position.y >= imgUtil.img.getHeight())
+		if (position.x < 0 || position.x >= imgUtil.getLargeur() || position.y < 0 || position.y >= imgUtil.getHauteur())
+		{
 			return;
+		}
 		
 		// Recuperer la couleur cliquee
-		couleurCible = new Color(imgUtil.img.getRGB(position.x, position.y));
+		couleurCible = new Color(imgUtil.getImage().getRGB(position.x, position.y));
 		
 		// Algorithme de remplissage pour retirer la couleur
 		PotPeinture.retirerCouleurIteratif(imgUtil, position.x, position.y, couleurCible, tolerance);
@@ -48,41 +50,38 @@ public class PotPeinture
 	private static void retirerCouleurIteratif(ImageUtil imgUtil, int x, int y, Color couleurCible, int tolerance)
 	{
 		Queue<Point> file;
-		boolean[][] visite;
-		Point p;
-		Color couleurActuelle;
-		int rgb, transparent;
+		boolean[][]  visite;
+		Point        p;
+		Color        couleurActuelle;
+		int          rgb, transparent;
 
-		file = new LinkedList<>();
-		file.add(new Point(x, y));
+		file   = new LinkedList<>();
+		visite = new boolean[imgUtil.getLargeur()][imgUtil.getHauteur()];
 		
-		visite = new boolean[imgUtil.img.getWidth()][imgUtil.img.getHeight()];
+		file.add(new Point(x, y));
 		
 		while (!file.isEmpty())
 		{
 			p = file.poll();
 			
 			// Verifier les limites
-			if (p.x < 0 || p.x >= imgUtil.img.getWidth() || p.y < 0 || p.y >= imgUtil.img.getHeight())
-				continue;
+			if (p.x < 0 || p.x >= imgUtil.getLargeur() || p.y < 0 || p.y >= imgUtil.getHauteur()) { continue; }
 			
 			// Si deja visite, passer
-			if (visite[p.x][p.y])
-				continue;
+			if (visite[p.x][p.y]) { continue; }
 			
-			couleurActuelle = new Color(imgUtil.img.getRGB(p.x, p.y), true);
+			couleurActuelle = new Color(imgUtil.getImage().getRGB(p.x, p.y), true);
 			
 			// Verifier si la couleur est proche de la couleur cible
-			if (!couleurProche(couleurActuelle, couleurCible, tolerance))
-				continue;
+			if (!PotPeinture.couleurProche(couleurActuelle, couleurCible, tolerance)) { continue; }
 			
 			// Marquer comme visite
 			visite[p.x][p.y] = true;
 			
 			// Rendre transparent (Alpha = 0)
-			rgb = imgUtil.img.getRGB(p.x, p.y);
+			rgb         = imgUtil.getImage().getRGB(p.x, p.y);
 			transparent = rgb & 0x00FFFFFF; // Garde RGB, met Alpha a 0
-			imgUtil.img.setRGB(p.x, p.y, transparent);
+			imgUtil.getImage().setRGB(p.x, p.y, transparent);
 			
 			// Ajouter les 4 voisins (haut, bas, gauche, droite)
 			file.add(new Point(p.x + 1, p.y));
@@ -103,14 +102,12 @@ public class PotPeinture
 	{
 		Color couleurCible;
 
-		if (position.x < 0 || position.x >= imgUtil.img.getWidth() || position.y < 0 || position.y >= imgUtil.img.getHeight())
-			return;
+		if (position.x < 0 || position.x >= imgUtil.getLargeur() || position.y < 0 || position.y >= imgUtil.getHauteur()) { return; }
 		
-		couleurCible = new Color(imgUtil.img.getRGB(position.x, position.y));
+		couleurCible = new Color(imgUtil.getImage().getRGB(position.x, position.y));
 		
 		// Si meme couleur, ne rien faire
-		if (PotPeinture.couleurProche(couleurCible, nouvelleCouleur, 0))
-			return;
+		if (PotPeinture.couleurProche(couleurCible, nouvelleCouleur, 0)) { return; }
 		
 		PotPeinture.remplirIteratif(imgUtil, position.x, position.y, couleurCible, nouvelleCouleur, tolerance);
 	}
@@ -134,34 +131,33 @@ public class PotPeinture
 	private static void remplirIteratif(ImageUtil imgUtil, int x, int y, Color couleurCible, Color nouvelleCouleur, int tolerance)
 	{
 		Queue<Point> file;
-		boolean[][] visite;
-		Point p;
-		Color couleurActuelle;
+		boolean[][]  visite;
+		Point        p;
+		Color        couleurActuelle;
+		int          argb;
 
-		file = new LinkedList<>();
-		file.add(new Point(x, y));
+		file   = new LinkedList<>();
+		visite = new boolean[imgUtil.getLargeur()][imgUtil.getHauteur()];
 		
-		visite = new boolean[imgUtil.img.getWidth()][imgUtil.img.getHeight()];
+		file.add(new Point(x, y));
 		
 		while (!file.isEmpty())
 		{
 			p = file.poll();
 			
-			if (p.x < 0 || p.x >= imgUtil.img.getWidth() || p.y < 0 || p.y >= imgUtil.img.getHeight())
-				continue;
+			if (p.x < 0 || p.x >= imgUtil.getLargeur() || p.y < 0 || p.y >= imgUtil.getHauteur()) { continue; }
 			
-			if (visite[p.x][p.y])
-				continue;
+			if (visite[p.x][p.y]) { continue; }
 			
-			couleurActuelle = new Color(imgUtil.img.getRGB(p.x, p.y), true);
+			couleurActuelle = new Color(imgUtil.getImage().getRGB(p.x, p.y), true);
 			
-			if (!PotPeinture.couleurProche(couleurActuelle, couleurCible, tolerance))
-				continue;
+			if (!PotPeinture.couleurProche(couleurActuelle, couleurCible, tolerance)) { continue; }
 			
 			visite[p.x][p.y] = true;
+			
 			// Construire ARGB avec alpha opaque
-			int argb = (255 << 24) | (nouvelleCouleur.getRGB() & 0x00FFFFFF);
-			imgUtil.img.setRGB(p.x, p.y, argb);
+			argb = (255 << 24) | (nouvelleCouleur.getRGB() & 0x00FFFFFF);
+			imgUtil.getImage().setRGB(p.x, p.y, argb);
 			
 			// Ajouter les voisins
 			file.add(new Point(p.x + 1, p.y));

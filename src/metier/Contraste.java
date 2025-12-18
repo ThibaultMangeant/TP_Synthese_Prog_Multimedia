@@ -10,22 +10,24 @@ import java.awt.image.BufferedImage;
 public class Contraste
 {
 
-	String    fichierSource;
-	String    fichierDest;
-	ImageUtil imgUtil;
+	private String    fichierDest;
+	private ImageUtil imgUtil;
 
 	public Contraste(String fichierSource, String fichierDest)
 	{
-		this.fichierSource = fichierSource;
 		this.fichierDest   = fichierDest;
 		this.imgUtil       = new ImageUtil(fichierSource);
 	}
 
 	public void appliquerContraste(int contraste)
 	{
-		BufferedImage src = this.imgUtil.getImage();
-		BufferedImage out = appliquerContraste(src, contraste);
-		this.imgUtil.setImage(out);
+		BufferedImage src;
+		BufferedImage sortie;
+
+		src    = this.imgUtil.getImage();
+		sortie = Contraste.appliquerContraste(src, contraste);
+		
+		this.imgUtil.setImage(sortie);
 		this.imgUtil.sauvegarderImage(this.fichierDest);
 	}
 
@@ -39,38 +41,52 @@ public class Contraste
 	 */
 	public static BufferedImage appliquerContraste(BufferedImage src, int contraste)
 	{
-		int largeur = src.getWidth();
-		int hauteur = src.getHeight();
-		BufferedImage out = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_ARGB);
+		int           largeur, hauteur;
+		int           x, y;
+		BufferedImage sortie;
+		double        c, c255, facteur;
+		int           pixel;
+		int           a, r, g, b;
+		int           nouveauR, nouveauG, nouveauB;
+		int           rgba;
+
+		largeur = src.getWidth();
+		hauteur = src.getHeight();
+		sortie  = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_ARGB);
 
 		// Convertit la valeur [-100..100] en échelle [-255..255] puis calcule le facteur standard
-		double c = Math.max(-100, Math.min(100, contraste));
-		double c255 = c * 255.0 / 100.0;
-		double factor = (259.0 * (c255 + 255.0)) / (255.0 * (259.0 - c255));
+		c       = Math.max(-100, Math.min(100, contraste));
+		c255    = c * 255.0 / 100.0;
+		facteur = (259.0 * (c255 + 255.0)) / (255.0 * (259.0 - c255));
 
-		for (int x = 0; x < largeur; x++)
+		for (x = 0; x < largeur; x++)
 		{
-			for (int y = 0; y < hauteur; y++)
+			for (y = 0; y < hauteur; y++)
 			{
-				int pixel = src.getRGB(x, y);
-				int a = (pixel >>> 24) & 0xFF;
-				int r = (pixel >>> 16) & 0xFF;
-				int g = (pixel >>> 8)  & 0xFF;
-				int b = pixel & 0xFF;
+				pixel = src.getRGB(x, y);
+				
+				a = (pixel >>> 24) & 0xFF;
+				r = (pixel >>> 16) & 0xFF;
+				g = (pixel >>> 8)  & 0xFF;
+				b = pixel          & 0xFF;
 
-				int nr = (int)Math.round(factor * (r - 128) + 128);
-				int ng = (int)Math.round(factor * (g - 128) + 128);
-				int nb = (int)Math.round(factor * (b - 128) + 128);
+				nouveauR = (int)Math.round(facteur * (r - 128) + 128);
+				nouveauG = (int)Math.round(facteur * (g - 128) + 128);
+				nouveauB = (int)Math.round(facteur * (b - 128) + 128);
 
-				nr = Math.min(255, Math.max(0, nr));
-				ng = Math.min(255, Math.max(0, ng));
-				nb = Math.min(255, Math.max(0, nb));
+				if (nouveauR < 0)       { nouveauR = 0;   } 
+				else if (nouveauR > 255) { nouveauR = 255;}
+				if (nouveauG < 0)       { nouveauG = 0;   }
+				else if (nouveauG > 255) { nouveauG = 255;}
+				if (nouveauB < 0)       { nouveauB = 0;   } 
+				else if (nouveauB > 255) { nouveauB = 255;}
 
-				int rgba = (a << 24) | (nr << 16) | (ng << 8) | (nb);
-				out.setRGB(x, y, rgba);
+				rgba = (a << 24) | (nouveauR << 16) | (nouveauG << 8) | (nouveauB);
+				
+				sortie.setRGB(x, y, rgba);
 			}
 		}
 
-		return out;
+		return sortie;
 	}
 }

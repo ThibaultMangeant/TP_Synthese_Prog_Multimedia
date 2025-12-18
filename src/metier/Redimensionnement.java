@@ -20,8 +20,8 @@ public class Redimensionnement
 	 */
 	public Redimensionnement(String fichierSource, String fichierDest)
 	{
-		this.fichierDest   = fichierDest;
-		this.imgUtil       = new ImageUtil(fichierSource);
+		this.fichierDest = fichierDest;
+		this.imgUtil     = new ImageUtil(fichierSource);
 	}
 
 	/**
@@ -31,103 +31,110 @@ public class Redimensionnement
 	 * Pour chaque pixel de l'image destination, on calcule quel pixel de l'image
 	 * source doit etre copie en appliquant un facteur d'echelle.
 	 * 
-	 * @param newWidth Largeur cible en pixels
-	 * @param newHeight Hauteur cible en pixels
+	 * @param nouvelleLargeur Largeur cible en pixels
+	 * @param nouvelleHauteur Hauteur cible en pixels
 	 */
-	public void redimensionner(int newWidth, int newHeight)
+	public void redimensionner(int nouvelleLargeur, int nouvelleHauteur)
 	{
-		BufferedImage src, dest;
+		BufferedImage source;
+		BufferedImage destination;
 
-		src = this.imgUtil.getImage();
-		if (newWidth <= 0 || newHeight <= 0)
-			return;
+		if (nouvelleLargeur <= 0 || nouvelleHauteur <= 0) { return; }
 
-		dest = Redimensionnement.redimensionner(src, newWidth, newHeight);
-		this.imgUtil.setImage(dest);
+		source      = this.imgUtil.getImage();
+		destination = Redimensionnement.redimensionner(source, nouvelleLargeur, nouvelleHauteur);
+		
+		this.imgUtil.setImage(destination);
 		this.imgUtil.sauvegarderImage(this.fichierDest);
 	}
 
 	/**
 	 * Redimensionne l'image en conservant le ratio via un facteur d'echelle.
-	 * @param scale Facteur d'echelle (>0). 2.0 double la taille, 0.5 la divise par deux.
+	 * @param echelle Facteur d'echelle (>0). 2.0 double la taille, 0.5 la divise par deux.
 	 */
-	public void redimensionnerRatio(double scale)
+	public void redimensionnerRatio(double echelle)
 	{
-		BufferedImage src, dest;
+		BufferedImage source;
+		BufferedImage destination;
 
-		if (scale <= 0)
-			return;
-		src = this.imgUtil.getImage();
-		dest = Redimensionnement.redimensionnerRatio(src, scale);
-		this.imgUtil.setImage(dest);
+		if (echelle <= 0) { return; }
+		
+		source      = this.imgUtil.getImage();
+		destination = Redimensionnement.redimensionnerRatio(source, echelle);
+		
+		this.imgUtil.setImage(destination);
 		this.imgUtil.sauvegarderImage(this.fichierDest);
 	}
 
 	/**
 	 * Methode statique: redimensionne une image aux dimensions donnees.
 	 */
-	public static BufferedImage redimensionner(BufferedImage src, int newWidth, int newHeight)
+	public static BufferedImage redimensionner(BufferedImage source, int nouvelleLargeur, int nouvelleHauteur)
 	{
-		BufferedImage dest;
-		double scaleX, scaleY;
-		double i0, j0, i0d, j0d;
-		double xd, yd;
-		double xs, ys;
-		int    is, js;
-		int    rgb;
-		int    w, h;
+		BufferedImage destination;
+		double        echelleX, echelleY;
+		double        centreSourceX, centreSourceY;
+		double        centreDestX, centreDestY;
+		double        xDest, yDest;
+		double        xSource, ySource;
+		int           iSource, jSource;
+		int           rgb;
+		int           largeur, hauteur;
+		int           id, jd;
 
-		if (newWidth <= 0 || newHeight <= 0) return src;
+		if (nouvelleLargeur <= 0 || nouvelleHauteur <= 0) { return source; }
 
-		w = src.getWidth ();
-		h = src.getHeight();
+		largeur = source.getWidth();
+		hauteur = source.getHeight();
 
 		// On force l'ARGB pour conserver la transparence si besoin
-		dest = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+		destination = new BufferedImage(nouvelleLargeur, nouvelleHauteur, BufferedImage.TYPE_INT_ARGB);
 
 		// Échantillonnage inverse (nearest neighbor) centré comme pour la rotation
-		scaleX = (double) w / newWidth;
-		scaleY = (double) h / newHeight;
+		echelleX = (double) largeur / nouvelleLargeur;
+		echelleY = (double) hauteur / nouvelleHauteur;
 
-		i0  = w / 2.0;        // centre source
-		j0  = h / 2.0;
-		i0d = newWidth / 2.0;  // centre destination
-		j0d = newHeight / 2.0;
+		centreSourceX = largeur / 2.0;           // centre source
+		centreSourceY = hauteur / 2.0;
+		centreDestX   = nouvelleLargeur / 2.0;   // centre destination
+		centreDestY   = nouvelleHauteur / 2.0;
 
-		for (int jd = 0; jd < newHeight; jd++)
+		for (jd = 0; jd < nouvelleHauteur; jd++)
 		{
-			for (int id = 0; id < newWidth; id++)
+			for (id = 0; id < nouvelleLargeur; id++)
 			{
-				xd = id - i0d;
-				yd = jd - j0d;
+				xDest = id - centreDestX;
+				yDest = jd - centreDestY;
 
-				xs = xd * scaleX;
-				ys = yd * scaleY;
+				xSource = xDest * echelleX;
+				ySource = yDest * echelleY;
 
-				is = (int)Math.round(xs + i0);
-				js = (int)Math.round(ys + j0);
+				iSource = (int)Math.round(xSource + centreSourceX);
+				jSource = (int)Math.round(ySource + centreSourceY);
 
-				if (is >= 0 && is < w && js >= 0 && js < h)
+				if (iSource >= 0 && iSource < largeur && jSource >= 0 && jSource < hauteur)
 				{
-					rgb = src.getRGB(is, js);
-					dest.setRGB(id, jd, rgb);
+					rgb = source.getRGB(iSource, jSource);
+					destination.setRGB(id, jd, rgb);
 				}
 			}
 		}
 
-		return dest;
+		return destination;
 	}
 
 	/**
 	 * Methode statique: redimensionne une image en conservant le ratio via un facteur d'echelle.
 	 */
-	public static BufferedImage redimensionnerRatio(BufferedImage src, double scale)
+	public static BufferedImage redimensionnerRatio(BufferedImage source, double echelle)
 	{
-		int newWidth, newHeight;
+		int nouvelleLargeur, nouvelleHauteur;
 
-		if (scale <= 0) return src;
-		newWidth  = Math.max(1, (int)Math.round(src.getWidth()  * scale));
-		newHeight = Math.max(1, (int)Math.round(src.getHeight() * scale));
-		return Redimensionnement.redimensionner(src, newWidth, newHeight);
+		if (echelle <= 0) { return source; }
+		
+		nouvelleLargeur = Math.max(1, (int)Math.round(source.getWidth()  * echelle));
+		nouvelleHauteur = Math.max(1, (int)Math.round(source.getHeight() * echelle));
+		
+		return Redimensionnement.redimensionner(source, nouvelleLargeur, nouvelleHauteur);
 	}
 }

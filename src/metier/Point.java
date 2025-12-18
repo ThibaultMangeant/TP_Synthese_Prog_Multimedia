@@ -24,16 +24,6 @@ public class Point
 	}
 	
 	/**
-	 * Retourne une representation textuelle du point
-	 * @return Chaine de caracteres representant le point
-	 */
-	@Override
-	public String toString()
-	{
-		return "Point(" + x + ", " + y + ")";
-	}
-	
-	/**
 	 * Compare deux points pour l'egalite
 	 * @param obj Objet a comparer
 	 * @return true si les points ont les memes coordonnees
@@ -44,11 +34,18 @@ public class Point
 		Point point;
 
 		if (this == obj)
+		{
 			return true;
-		if (obj == null || getClass() != obj.getClass())
+		}
+		
+		if (obj == null || this.getClass() != obj.getClass())
+		{
 			return false;
+		}
+		
 		point = (Point) obj;
-		return x == point.x && y == point.y;
+		
+		return this.x == point.x && this.y == point.y;
 	}
 	
 }

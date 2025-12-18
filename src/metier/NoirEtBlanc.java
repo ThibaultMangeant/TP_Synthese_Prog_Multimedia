@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 public class NoirEtBlanc
 {
 	private ImageUtil imgUtil;
-	private String fichierDest;
+	private String    fichierDest;
 
 	/**
 	 * Constructeur
@@ -19,7 +19,7 @@ public class NoirEtBlanc
 	 */
 	public NoirEtBlanc(String fichierSource, String fichierDest)
 	{
-		this.imgUtil = new ImageUtil(fichierSource);
+		this.imgUtil     = new ImageUtil(fichierSource);
 		this.fichierDest = fichierDest;
 	}
 
@@ -28,33 +28,46 @@ public class NoirEtBlanc
 	 */
 	public void convertir()
 	{
-		BufferedImage biSource = this.imgUtil.getImage();
-		BufferedImage biDest = convertir(biSource);
+		BufferedImage imageSource;
+		BufferedImage imageDestination;
+
+		imageSource      = this.imgUtil.getImage();
+		imageDestination = NoirEtBlanc.convertir(imageSource);
 		
-		this.imgUtil.setImage(biDest);
+		this.imgUtil.setImage(imageDestination);
 		this.imgUtil.sauvegarderImage(this.fichierDest);
 	}
 
 	/**
 	 * Version statique : convertit une image en noir et blanc
-	 * @param biSource Image source
+	 * @param imageSource Image source
 	 * @return Image en niveaux de gris
 	 */
-	public static BufferedImage convertir(BufferedImage biSource)
+	public static BufferedImage convertir(BufferedImage imageSource)
 	{
-		BufferedImage biDest = new BufferedImage(biSource.getWidth(), biSource.getHeight(), BufferedImage.TYPE_INT_RGB);
+		BufferedImage imageDestination;
+		int           largeur, hauteur;
+		int           x, y;
+		int           couleur;
+		int           gris;
+		int           couleurGris;
 
-		for (int y = 0; y < biSource.getHeight(); y++)
+		largeur          = imageSource.getWidth();
+		hauteur          = imageSource.getHeight();
+		imageDestination = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_RGB);
+
+		for (y = 0; y < hauteur; y++)
 		{
-			for (int x = 0; x < biSource.getWidth(); x++)
+			for (x = 0; x < largeur; x++)
 			{
-				int coul = biSource.getRGB(x, y);
-				int gris = ImageUtil.luminance(new Color(coul));
-				int coulGris = (gris << 16) | (gris << 8) | gris;
-				biDest.setRGB(x, y, coulGris);
+				couleur     = imageSource.getRGB(x, y);
+				gris        = ImageUtil.luminance(new Color(couleur));
+				couleurGris = (gris << 16) | (gris << 8) | gris;
+				
+				imageDestination.setRGB(x, y, couleurGris);
 			}
 		}
 
-		return biDest;
+		return imageDestination;
 	}
 }

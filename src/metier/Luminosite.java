@@ -17,7 +17,7 @@ public class Luminosite
 	 */
 	public Luminosite(String cheminImage)
 	{
-		this.imgUtil     = new ImageUtil(cheminImage);
+		this.imgUtil = new ImageUtil(cheminImage);
 	}
 
 	/**
@@ -27,9 +27,13 @@ public class Luminosite
 	 */
 	public void appliquerLuminosite(int valeur, String fichierDest)
 	{
-		BufferedImage src = this.imgUtil.getImage();
-		BufferedImage out = appliquerLuminosite(src, valeur);
-		this.imgUtil.setImage(out);
+		BufferedImage src;
+		BufferedImage sortie;
+
+		src    = this.imgUtil.getImage();
+		sortie = Luminosite.appliquerLuminosite(src, valeur);
+		
+		this.imgUtil.setImage(sortie);
 		this.imgUtil.sauvegarderImage(fichierDest);
 	}
 
@@ -39,29 +43,46 @@ public class Luminosite
 	 */
 	public static BufferedImage appliquerLuminosite(BufferedImage src, int valeur)
 	{
-		int w = src.getWidth();
-		int h = src.getHeight();
-		BufferedImage out = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		int           largeur, hauteur;
+		BufferedImage sortie;
+		int           x, y;
+		int           pixel;
+		int           a, r, g, b;
+		int           nouveauR, nouveauG, nouveauB;
+		int           rgba;
 
-		for (int y = 0; y < h; y++)
+		largeur = src.getWidth();
+		hauteur = src.getHeight();
+		sortie  = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_ARGB);
+
+		for (y = 0; y < hauteur; y++)
 		{
-			for (int x = 0; x < w; x++)
+			for (x = 0; x < largeur; x++)
 			{
-				int pixel = src.getRGB(x, y);
-				int a = (pixel >>> 24) & 0xFF;
-				int r = (pixel >>> 16) & 0xFF;
-				int g = (pixel >>> 8)  & 0xFF;
-				int b =  pixel         & 0xFF;
+				pixel = src.getRGB(x, y);
+				
+				a = (pixel >>> 24) & 0xFF;
+				r = (pixel >>> 16) & 0xFF;
+				g = (pixel >>> 8)  & 0xFF;
+				b = pixel          & 0xFF;
 
-				int nr = r + valeur; if (nr < 0) nr = 0; else if (nr > 255) nr = 255;
-				int ng = g + valeur; if (ng < 0) ng = 0; else if (ng > 255) ng = 255;
-				int nb = b + valeur; if (nb < 0) nb = 0; else if (nb > 255) nb = 255;
+				nouveauR = r + valeur;
+				nouveauG = g + valeur;
+				nouveauB = b + valeur;
+				
+				if (nouveauR < 0)       { nouveauR = 0;    } 
+				else if (nouveauR > 255) { nouveauR = 255; }
+				if (nouveauG < 0)       { nouveauG = 0;    } 
+				else if (nouveauG > 255) { nouveauG = 255; }
+				if (nouveauB < 0)       { nouveauB = 0;    } 
+				else if (nouveauB > 255) { nouveauB = 255; }
 
-				int rgba = (a << 24) | (nr << 16) | (ng << 8) | nb;
-				out.setRGB(x, y, rgba);
+				rgba = (a << 24) | (nouveauR << 16) | (nouveauG << 8) | nouveauB;
+				
+				sortie.setRGB(x, y, rgba);
 			}
 		}
 
-		return out;
+		return sortie;
 	}
 }

@@ -16,7 +16,7 @@ public class Miroir
 	 */
 	public Miroir(String fichierSource)
 	{
-		this.imgUtil       = new ImageUtil(fichierSource);
+		this.imgUtil = new ImageUtil(fichierSource);
 	}
 
 	/**
@@ -25,12 +25,12 @@ public class Miroir
 	 */
 	public void miroirHorizontal()
 	{
-		BufferedImage src, out;
+		BufferedImage src, sortie;
 
-		// Récupération de l'image source et de ses dimensions
-		src = this.imgUtil.getImage();
-		out = appliquerMiroirHorizontal(src);
-		this.imgUtil.setImage(out);
+		src    = this.imgUtil.getImage();
+		sortie = Miroir.appliquerMiroirHorizontal(src);
+		
+		this.imgUtil.setImage(sortie);
 	}
 
 	/**
@@ -39,12 +39,12 @@ public class Miroir
 	 */
 	public void miroirVertical()
 	{
-		BufferedImage src, out;
+		BufferedImage src, sortie;
 
-		// Récupération de l'image source et de ses dimensions
-		src = this.imgUtil.getImage();
-		out = appliquerMiroirVertical(src);
-		this.imgUtil.setImage(out);
+		src    = this.imgUtil.getImage();
+		sortie = Miroir.appliquerMiroirVertical(src);
+		
+		this.imgUtil.setImage(sortie);
 	}
 
 	/**
@@ -52,20 +52,31 @@ public class Miroir
 	 */
 	public static BufferedImage appliquerMiroirHorizontal(BufferedImage src)
 	{
-		BufferedImage out;
-		int w, h;
+		BufferedImage sortie;
+		int           largeur, hauteur;
+		int           x, y;
+		int           typeImage;
 
-		w = src.getWidth();
-		h = src.getHeight();
-		out = new BufferedImage(w, h, src.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : src.getType());
-		for (int y = 0; y < h; y++)
+		largeur = src.getWidth();
+		hauteur = src.getHeight();
+		
+		typeImage = src.getType();
+		if (typeImage == 0)
 		{
-			for (int x = 0; x < w; x++)
+			typeImage = BufferedImage.TYPE_INT_ARGB;
+		}
+		
+		sortie = new BufferedImage(largeur, hauteur, typeImage);
+		
+		for (y = 0; y < hauteur; y++)
+		{
+			for (x = 0; x < largeur; x++)
 			{
-				out.setRGB(w - 1 - x, y, src.getRGB(x, y));
+				sortie.setRGB(largeur - 1 - x, y, src.getRGB(x, y));
 			}
 		}
-		return out;
+		
+		return sortie;
 	}
 
 	/**
@@ -73,19 +84,27 @@ public class Miroir
 	 */
 	public static BufferedImage appliquerMiroirVertical(BufferedImage src)
 	{
-		BufferedImage out;
-		int w, h;
+		BufferedImage sortie;
+		int           largeur, hauteur;
+		int           x, y;
+		int           typeImage;
 
-		w = src.getWidth();
-		h = src.getHeight();
-		out = new BufferedImage(w, h, src.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : src.getType());
-		for (int y = 0; y < h; y++)
+		largeur = src.getWidth();
+		hauteur = src.getHeight();
+		
+		typeImage = src.getType();
+		if (typeImage == 0) { typeImage = BufferedImage.TYPE_INT_ARGB; }
+		
+		sortie = new BufferedImage(largeur, hauteur, typeImage);
+		
+		for (y = 0; y < hauteur; y++)
 		{
-			for (int x = 0; x < w; x++)
+			for (x = 0; x < largeur; x++)
 			{
-				out.setRGB(x, h - 1 - y, src.getRGB(x, y));
+				sortie.setRGB(x, hauteur - 1 - y, src.getRGB(x, y));
 			}
 		}
-		return out;
+		
+		return sortie;
 	}
 }

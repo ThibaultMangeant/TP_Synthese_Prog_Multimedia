@@ -87,7 +87,7 @@ public class AntiAlias
 					for (int i = -1; i <= 1; i++)
 					{
 						colonneVoisine = colonne + i;
-						if (colonneVoisine < 0)          { colonneVoisine = 0; }
+						if (colonneVoisine < 0)             { colonneVoisine = 0; }
 						else if (colonneVoisine >= largeur) { colonneVoisine = largeur - 1; }
 
 						pixel = src.getRGB(colonneVoisine, ligneVoisine);

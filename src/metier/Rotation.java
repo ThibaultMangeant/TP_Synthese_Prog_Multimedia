@@ -38,15 +38,15 @@ public class Rotation
 	 */
 	public void rotation(double angle)
 	{
-		BufferedImage img, dest;
+		BufferedImage image;
+		BufferedImage destination;
 
-		img  = this.imageUtil.getImage();
-		dest = appliquerRotation(img, angle);
-		this.imageUtil.setImage(dest);
-		if (this.fichierDest != null && !this.fichierDest.isEmpty())
-		{
-			this.imageUtil.sauvegarderImage(this.fichierDest);
-		}
+		image       = this.imageUtil.getImage();
+		destination = Rotation.appliquerRotation(image, angle);
+		
+		this.imageUtil.setImage(destination);
+		
+		if (this.fichierDest != null && !this.fichierDest.isEmpty()) { this.imageUtil.sauvegarderImage(this.fichierDest); }
 	}
 	
 	/**
@@ -54,118 +54,122 @@ public class Rotation
 	 * Cette methode determine la taille necessaire pour contenir toute l'image
 	 * apres rotation, sans decoupage.
 	 * 
-	 * @param w Largeur de l'image source
-	 * @param h Hauteur de l'image source
-	 * @param a Angle de rotation en radians
+	 * @param largeur Largeur de l'image source
+	 * @param hauteur Hauteur de l'image source
+	 * @param angleRad Angle de rotation en radians
 	 * @return Tableau contenant [nouvelle largeur, nouvelle hauteur]
 	 */
-	private static int[] rotatedSize(int w, int h, double a)
+	private static int[] rotatedSize(int largeur, int hauteur, double angleRad)
 	{
-		double[] xs, ys;
-		double   ca, sa;
+		double[] coordonneesX, coordonneesY;
+		double   cosinus, sinus;
 		double   minX, minY, maxX, maxY;
 		double   x, y;
-		double   xr, yr;
-		int      newW, newH;
+		double   xRotation, yRotation;
+		int      nouvelleLargeur, nouvelleHauteur;
+		int      k;
 
 		// Coordonnees des 4 coins de l'image source par rapport au centre
 		// Coin haut-gauche, haut-droit, bas-droit, bas-gauche
-		xs = new double[] { -w/2.0, w/2.0, w/2.0, -w/2.0 };
-		ys = new double[] { -h/2.0, -h/2.0, h/2.0, h/2.0 };
+		coordonneesX = new double[] { -largeur/2.0, largeur/2.0, largeur/2.0, -largeur/2.0 };
+		coordonneesY = new double[] { -hauteur/2.0, -hauteur/2.0, hauteur/2.0, hauteur/2.0 };
 		
 		// Precalcul du cosinus et sinus
-		ca = Math.cos(a);
-		sa = Math.sin(a);
+		cosinus = Math.cos(angleRad);
+		sinus   = Math.sin(angleRad);
 		
 		// Initialisation des limites min/max pour trouver la boite englobante
-		minX = Double.POSITIVE_INFINITY; maxX = Double.NEGATIVE_INFINITY;
-		minY = Double.POSITIVE_INFINITY; maxY = Double.NEGATIVE_INFINITY;
+		minX = Double.POSITIVE_INFINITY;
+		maxX = Double.NEGATIVE_INFINITY;
+		minY = Double.POSITIVE_INFINITY;
+		maxY = Double.NEGATIVE_INFINITY;
 		
 		// Pour chacun des 4 coins de l'image
-		for (int k = 0; k < 4; k++)
+		for (k = 0; k < 4; k++)
 		{
-			x = xs[k];
-			y = ys[k];
+			x = coordonneesX[k];
+			y = coordonneesY[k];
 			
 			// Application de la rotation au coin
 			// xr = x*cos(a) + y*sin(a)
 			// yr = -x*sin(a) + y*cos(a)
-			xr = x * ca + y * sa;
-			yr = -x * sa + y * ca;
+			xRotation = x * cosinus + y * sinus;
+			yRotation = -x * sinus + y * cosinus;
 			
 			// Mise a jour des limites min/max
-			if (xr < minX) minX = xr;
-			if (xr > maxX) maxX = xr;
-			if (yr < minY) minY = yr;
-			if (yr > maxY) maxY = yr;
+			if (xRotation < minX) { minX = xRotation; }
+			if (xRotation > maxX) { maxX = xRotation; }
+			if (yRotation < minY) { minY = yRotation; }
+			if (yRotation > maxY) { maxY = yRotation; }
 		}
 		
 		// Calcul des nouvelles dimensions a partir des limites
-		newW = (int) Math.round(maxX - minX);
-		newH = (int) Math.round(maxY - minY);
+		nouvelleLargeur = (int) Math.round(maxX - minX);
+		nouvelleHauteur = (int) Math.round(maxY - minY);
 		
-		return new int[] { newW, newH };
+		return new int[] { nouvelleLargeur, nouvelleHauteur };
 	}
 
 	/**
 	 * Methode statique: applique la rotation en memoire et retourne l'image tournee.
 	 */
-	public static BufferedImage appliquerRotation(BufferedImage src, double angle)
+	public static BufferedImage appliquerRotation(BufferedImage source, double angle)
 	{
-		int[]    size;
-		double   ca, sa, a;
-		double   i0, j0, i0r, j0r;
-		double   x, y;
-		double   yp, xp;
-		int      w, h;
-		int      is, js;
-		int      newW, newH;
-		int      rgb;
-
-		BufferedImage dest;
+		int[]         taille;
+		double        cosinus, sinus, angleRad;
+		double        centreSourceX, centreSourceY;
+		double        centreDestX, centreDestY;
+		double        x, y;
+		double        xPrime, yPrime;
+		int           largeur, hauteur;
+		int           iSource, jSource;
+		int           nouvelleLargeur, nouvelleHauteur;
+		int           rgb;
+		BufferedImage destination;
+		int           id, jd;
 
 		// Conversion de l'angle de degres en radians
-		a = Math.toRadians(angle);
+		angleRad = Math.toRadians(angle);
 
-		w = src.getWidth();
-		h = src.getHeight();
+		largeur = source.getWidth();
+		hauteur = source.getHeight();
 
-		size = rotatedSize(w, h, a);
-		newW = size[0];
-		newH = size[1];
+		taille            = Rotation.rotatedSize(largeur, hauteur, angleRad);
+		nouvelleLargeur   = taille[0];
+		nouvelleHauteur   = taille[1];
 
-		dest = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+		destination = new BufferedImage(nouvelleLargeur, nouvelleHauteur, BufferedImage.TYPE_INT_ARGB);
 
-		ca = Math.cos(a);
-		sa = Math.sin(a);
+		cosinus = Math.cos(angleRad);
+		sinus   = Math.sin(angleRad);
 
-		i0 = w / 2.0;
-		j0 = h / 2.0;
-		i0r = newW / 2.0;
-		j0r = newH / 2.0;
+		centreSourceX = largeur / 2.0;
+		centreSourceY = hauteur / 2.0;
+		centreDestX   = nouvelleLargeur / 2.0;
+		centreDestY   = nouvelleHauteur / 2.0;
 
-		for (int jd = 0; jd < newH; jd++)
+		for (jd = 0; jd < nouvelleHauteur; jd++)
 		{
-			for (int id = 0; id < newW; id++)
+			for (id = 0; id < nouvelleLargeur; id++)
 			{
-				xp = id - i0r;
-				yp = jd - j0r;
+				xPrime = id - centreDestX;
+				yPrime = jd - centreDestY;
 
-				x = xp * ca - yp * sa;
-				y = xp * sa + yp * ca;
+				x = xPrime * cosinus - yPrime * sinus;
+				y = xPrime * sinus   + yPrime * cosinus;
 
-				is = (int) Math.round(x + i0);
-				js = (int) Math.round(y + j0);
+				iSource = (int) Math.round(x + centreSourceX);
+				jSource = (int) Math.round(y + centreSourceY);
 
-				if (is >= 0 && is < w && js >= 0 && js < h)
+				if (iSource >= 0 && iSource < largeur && jSource >= 0 && jSource < hauteur)
 				{
-					rgb = src.getRGB(is, js);
-					dest.setRGB(id, jd, rgb);
+					rgb = source.getRGB(iSource, jSource);
+					destination.setRGB(id, jd, rgb);
 				}
 			}
 		}
 
-		return dest;
+		return destination;
 	}
 
 	/**
@@ -195,8 +199,19 @@ public class Rotation
 	/**
 	 * Aides statiques pour angles fixes
 	 */
-	public static BufferedImage appliquerRotation90 (BufferedImage src) { return Rotation.appliquerRotation(src,  90.0); }
-	public static BufferedImage appliquerRotation180(BufferedImage src) { return Rotation.appliquerRotation(src, 180.0); }
-	public static BufferedImage appliquerRotation270(BufferedImage src) { return Rotation.appliquerRotation(src, 270.0); }
+	public static BufferedImage appliquerRotation90(BufferedImage source)
+	{
+		return Rotation.appliquerRotation(source, 90.0);
+	}
+	
+	public static BufferedImage appliquerRotation180(BufferedImage source)
+	{
+		return Rotation.appliquerRotation(source, 180.0);
+	}
+	
+	public static BufferedImage appliquerRotation270(BufferedImage source)
+	{
+		return Rotation.appliquerRotation(source, 270.0);
+	}
 
 }

@@ -10,7 +10,7 @@ public class Fusion
 {
 	private ImageUtil imgUtil1;
 	private ImageUtil imgUtil2;
-	private String fichierDest;
+	private String    fichierDest;
 
 	/**
 	 * Constructeur
@@ -20,8 +20,8 @@ public class Fusion
 	 */
 	public Fusion(String fichierImage1, String fichierImage2, String fichierDest)
 	{
-		this.imgUtil1 = new ImageUtil(fichierImage1);
-		this.imgUtil2 = new ImageUtil(fichierImage2);
+		this.imgUtil1    = new ImageUtil(fichierImage1);
+		this.imgUtil2    = new ImageUtil(fichierImage2);
 		this.fichierDest = fichierDest;
 	}
 
@@ -31,12 +31,14 @@ public class Fusion
 	 */
 	public void fusionnerAvecFondu(int largeurFondue)
 	{
-		BufferedImage imgGauche = this.imgUtil1.getImage();
-		BufferedImage imgDroite = this.imgUtil2.getImage();
+		BufferedImage imgGauche, imgDroite;
+		BufferedImage imgResultat;
+
+		imgGauche   = this.imgUtil1.getImage();
+		imgDroite   = this.imgUtil2.getImage();
+		imgResultat = Fusion.fusionnerAvecFondu(imgGauche, imgDroite, largeurFondue);
 		
-		BufferedImage imgResult = fusionnerAvecFondu(imgGauche, imgDroite, largeurFondue);
-		
-		this.imgUtil1.setImage(imgResult);
+		this.imgUtil1.setImage(imgResultat);
 		this.imgUtil1.sauvegarderImage(this.fichierDest);
 	}
 
@@ -49,91 +51,112 @@ public class Fusion
 	 */
 	public static BufferedImage fusionnerAvecFondu(BufferedImage imgGauche, BufferedImage imgDroite, int largeurFondue)
 	{
-		int largeurTotale = imgGauche.getWidth() + imgDroite.getWidth();
-		int hauteurMax = Math.max(imgGauche.getHeight(), imgDroite.getHeight());
-		
-		BufferedImage imgResult = new BufferedImage(largeurTotale, hauteurMax, BufferedImage.TYPE_INT_ARGB);
+		int           largeurTotale, hauteurMax;
+		BufferedImage imgResultat;
+		int           x, y;
+		int           debutFondue, finFondue;
+		float         alpha;
+		int           couleurGauche, couleurDroite;
+		int           xDroite, xGauche;
+		int           rougeGauche, vertGauche, bleuGauche, alphaGauche;
+		int           rougeDroite, vertDroite, bleuDroite, alphaDroite;
+		int           rougeFinal, vertFinal, bleuFinal, alphaFinal;
+		int           couleurFinal;
+
+		largeurTotale = imgGauche.getWidth() + imgDroite.getWidth();
+		hauteurMax    = Math.max(imgGauche.getHeight(), imgDroite.getHeight());
+		imgResultat   = new BufferedImage(largeurTotale, hauteurMax, BufferedImage.TYPE_INT_ARGB);
 
 		// Copier l'image gauche
-		for (int x = 0; x < imgGauche.getWidth(); x++)
+		for (x = 0; x < imgGauche.getWidth(); x++)
 		{
-			for (int y = 0; y < imgGauche.getHeight(); y++)
+			for (y = 0; y < imgGauche.getHeight(); y++)
 			{
-				imgResult.setRGB(x, y, imgGauche.getRGB(x, y));
+				imgResultat.setRGB(x, y, imgGauche.getRGB(x, y));
 			}
 		}
 
 		// Copier l'image droite
-		for (int x = 0; x < imgDroite.getWidth(); x++)
+		for (x = 0; x < imgDroite.getWidth(); x++)
 		{
-			for (int y = 0; y < imgDroite.getHeight(); y++)
+			for (y = 0; y < imgDroite.getHeight(); y++)
 			{
-				imgResult.setRGB(x + imgGauche.getWidth(), y, imgDroite.getRGB(x, y));
+				imgResultat.setRGB(x + imgGauche.getWidth(), y, imgDroite.getRGB(x, y));
 			}
 		}
 
 		// Appliquer le fondu
-		int debutFondue = imgGauche.getWidth() - largeurFondue / 2;
-		int finFondue = imgGauche.getWidth() + largeurFondue / 2;
+		debutFondue = imgGauche.getWidth() - largeurFondue / 2;
+		finFondue   = imgGauche.getWidth() + largeurFondue / 2;
 
 		// S'assurer que la zone de fondu est valide
-		if (debutFondue < 0) debutFondue = 0;
-		if (finFondue > largeurTotale) finFondue = largeurTotale;
+		if (debutFondue < 0)            { debutFondue = 0;              }
+		if (finFondue > largeurTotale)  { finFondue = largeurTotale;   }
 
-		for (int x = debutFondue; x < finFondue; x++)
+		for (x = debutFondue; x < finFondue; x++)
 		{
-			for (int y = 0; y < hauteurMax; y++)
+			for (y = 0; y < hauteurMax; y++)
 			{
 				// Calculer alpha (progression du fondu de 0 à 1)
-				float alpha = (float)(x - debutFondue) / (float)(finFondue - debutFondue);
+				alpha = (float)(x - debutFondue) / (float)(finFondue - debutFondue);
 
-				int couleurGauche = 0;
-				int couleurDroite = 0;
+				couleurGauche = 0;
+				couleurDroite = 0;
 
 				// Déterminer les coordonnées selon la position
 				if (x < imgGauche.getWidth())
 				{
 					// Zone de fondu dans l'image gauche
-					int xDroite = x - debutFondue;
+					xDroite = x - debutFondue;
 					
-					if (y < imgGauche.getHeight()) couleurGauche = imgGauche.getRGB(x, y);
+					if (y < imgGauche.getHeight())
+					{
+						couleurGauche = imgGauche.getRGB(x, y);
+					}
 					if (xDroite >= 0 && xDroite < imgDroite.getWidth() && y < imgDroite.getHeight())
+					{
 						couleurDroite = imgDroite.getRGB(xDroite, y);
+					}
 				}
 				else
 				{
 					// Zone de fondu dans l'image droite
-					int xDroite = x - imgGauche.getWidth();
-					int xGauche = imgGauche.getWidth() - 1 - (x - imgGauche.getWidth());
+					xDroite = x - imgGauche.getWidth();
+					xGauche = imgGauche.getWidth() - 1 - (x - imgGauche.getWidth());
 					
 					if (xGauche >= 0 && xGauche < imgGauche.getWidth() && y < imgGauche.getHeight())
+					{
 						couleurGauche = imgGauche.getRGB(xGauche, y);
+					}
 					if (xDroite >= 0 && xDroite < imgDroite.getWidth() && y < imgDroite.getHeight())
+					{
 						couleurDroite = imgDroite.getRGB(xDroite, y);
+					}
 				}
 
 				// Extraire les composantes RGB
-				int rougeGauche = (couleurGauche >> 16) & 0xFF;
-				int vertGauche = (couleurGauche >> 8) & 0xFF;
-				int bleuGauche = couleurGauche & 0xFF;
-				int alphaGauche = (couleurGauche >> 24) & 0xFF;
+				rougeGauche = (couleurGauche >> 16) & 0xFF;
+				vertGauche  = (couleurGauche >> 8)  & 0xFF;
+				bleuGauche  = couleurGauche         & 0xFF;
+				alphaGauche = (couleurGauche >> 24) & 0xFF;
 
-				int rougeDroite = (couleurDroite >> 16) & 0xFF;
-				int vertDroite = (couleurDroite >> 8) & 0xFF;
-				int bleuDroite = couleurDroite & 0xFF;
-				int alphaDroite = (couleurDroite >> 24) & 0xFF;
+				rougeDroite = (couleurDroite >> 16) & 0xFF;
+				vertDroite  = (couleurDroite >> 8)  & 0xFF;
+				bleuDroite  = couleurDroite         & 0xFF;
+				alphaDroite = (couleurDroite >> 24) & 0xFF;
 
 				// Interpolation linéaire
-				int rougeFinal = Math.round(rougeGauche * (1 - alpha) + rougeDroite * alpha);
-				int vertFinal = Math.round(vertGauche * (1 - alpha) + vertDroite * alpha);
-				int bleuFinal = Math.round(bleuGauche * (1 - alpha) + bleuDroite * alpha);
-				int alphaFinal = Math.round(alphaGauche * (1 - alpha) + alphaDroite * alpha);
+				rougeFinal = Math.round(rougeGauche * (1 - alpha) + rougeDroite * alpha);
+				vertFinal  = Math.round(vertGauche  * (1 - alpha) + vertDroite  * alpha);
+				bleuFinal  = Math.round(bleuGauche  * (1 - alpha) + bleuDroite  * alpha);
+				alphaFinal = Math.round(alphaGauche * (1 - alpha) + alphaDroite * alpha);
 
-				int couleurFinal = (alphaFinal << 24) | (rougeFinal << 16) | (vertFinal << 8) | bleuFinal;
-				imgResult.setRGB(x, y, couleurFinal);
+				couleurFinal = (alphaFinal << 24) | (rougeFinal << 16) | (vertFinal << 8) | bleuFinal;
+				
+				imgResultat.setRGB(x, y, couleurFinal);
 			}
 		}
 
-		return imgResult;
+		return imgResultat;
 	}
 }

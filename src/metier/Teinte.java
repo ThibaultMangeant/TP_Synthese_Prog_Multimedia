@@ -20,8 +20,8 @@ public class Teinte
 	 */
 	public Teinte(String fichierSource, String fichierDest)
 	{
-		this.fichierDest   = fichierDest;
-		this.imgUtil       = new ImageUtil(fichierSource);
+		this.fichierDest = fichierDest;
+		this.imgUtil     = new ImageUtil(fichierSource);
 	}
 
 	/**
@@ -33,52 +33,64 @@ public class Teinte
 	 */
 	public void teinter(int teinteRouge, int teinteVerte, int teinteBleue)
 	{
-		BufferedImage src, out;
+		BufferedImage source;
+		BufferedImage sortie;
 
-		src = this.imgUtil.getImage();
-		out = appliquerTeinte(src, teinteRouge, teinteVerte, teinteBleue);
-		this.imgUtil.setImage(out);
+		source = this.imgUtil.getImage();
+		sortie = Teinte.appliquerTeinte(source, teinteRouge, teinteVerte, teinteBleue);
+		
+		this.imgUtil.setImage(sortie);
 		this.imgUtil.sauvegarderImage(this.fichierDest);
 	}
 
 	/**
 	 * Methode statique: applique une teinte RGB sur une image et retourne le resultat.
-	 * @param src Image source
+	 * @param source Image source
 	 * @param teinteRouge delta rouge (-255..255)
 	 * @param teinteVerte delta vert (-255..255)
 	 * @param teinteBleue delta bleu (-255..255)
 	 * @return Image teintee
 	 */
-	public static BufferedImage appliquerTeinte(BufferedImage src, int teinteRouge, int teinteVerte, int teinteBleue)
+	public static BufferedImage appliquerTeinte(BufferedImage source, int teinteRouge, int teinteVerte, int teinteBleue)
 	{
-		BufferedImage out;
-		int largeur, hauteur;
-		int a, r, g, b, nr, ng, nb, pixel, rgba;
+		BufferedImage sortie;
+		int           largeur, hauteur;
+		int           x, y;
+		int           pixel;
+		int           a, r, g, b;
+		int           nouveauR, nouveauG, nouveauB;
+		int           rgba;
 
-		largeur = src.getWidth();
-		hauteur = src.getHeight();
-		out = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_ARGB);
+		largeur = source.getWidth();
+		hauteur = source.getHeight();
+		sortie  = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_ARGB);
 
-		for (int x = 0; x < largeur; x++)
+		for (x = 0; x < largeur; x++)
 		{
-			for (int y = 0; y < hauteur; y++)
+			for (y = 0; y < hauteur; y++)
 			{
-				pixel = src.getRGB(x, y);
+				pixel = source.getRGB(x, y);
+				
 				// Extraire RGBA correctement
 				a = (pixel >>> 24) & 0xFF;
 				r = (pixel >>> 16) & 0xFF;
 				g = (pixel >>> 8)  & 0xFF;
-				b = pixel & 0xFF;
+				b = pixel          & 0xFF;
 
-				nr = Math.max(0, Math.min(255, r + teinteRouge));
-				ng = Math.max(0, Math.min(255, g + teinteVerte));
-				nb = Math.max(0, Math.min(255, b + teinteBleue));
+				nouveauR = r + teinteRouge;
+				nouveauG = g + teinteVerte;
+				nouveauB = b + teinteBleue;
+				
+				if (nouveauR < 0) { nouveauR = 0; } else if (nouveauR > 255) { nouveauR = 255; }
+				if (nouveauG < 0) { nouveauG = 0; } else if (nouveauG > 255) { nouveauG = 255; }
+				if (nouveauB < 0) { nouveauB = 0; } else if (nouveauB > 255) { nouveauB = 255; }
 
-				rgba = (a << 24) | (nr << 16) | (ng << 8) | (nb);
-				out.setRGB(x, y, rgba);
+				rgba = (a << 24) | (nouveauR << 16) | (nouveauG << 8) | nouveauB;
+				
+				sortie.setRGB(x, y, rgba);
 			}
 		}
 
-		return out;
+		return sortie;
 	}
 }
