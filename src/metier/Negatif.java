@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Classe pour convertir une image en négatif (inversion des couleurs)
+ * @author Equipe 5
  */
 public class Negatif
 {

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 /**
  * Classe pour creer du texte avec une image en fond
  * L'image apparait uniquement dans les lettres du texte
+ * @author Equipe 5
  */
 public class TexteImage
 {

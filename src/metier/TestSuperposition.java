@@ -2,6 +2,7 @@ package metier;
 
 /**
  * Classe de test pour la superposition d'images
+ * @author Equipe 5
  */
 public class TestSuperposition
 {

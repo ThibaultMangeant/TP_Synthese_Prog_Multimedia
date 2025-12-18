@@ -5,6 +5,7 @@ package metier;
  * Par defaut utilise l'image du dossier src/images et produit deux fichiers:
  *  - src/images/david_tennant_resized_300x300.png
  *  - src/images/david_tennant_scaled_0_5.png
+ * @author Equipe 5
  */
 public class TestRedimensionnement
 {

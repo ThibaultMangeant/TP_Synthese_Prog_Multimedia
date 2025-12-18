@@ -7,6 +7,7 @@ package metier;
  *  - src/images/david_tennant_rot180.png
  *  - src/images/david_tennant_rot270.png
  *  - src/images/david_tennant_rot45.png
+ * @author Equipe 5
  */
 public class TestRotation
 {

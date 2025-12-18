@@ -5,6 +5,7 @@ package metier;
  * Par defaut utilise l'image du dossier src/images et produit deux fichiers:
  *  - src/images/david_tennant_texte.png (texte positionne)
  *  - src/images/david_tennant_texte_centre.png (texte centre)
+ * @author Equipe 5
  */
 public class TestTexteImage
 {

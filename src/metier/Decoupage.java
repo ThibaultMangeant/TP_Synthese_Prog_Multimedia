@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Opérations de découpage/recadrage sur une image
+ * @author Equipe 5
  */
 public class Decoupage
 {
