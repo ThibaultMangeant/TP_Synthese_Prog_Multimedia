@@ -8,20 +8,18 @@ import java.awt.image.BufferedImage;
  */
 public class AntiAlias
 {
-	ImageUtil imgUtil;
-	String fichierSource;
-	String fichierDest;
+	private ImageUtil utilitaireImage;
+	private String     fichierDestination;
 
 	/**
 	 * Constructeur fichier -> fichier (mode sauvegarde).
 	 * @param fichierSource chemin image source
-	 * @param fichierDest   chemin image destination
+	 * @param fichierDestination   chemin image destination
 	 */
-	public AntiAlias(String fichierSource, String fichierDest)
+	public AntiAlias(String fichierSource, String fichierDestination)
 	{
-		this.fichierSource = fichierSource;
-		this.fichierDest   = fichierDest;
-		this.imgUtil       = new ImageUtil(fichierSource);
+		this.fichierDestination  = fichierDestination;
+		this.utilitaireImage     = new ImageUtil(fichierSource);
 	}
 
 	/**
@@ -29,10 +27,12 @@ public class AntiAlias
 	 */
 	public void lisser()
 	{
-		BufferedImage src = this.imgUtil.getImage();
-		BufferedImage out = appliquerAntiAliasing(src);
-		this.imgUtil.setImage(out);
-		this.imgUtil.sauvegarderImage(this.fichierDest);
+		BufferedImage imageSource, imageSortie;
+
+		imageSource = this.utilitaireImage.getImage();
+		imageSortie = AntiAlias.appliquerAntiAliasing(imageSource);
+		this.utilitaireImage.setImage(imageSortie);
+		this.utilitaireImage.sauvegarderImage(this.fichierDestination);
 	}
 
 	/**
@@ -47,58 +47,82 @@ public class AntiAlias
 	 */
 	public static BufferedImage appliquerAntiAliasing(BufferedImage src)
 	{
-		int w = src.getWidth();
-		int h = src.getHeight();
-		BufferedImage out = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		int            largeur, hauteur;
+		BufferedImage  imageSortie;
+		int[]          noyau;
+		int            sommeNoyau;
+		int            accumulateurAlpha, accumulateurRouge, accumulateurVert, accumulateurBleu;
+		int            indiceNoyau;
+		int            ligneVoisine, colonneVoisine;
+		int            pixel;
+		int            alpha, rouge, vert, bleu;
+		int            nouvelAlpha, nouveauRouge, nouveauVert, nouveauBleu;
+		int            couleurRGBA;
 
-		int[] k = {1,2,1,
-				 2,4,2,
-				 1,2,1};
-		int kSum = 16;
+		largeur     = src.getWidth();
+		hauteur     = src.getHeight();
+		imageSortie = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_ARGB);
 
-		for (int y = 0; y < h; y++)
+		noyau = new int[]
 		{
-			for (int x = 0; x < w; x++)
+			1, 2, 1,
+			2, 4, 2,
+			1, 2, 1
+		};
+		sommeNoyau = 16;
+
+		for (int ligne = 0; ligne < hauteur; ligne++)
+		{
+			for (int colonne = 0; colonne < largeur; colonne++)
 			{
-				int aAcc=0, rAcc=0, gAcc=0, bAcc=0;
-				int ki = 0;
+				accumulateurAlpha = accumulateurRouge = accumulateurVert = accumulateurBleu = 0;
+				indiceNoyau       = 0;
+
 				for (int j = -1; j <= 1; j++)
 				{
-					int yy = y + j;
-					if (yy < 0) yy = 0; if (yy >= h) yy = h - 1; // clamp bord
+					ligneVoisine = ligne + j;
+					if (ligneVoisine < 0)             { ligneVoisine = 0;           }
+					else if (ligneVoisine >= hauteur) { ligneVoisine = hauteur - 1; }
+
 					for (int i = -1; i <= 1; i++)
 					{
-						int xx = x + i;
-						if (xx < 0) xx = 0; if (xx >= w) xx = w - 1; // clamp bord
-						int pixel = src.getRGB(xx, yy);
-						int a = (pixel >>> 24) & 0xFF;
-						int r = (pixel >>> 16) & 0xFF;
-						int g = (pixel >>> 8)  & 0xFF;
-						int b = pixel & 0xFF;
+						colonneVoisine = colonne + i;
+						if (colonneVoisine < 0)          { colonneVoisine = 0; }
+						else if (colonneVoisine >= largeur) { colonneVoisine = largeur - 1; }
 
-						int kv = k[ki++];
-						aAcc += kv * a;
-						rAcc += kv * r;
-						gAcc += kv * g;
-						bAcc += kv * b;
+						pixel = src.getRGB(colonneVoisine, ligneVoisine);
+						alpha = (pixel >>> 24) & 0xFF;
+						rouge = (pixel >>> 16) & 0xFF;
+						vert  = (pixel >>> 8)  & 0xFF;
+						bleu  = pixel & 0xFF;
+
+						accumulateurAlpha += noyau[indiceNoyau] * alpha;
+						accumulateurRouge += noyau[indiceNoyau] * rouge;
+						accumulateurVert  += noyau[indiceNoyau] * vert;
+						accumulateurBleu  += noyau[indiceNoyau] * bleu;
+						indiceNoyau++;
 					}
 				}
 
-				int na = aAcc / kSum;
-				int nr = rAcc / kSum;
-				int ng = gAcc / kSum;
-				int nb = bAcc / kSum;
+				nouvelAlpha  = accumulateurAlpha / sommeNoyau;
+				nouveauRouge = accumulateurRouge / sommeNoyau;
+				nouveauVert  = accumulateurVert  / sommeNoyau;
+				nouveauBleu  = accumulateurBleu  / sommeNoyau;
 
-				if (na < 0) na = 0; else if (na > 255) na = 255;
-				if (nr < 0) nr = 0; else if (nr > 255) nr = 255;
-				if (ng < 0) ng = 0; else if (ng > 255) ng = 255;
-				if (nb < 0) nb = 0; else if (nb > 255) nb = 255;
+				if (nouvelAlpha < 0)         { nouvelAlpha = 0;    }
+				else if (nouvelAlpha > 255)  { nouvelAlpha = 255;  }
+				if (nouveauRouge < 0)        { nouveauRouge = 0;   }
+				else if (nouveauRouge > 255) { nouveauRouge = 255; }
+				if (nouveauVert < 0)         { nouveauVert = 0;    }
+				else if (nouveauVert > 255)  { nouveauVert = 255;  }
+				if (nouveauBleu < 0)         { nouveauBleu = 0;    }
+				else if (nouveauBleu > 255)  { nouveauBleu = 255;  }
 
-				int rgba = (na << 24) | (nr << 16) | (ng << 8) | nb;
-				out.setRGB(x, y, rgba);
+				couleurRGBA = (nouvelAlpha << 24) | (nouveauRouge << 16) | (nouveauVert << 8) | nouveauBleu;
+				imageSortie.setRGB(colonne, ligne, couleurRGBA);
 			}
 		}
 
-		return out;
+		return imageSortie;
 	}
 }
