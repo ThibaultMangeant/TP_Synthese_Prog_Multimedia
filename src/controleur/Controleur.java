@@ -35,6 +35,11 @@ public class Controleur
 	// Mode pot de peinture
 	private String modePotPeinture; // "remplir", "retirer" ou null
 
+	// Mode découpage (sélection par deux clics)
+	private boolean modeDecoupageActif;
+	private Point   pointDecoupe1;
+	private Point   pointDecoupe2;
+
 	public Controleur()
 	{
 		// Initialisation avec l'image par defaut pour eviter imageUtil null
@@ -49,6 +54,9 @@ public class Controleur
 		this.calqueSuperpositionX = 0;
 		this.calqueSuperpositionY = 0;
 		this.modePotPeinture = null;
+		this.modeDecoupageActif = false;
+		this.pointDecoupe1 = null;
+		this.pointDecoupe2 = null;
 		this.framePrincipale = new FramePrincipale(this);
 		this.initImage();
 	}
@@ -349,6 +357,64 @@ public class Controleur
 		this.sauvegarderEtat();
 		PotPeinture.retirerCouleur(this.imageUtil, x, y, 30);
 		this.framePrincipale.afficherImage(this.imageUtil.getImage());
+	}
+
+	/* =====================
+	   Découpage par 2 clics
+	   ===================== */
+
+	public void activerModeDecoupage()
+	{
+		this.modeDecoupageActif = true;
+		this.pointDecoupe1 = null;
+		this.pointDecoupe2 = null;
+		this.framePrincipale.activerCurseurPotPeinture();
+		javax.swing.JOptionPane.showMessageDialog(null,
+			"Mode Découpage activé : Cliquez deux fois sur l'image pour découper le rectangle.\nClic droit pour annuler.");
+	}
+
+	public void desactiverModeDecoupage()
+	{
+		this.modeDecoupageActif = false;
+		this.pointDecoupe1 = null;
+		this.pointDecoupe2 = null;
+		this.framePrincipale.desactiverCurseurPotPeinture();
+	}
+
+	public boolean isModeDecoupageActif()
+	{
+		return this.modeDecoupageActif;
+	}
+
+	public void enregistrerPointDecoupage(int imgX, int imgY)
+	{
+		if (!this.modeDecoupageActif) return;
+
+		if (this.pointDecoupe1 == null)
+		{
+			this.pointDecoupe1 = new Point(imgX, imgY);
+			return;
+		}
+
+		this.pointDecoupe2 = new Point(imgX, imgY);
+
+		// Deux points définis: appliquer découpage
+		this.sauvegarderEtat();
+		BufferedImage originale = this.imageUtil.getImage();
+		BufferedImage decoupee = Decoupage.decouper(originale,
+			this.pointDecoupe1.x, this.pointDecoupe1.y,
+			this.pointDecoupe2.x, this.pointDecoupe2.y);
+
+		// Repositionner l'image au bon endroit (top-left du rectangle sélectionné)
+		int minX = Math.min(this.pointDecoupe1.x, this.pointDecoupe2.x);
+		int minY = Math.min(this.pointDecoupe1.y, this.pointDecoupe2.y);
+		this.imageUtil.setImage(decoupee);
+		this.imageUtil.setX0(this.getPosX() + minX);
+		this.imageUtil.setY0(this.getPosY() + minY);
+		this.framePrincipale.afficherImage(decoupee);
+
+		// Sortir du mode pour éviter les clics supplémentaires
+		this.desactiverModeDecoupage();
 	}
 
 	public void appliquerTeinte(int teinteRouge, int teinteVerte, int teinteBleue)

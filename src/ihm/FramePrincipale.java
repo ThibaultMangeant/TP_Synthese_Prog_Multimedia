@@ -214,6 +214,27 @@ public class FramePrincipale extends JFrame
 		this.panelPrincipal.majIHM();
 	}
 
+	/* Ponts pour le mode Découpage */
+	public boolean isModeDecoupageActif()
+	{
+		return this.controleur.isModeDecoupageActif();
+	}
+
+	public void enregistrerPointDecoupage(int imgX, int imgY)
+	{
+		this.controleur.enregistrerPointDecoupage(imgX, imgY);
+	}
+
+	public void activerModeDecoupage()
+	{
+		this.controleur.activerModeDecoupage();
+	}
+
+	public void desactiverModeDecoupage()
+	{
+		this.controleur.desactiverModeDecoupage();
+	}
+
 	public String choisirImageInitiale()
 	{
 		JFileChooser selecteurFichier;

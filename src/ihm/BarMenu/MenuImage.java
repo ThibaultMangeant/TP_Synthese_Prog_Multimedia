@@ -22,6 +22,7 @@ public class MenuImage extends JMenu implements ActionListener
 	private JMenuItem itemMiroirH;
 	private JMenuItem itemMiroirV;
 	private JMenuItem itemRedimensionner;
+	private JMenuItem itemDecouper;
 
 	public MenuImage(Controleur controleur)
 	{
@@ -34,6 +35,7 @@ public class MenuImage extends JMenu implements ActionListener
 		this.itemMiroirH        = new JMenuItem("Miroir Horizontal");
 		this.itemMiroirV        = new JMenuItem("Miroir Vertical");
 		this.itemRedimensionner = new JMenuItem("Redimensionner");
+		this.itemDecouper       = new JMenuItem("Découper (2 clics)");
 
 		/* Définition des raccourcis clavier */
 		this.itemRotation       .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK)); // Raccourci ctrl+R
@@ -47,12 +49,15 @@ public class MenuImage extends JMenu implements ActionListener
 		this.addSeparator();
 		this.add(this.itemMiroirH);
 		this.add(this.itemMiroirV);
+		this.addSeparator();
+		this.add(this.itemDecouper);
 
 		/* Activation des composants */
 		this.itemRotation      .addActionListener(this);
 		this.itemMiroirH       .addActionListener(this);
 		this.itemMiroirV       .addActionListener(this);
 		this.itemRedimensionner.addActionListener(this);
+		this.itemDecouper      .addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -82,6 +87,11 @@ public class MenuImage extends JMenu implements ActionListener
 				int nouvelleHauteur  = Integer.parseInt(JOptionPane.showInputDialog("Rentrer la nouvelle hauteur : "));
 
 				this.controleur.redimensionner(nouvelleLargeur, nouvelleHauteur);
+			}
+
+			if (e.getSource() == this.itemDecouper)
+			{
+				this.controleur.activerModeDecoupage();
 			}
 		}
 	}

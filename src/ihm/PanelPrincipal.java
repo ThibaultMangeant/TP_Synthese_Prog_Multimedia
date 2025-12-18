@@ -163,6 +163,27 @@ public class PanelPrincipal extends JPanel
 					PanelPrincipal.this.frame.appliquerPotPeintureRetirer(imgX, imgY);
 				}
 			}
+
+			// Mode découpage: 2 clics pour définir le rectangle
+			if (PanelPrincipal.this.frame.isModeDecoupageActif())
+			{
+				// Clic droit : annuler le mode découpage
+				if (e.getButton() == MouseEvent.BUTTON3)
+				{
+					PanelPrincipal.this.frame.desactiverModeDecoupage();
+					PanelPrincipal.this.desactiverCurseurPotPeinture();
+					return;
+				}
+
+				if (PanelPrincipal.this.frame.contientAvecZoom(e.getX(), e.getY()))
+				{
+					int imgX = e.getX() - PanelPrincipal.this.frame.getPosX();
+					int imgY = e.getY() - PanelPrincipal.this.frame.getPosY();
+					imgX = (int)(imgX / zoom);
+					imgY = (int)(imgY / zoom);
+					PanelPrincipal.this.frame.enregistrerPointDecoupage(imgX, imgY);
+				}
+			}
 		}
 
 		@Override
@@ -259,7 +280,7 @@ public class PanelPrincipal extends JPanel
 
 		public void mouseEntered(MouseEvent e)
 		{
-			if (PanelPrincipal.this.frame.getModePotPeinture() == null)
+			if (PanelPrincipal.this.frame.getModePotPeinture() == null && !PanelPrincipal.this.frame.isModeDecoupageActif())
 			{
 				PanelPrincipal.this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 			}
@@ -267,7 +288,7 @@ public class PanelPrincipal extends JPanel
 
 		public void mouseExited(MouseEvent e)
 		{
-			if (PanelPrincipal.this.frame.getModePotPeinture() == null)
+			if (PanelPrincipal.this.frame.getModePotPeinture() == null && !PanelPrincipal.this.frame.isModeDecoupageActif())
 			{
 				PanelPrincipal.this.setCursor(curseurNormal);
 			}

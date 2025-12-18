@@ -18,6 +18,7 @@
 ./src/metier/NoirEtBlanc.java
 ./src/metier/Luminosite.java
 ./src/metier/ImageUtil.java
+./src/metier/Decoupage.java
 ./src/metier/Miroir.java
 ./src/metier/Point.java
 ./src/metier/PotPeinture.java
